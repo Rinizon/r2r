@@ -1,0 +1,762 @@
+[gd_scene load_steps=16 format=3 uid="uid://m8f0qms2hc4j"]
+
+[ext_resource type="Script" path="res://scripts/main/main.gd" id="1_m1"]
+[ext_resource type="Script" path="res://scripts/contracts/contract_manager.gd" id="1_cm"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_controller.gd" id="1_ic"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_p1"]
+[ext_resource type="PackedScene" path="res://scenes/workstations/workstation.tscn" id="3_w1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/contracts_board_panel.tscn" id="4_cbp"]
+[ext_resource type="Texture2D" path="res://art/environment/garage_art_foundation.png" id="4_af"]
+[ext_resource type="Texture2D" path="res://art/environment/garage_shell.png" id="5_gs"]
+[ext_resource type="Texture2D" path="res://art/environment/garage_props.png" id="6_gp"]
+[ext_resource type="Texture2D" path="res://art/environment/garage_polish.png" id="7_gpol"]
+[ext_resource type="Texture2D" path="res://art/environment/unified_garage_scene.png" id="8_ugs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(640, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
+size = Vector2(24, 360)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_desk"]
+size = Vector2(224, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_board"]
+size = Vector2(132, 44)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_m1")
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="UnifiedGarageScene" type="Sprite2D" parent="Environment"]
+centered = false
+scale = Vector2(0.382775, 0.382572)
+texture = ExtResource("8_ugs")
+
+[node name="ArtFoundation" type="Sprite2D" parent="Environment"]
+visible = false
+centered = false
+scale = Vector2(0.382775, 0.382572)
+texture = ExtResource("4_af")
+
+[node name="GarageShell" type="Sprite2D" parent="Environment"]
+visible = false
+centered = false
+scale = Vector2(0.382775, 0.382572)
+texture = ExtResource("5_gs")
+
+[node name="GarageProps" type="Sprite2D" parent="Environment"]
+visible = false
+centered = false
+scale = Vector2(0.382775, 0.382572)
+texture = ExtResource("6_gp")
+
+[node name="GaragePolish" type="Sprite2D" parent="Environment"]
+visible = false
+centered = false
+scale = Vector2(0.382775, 0.382572)
+texture = ExtResource("7_gpol")
+
+[node name="Floor" type="Polygon2D" parent="Environment"]
+visible = false
+color = Color(0.192157, 0.180392, 0.156863, 1)
+polygon = PackedVector2Array(0, 0, 640, 0, 640, 360, 0, 360)
+
+[node name="AccentRug" type="Polygon2D" parent="Environment"]
+visible = false
+color = Color(0.388235, 0.301961, 0.211765, 1)
+polygon = PackedVector2Array(120, 160, 520, 160, 520, 300, 120, 300)
+
+[node name="Walls" type="Node2D" parent="Environment"]
+
+[node name="TopWall" type="StaticBody2D" parent="Environment/Walls"]
+position = Vector2(320, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Walls/TopWall"]
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="BottomWall" type="StaticBody2D" parent="Environment/Walls"]
+position = Vector2(320, 348)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Walls/BottomWall"]
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="LeftWall" type="StaticBody2D" parent="Environment/Walls"]
+position = Vector2(12, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Walls/LeftWall"]
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="RightWall" type="StaticBody2D" parent="Environment/Walls"]
+position = Vector2(628, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Walls/RightWall"]
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="DeskArea" type="Node2D" parent="Environment"]
+
+[node name="Desk" type="StaticBody2D" parent="Environment/DeskArea"]
+position = Vector2(506, 128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/DeskArea/Desk"]
+shape = SubResource("RectangleShape2D_desk")
+
+[node name="DeskSurface" type="Polygon2D" parent="Environment/DeskArea"]
+visible = false
+color = Color(0.458824, 0.341176, 0.247059, 1)
+polygon = PackedVector2Array(128, 44, 352, 44, 352, 124, 128, 124)
+
+[node name="Whiteboard" type="Polygon2D" parent="Environment"]
+visible = false
+color = Color(0.886275, 0.898039, 0.901961, 1)
+polygon = PackedVector2Array(468, 48, 588, 48, 588, 132, 468, 132)
+
+[node name="StartupShelf" type="Polygon2D" parent="Environment"]
+visible = false
+color = Color(0.333333, 0.34902, 0.372549, 1)
+polygon = PackedVector2Array(60, 52, 120, 52, 120, 148, 60, 148)
+
+[node name="BoardDesk" type="StaticBody2D" parent="Environment"]
+position = Vector2(112, 122)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/BoardDesk"]
+shape = SubResource("RectangleShape2D_board")
+
+[node name="ExpansionCorner" type="Node2D" parent="Environment"]
+
+[node name="ExpansionPad" type="Polygon2D" parent="Environment/ExpansionCorner"]
+visible = false
+color = Color(0.141176, 0.160784, 0.192157, 1)
+polygon = PackedVector2Array(420, 208, 594, 208, 594, 318, 420, 318)
+
+[node name="CableRun" type="Polygon2D" parent="Environment/ExpansionCorner"]
+visible = false
+color = Color(0.85098, 0.643137, 0.141176, 1)
+polygon = PackedVector2Array(396, 254, 420, 254, 420, 266, 396, 266)
+
+[node name="SupportMonitor" type="Polygon2D" parent="Environment/ExpansionCorner"]
+visible = false
+color = Color(0.337255, 0.792157, 0.835294, 1)
+polygon = PackedVector2Array(514, 186, 560, 186, 560, 208, 514, 208)
+
+[node name="Player" parent="." instance=ExtResource("2_p1")]
+position = Vector2(316, 250)
+
+[node name="Workstations" type="Node2D" parent="."]
+
+[node name="ComputerStation" parent="Workstations" instance=ExtResource("3_w1")]
+position = Vector2(516, 116)
+station_name = "Computer Workstation"
+station_type = "computer"
+station_summary = "A hand-built startup desktop with just enough capacity to host a few small client sites."
+interact_radius = 40.0
+hardware_data_path = "res://data/hardware/starter_workstation.json"
+accent_color = Color(0.243137, 0.6, 0.85098, 1)
+
+[node name="ContractsBoard" parent="Workstations" instance=ExtResource("3_w1")]
+position = Vector2(100, 86)
+station_name = "Billing and Contracts Board"
+station_type = "contracts"
+station_summary = "A lightweight planning board for starter hosting work, invoices, and new small-business leads."
+interact_radius = 20.0
+interact_box_size = Vector2(54, 30)
+contracts_data_path = "res://data/contracts/starter_contracts.json"
+accent_color = Color(0.929412, 0.643137, 0.247059, 1)
+
+[node name="ExternalServerUnit" parent="Workstations" instance=ExtResource("3_w1")]
+visible = false
+position = Vector2(540, 238)
+station_name = "External Server Unit"
+station_type = "expansion"
+station_summary = "A standalone server tower waiting in the corner, ready to take overflow hosting and support more reliable always-on services."
+hardware_data_path = "res://data/hardware/external_server_unit.json"
+accent_color = Color(0.462745, 0.788235, 0.980392, 1)
+
+[node name="ContractManager" type="Node" parent="."]
+script = ExtResource("1_cm")
+
+[node name="InteractionController" type="Node" parent="."]
+script = ExtResource("1_ic")
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="LayoutRoot" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopRow" type="HBoxContainer" parent="UI/LayoutRoot/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MainPanel" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow"]
+layout_mode = 2
+size_flags_vertical = 0
+custom_minimum_size = Vector2(520, 0)
+modulate = Color(0.901961, 0.85098, 0.733333, 1)
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin"]
+theme_override_constants/separation = 8
+
+[node name="TabButtons" type="HBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="Operations" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabButtons"]
+text = "Operations"
+disabled = true
+
+[node name="Contracts" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabButtons"]
+text = "Contracts"
+
+[node name="Progress" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabButtons"]
+text = "Progress"
+
+[node name="TabContent" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content"]
+theme_override_constants/separation = 10
+
+[node name="OperationsTab" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent"]
+theme_override_constants/separation = 10
+
+[node name="StartupFinances" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content"]
+text = "Startup Finances"
+theme_override_font_sizes/font_size = 18
+
+[node name="Metrics" type="GridContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content"]
+columns = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 6
+
+[node name="CashLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content/Metrics"]
+text = "Cash"
+
+[node name="CashValue" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content/Metrics"]
+horizontal_alignment = 2
+text = "$1200"
+
+[node name="IncomeLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content/Metrics"]
+text = "Income"
+
+[node name="IncomeValue" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content/Metrics"]
+horizontal_alignment = 2
+text = "$75/mo"
+
+[node name="ExpensesLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content/Metrics"]
+text = "Expenses"
+
+[node name="ExpensesValue" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/StartupFinances/Margin/Content/Metrics"]
+horizontal_alignment = 2
+text = "$20/mo"
+
+[node name="OnboardingPanel" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/OnboardingPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/OnboardingPanel/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/OnboardingPanel/Margin/Content"]
+text = "Startup Loop"
+theme_override_font_sizes/font_size = 18
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/OnboardingPanel/Margin/Content"]
+autowrap_mode = 3
+text = "Walk to the contract board, accept a small client, then return to the workstation to activate hosting. Watch for overload warnings as you stack jobs, and plan toward your first server upgrade."
+
+[node name="TimeControls" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(240, 0)
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+text = "Clock"
+theme_override_font_sizes/font_size = 18
+
+[node name="DateLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+text = "January 1"
+
+[node name="TimeLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+text = "08:00"
+theme_override_font_sizes/font_size = 20
+
+[node name="StatusLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+text = "Status: Running"
+
+[node name="Transport" type="HBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="Start" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport"]
+text = "Start"
+
+[node name="Stop" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport"]
+text = "Stop"
+
+[node name="Faster" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport"]
+text = "Faster"
+
+[node name="Reset" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport"]
+text = "Reset"
+
+[node name="NextMonth" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport"]
+text = "Next Month"
+
+[node name="SpeedLabel" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+text = "Speed 1x"
+
+[node name="SpeedStates" type="HBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="Speed1" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/SpeedStates"]
+text = "1x"
+disabled = true
+modulate = Color(0.972549, 0.788235, 0.352941, 1)
+
+[node name="Speed2" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/SpeedStates"]
+text = "2x"
+modulate = Color(0.78, 0.82, 0.86, 1)
+
+[node name="Speed3" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/SpeedStates"]
+text = "3x"
+modulate = Color(0.78, 0.82, 0.86, 1)
+
+[node name="SaveControls" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls/Margin/Content"]
+text = "Session"
+theme_override_font_sizes/font_size = 18
+
+[node name="Buttons" type="HBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="Continue" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls/Margin/Content/Buttons"]
+text = "Continue"
+disabled = true
+
+[node name="Reset" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls/Margin/Content/Buttons"]
+text = "Reset"
+
+[node name="Status" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/SaveControls/Margin/Content"]
+autowrap_mode = 3
+text = "No local save yet."
+
+[node name="ContractsTab" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent"]
+visible = false
+theme_override_constants/separation = 10
+
+[node name="AvailableSection" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/AvailableSection"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/AvailableSection/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/AvailableSection/Margin/Content"]
+text = "Available Leads"
+theme_override_font_sizes/font_size = 18
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/AvailableSection/Margin/Content"]
+autowrap_mode = 3
+text = "Available leads: 4\nBoard: Neighborhood Bakery | Risk: Low Risk | Support: Light Support / Local Artist Portfolio | Risk: Low Risk | Support: Hands-off / Corner Dental Clinic | Risk: Compliance Sensitive | Support: Priority Support / Metro Fitness Studio | Risk: Traffic Spikes | Support: After-hours Support"
+
+[node name="QueueSection" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/QueueSection"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/QueueSection/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/QueueSection/Margin/Content"]
+text = "Accepted Queue"
+theme_override_font_sizes/font_size = 18
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/QueueSection/Margin/Content"]
+autowrap_mode = 3
+text = "Accepted queue: 0"
+
+[node name="ActiveSection" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ActiveSection"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ActiveSection/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ActiveSection/Margin/Content"]
+text = "Active Hosting"
+theme_override_font_sizes/font_size = 18
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ActiveSection/Margin/Content"]
+autowrap_mode = 3
+text = "Active hosting: 0"
+
+[node name="OutcomesSection" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/OutcomesSection"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/OutcomesSection/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/OutcomesSection/Margin/Content"]
+text = "Outcomes"
+theme_override_font_sizes/font_size = 18
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/OutcomesSection/Margin/Content"]
+autowrap_mode = 3
+text = "Completed contracts: 0\nCancelled contracts: 0"
+
+[node name="ResponseSection" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content"]
+text = "Issue Response"
+theme_override_font_sizes/font_size = 18
+
+[node name="Buttons" type="HBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="EnableHold" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content/Buttons"]
+text = "Enable Hold"
+
+[node name="ClearHold" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content/Buttons"]
+text = "Clear Hold"
+
+[node name="BackupPass" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content/Buttons"]
+text = "Backup Pass"
+
+[node name="LateShift" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content/Buttons"]
+text = "Late Shift"
+
+[node name="StabilizeLine" type="Button" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content/Buttons"]
+text = "Stabilize Line"
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ContractsTab/ResponseSection/Margin/Content"]
+autowrap_mode = 3
+text = "New hosting hold: Off\nEnable Hold to pause new activation if service warnings start stacking."
+
+[node name="ProgressTab" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent"]
+visible = false
+theme_override_constants/separation = 10
+
+[node name="ProgressSummary" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/ProgressSummary"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/ProgressSummary/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/ProgressSummary/Margin/Content"]
+text = "Progress"
+theme_override_font_sizes/font_size = 18
+
+[node name="Body" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/ProgressSummary/Margin/Content"]
+autowrap_mode = 3
+text = "Goal: Purchase the External server upgrade.\nCompleted contracts: 0\nCancelled contracts: 0\nWarnings this cycle: 0"
+
+[node name="NextCostPanel" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/NextCostPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/NextCostPanel/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/NextCostPanel/Margin/Content"]
+text = "Next Cost"
+theme_override_font_sizes/font_size = 18
+
+[node name="Value" type="Label" parent="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/ProgressTab/NextCostPanel/Margin/Content"]
+autowrap_mode = 3
+text = "External server purchase: $450"
+
+[node name="LogPanel" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow"]
+layout_mode = 2
+size_flags_vertical = 0
+custom_minimum_size = Vector2(220, 0)
+modulate = Color(0.901961, 0.85098, 0.733333, 1)
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/LogPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin"]
+theme_override_constants/separation = 10
+
+[node name="HeaderRow" type="HBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/HeaderRow"]
+size_flags_horizontal = 3
+text = "Log"
+theme_override_font_sizes/font_size = 18
+
+[node name="Collapse" type="Button" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/HeaderRow"]
+text = "Collapse"
+
+[node name="ContractsSection" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content"]
+theme_override_constants/separation = 6
+
+[node name="ContractsHeader" type="Label" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/ContractsSection"]
+text = "Contracts"
+
+[node name="ContractsBody" type="Label" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/ContractsSection"]
+autowrap_mode = 3
+text = "Contract log pending."
+
+[node name="ProgressSection" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content"]
+theme_override_constants/separation = 6
+
+[node name="ProgressHeader" type="Label" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/ProgressSection"]
+text = "Progress"
+
+[node name="ProgressBody" type="Label" parent="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/ProgressSection"]
+autowrap_mode = 3
+text = "Progress log pending."
+
+[node name="CollapsedStrip" type="Button" parent="UI/LayoutRoot/Margin/TopRow/LogPanel"]
+visible = false
+text = "LOG"
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 160.0
+
+[node name="RightStack" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow"]
+layout_mode = 2
+theme_override_constants/separation = 12
+custom_minimum_size = Vector2(250, 0)
+
+[node name="DockSpacer" type="Control" parent="UI/LayoutRoot/Margin/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MonthlySummary" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/RightStack"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+modulate = Color(0.901961, 0.85098, 0.733333, 1)
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/RightStack/MonthlySummary"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/RightStack/MonthlySummary/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/RightStack/MonthlySummary/Margin/Content"]
+text = "Month End"
+theme_override_font_sizes/font_size = 18
+
+[node name="Close" type="Button" parent="UI/LayoutRoot/Margin/TopRow/RightStack/MonthlySummary/Margin/Content"]
+text = "Close"
+
+[node name="SummaryText" type="Label" parent="UI/LayoutRoot/Margin/TopRow/RightStack/MonthlySummary/Margin/Content"]
+autowrap_mode = 3
+text = "Monthly summary pending."
+
+[node name="WarningAlert" type="PanelContainer" parent="UI/LayoutRoot/Margin/TopRow/RightStack"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+modulate = Color(0.901961, 0.85098, 0.733333, 1)
+
+[node name="Margin" type="MarginContainer" parent="UI/LayoutRoot/Margin/TopRow/RightStack/WarningAlert"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="UI/LayoutRoot/Margin/TopRow/RightStack/WarningAlert/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="UI/LayoutRoot/Margin/TopRow/RightStack/WarningAlert/Margin/Content"]
+text = "Service Warning"
+theme_override_font_sizes/font_size = 18
+
+[node name="Close" type="Button" parent="UI/LayoutRoot/Margin/TopRow/RightStack/WarningAlert/Margin/Content"]
+text = "Close"
+
+[node name="AlertText" type="Label" parent="UI/LayoutRoot/Margin/TopRow/RightStack/WarningAlert/Margin/Content"]
+autowrap_mode = 3
+text = "Warning details pending."
+
+[node name="StationPanel" type="PanelContainer" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -296.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 272.0
+grow_horizontal = 0
+grow_vertical = 0
+modulate = Color(0.901961, 0.85098, 0.733333, 1)
+
+[node name="Margin" type="MarginContainer" parent="UI/StationPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="Content" type="VBoxContainer" parent="UI/StationPanel/Margin"]
+theme_override_constants/separation = 8
+
+[node name="HeaderRow" type="HBoxContainer" parent="UI/StationPanel/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="UI/StationPanel/Margin/Content/HeaderRow"]
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="Close" type="Button" parent="UI/StationPanel/Margin/Content/HeaderRow"]
+text = "Close"
+
+[node name="Subtitle" type="Label" parent="UI/StationPanel/Margin/Content"]
+autowrap_mode = 3
+
+[node name="Details" type="RichTextLabel" parent="UI/StationPanel/Margin/Content"]
+custom_minimum_size = Vector2(0, 120)
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="Actions" type="FlowContainer" parent="UI/StationPanel/Margin/Content"]
+theme_override_constants/separation = 8
+
+[node name="ActionStatus" type="Label" parent="UI/StationPanel/Margin/Content"]
+autowrap_mode = 3
+modulate = Color(0.831373, 0.886275, 0.92549, 1)
+
+[node name="Hint" type="Label" parent="UI/StationPanel/Margin/Content"]
+autowrap_mode = 3
+modulate = Color(0.8, 0.8, 0.8, 1)
+
+[node name="ContractsBoardPanel" parent="UI" instance=ExtResource("4_cbp")]
+layout_mode = 1
+modulate = Color(0.901961, 0.85098, 0.733333, 1)
+
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabButtons/Operations" to="." method="_on_main_tab_pressed" binds= ["operations"]]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabButtons/Contracts" to="." method="_on_main_tab_pressed" binds= ["contracts"]]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabButtons/Progress" to="." method="_on_main_tab_pressed" binds= ["progress"]]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/LogPanel/Margin/Content/HeaderRow/Collapse" to="." method="_on_log_panel_toggle_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/LogPanel/CollapsedStrip" to="." method="_on_log_panel_toggle_pressed"]
+[connection signal="pressed" from="UI/StationPanel/Margin/Content/HeaderRow/Close" to="." method="_on_station_panel_close_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport/Start" to="." method="_on_time_start_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport/Stop" to="." method="_on_time_pause_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport/Faster" to="." method="_on_time_faster_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport/Reset" to="." method="_on_time_reset_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/Transport/NextMonth" to="." method="_on_time_next_month_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/SpeedStates/Speed1" to="." method="_on_time_speed_state_pressed" binds= [1]]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/SpeedStates/Speed2" to="." method="_on_time_speed_state_pressed" binds= [2]]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/MainPanel/Margin/Content/TabContent/OperationsTab/TimeControls/Margin/Content/SpeedStates/Speed3" to="." method="_on_time_speed_state_pressed" binds= [3]]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/RightStack/MonthlySummary/Margin/Content/Close" to="." method="_on_monthly_summary_close_pressed"]
+[connection signal="pressed" from="UI/LayoutRoot/Margin/TopRow/RightStack/WarningAlert/Margin/Content/Close" to="." method="_on_warning_alert_close_pressed"]

@@ -1,0 +1,457 @@
+# Hardware & Infrastructure Progression Tree
+
+This system governs the player's physical growth from a hobbyist hosting websites on a personal computer to operating global hyperscale cloud infrastructure.
+
+The hardware progression should feel tangible and visually rewarding. Every upgrade should represent a meaningful milestone in the company's evolution.
+
+---
+
+# Design Goals
+
+Hardware should:
+
+- Increase available capacity
+- Unlock new contract types
+- Introduce new management challenges
+- Create visible progression
+- Encourage strategic upgrades
+
+Players should constantly decide whether to:
+
+- Upgrade existing equipment
+- Buy additional equipment
+- Expand facilities
+- Replace aging hardware
+
+---
+
+# Era 1: Personal Computer
+
+## Starter PC
+
+Starting Equipment:
+
+- 2 CPU Cores
+- 4 GB RAM
+- 250 GB Storage
+- Consumer Internet
+
+Can Host:
+
+- Personal websites
+- Blogs
+- Portfolios
+
+Limitations:
+
+- Very low capacity
+- No redundancy
+- Frequent performance bottlenecks
+
+Upgradeable Components:
+
+- CPU
+- RAM
+- HDD/SSD
+- Internet connection
+
+Visual:
+
+Single desk with a personal computer.
+
+---
+
+# Era 2: Tower Servers
+
+## Entry-Level Tower Server
+
+Unlock Requirements:
+
+- First major profit milestone
+
+Benefits:
+
+- Increased CPU capacity
+- More RAM slots
+- Additional storage bays
+
+Can Host:
+
+- Small business websites
+- Forums
+- Community platforms
+
+New Mechanic:
+
+Hardware maintenance begins.
+
+Visual:
+
+Small office with multiple standalone servers.
+
+---
+
+# Era 3: Rack Infrastructure
+
+## Standard Server Rack
+
+Major Milestone:
+
+First dedicated infrastructure deployment.
+
+Rack Capacity:
+
+- 42U total space
+
+Equipment Uses Rack Units:
+
+- 1U Server
+- 2U Storage Server
+- 1U Network Switch
+- 2U UPS System
+
+New Gameplay:
+
+Rack space management.
+
+Player decisions:
+
+- Dense compute
+- Large storage
+- Network-heavy deployments
+
+Visual:
+
+Dedicated rack with visible equipment.
+
+---
+
+# Era 4: Server Room
+
+## Multiple Rack Deployment
+
+Infrastructure Additions:
+
+- Additional racks
+- Cooling systems
+- Backup power
+
+New Constraints:
+
+- Heat generation
+- Power consumption
+
+New Contract Types:
+
+- SaaS platforms
+- Online stores
+- Medium traffic services
+
+Visual:
+
+Rows of racks within a server room.
+
+---
+
+# Era 5: Enterprise Hardware
+
+## Blade Chassis Systems
+
+Benefits:
+
+- Higher density
+- Better efficiency
+- Increased scalability
+
+Supports:
+
+- Virtualization
+- Shared resource pools
+
+New Gameplay:
+
+Workload balancing.
+
+Visual:
+
+Enterprise-grade rack infrastructure.
+
+---
+
+# Era 6: Datacenter Infrastructure
+
+## Dedicated Datacenter
+
+New Systems:
+
+- Generator backup
+- Cooling plants
+- Fiber connections
+
+Player Manages:
+
+- Rack placement
+- Power distribution
+- Cooling zones
+
+Unlocks:
+
+- Enterprise contracts
+- Gaming services
+- Streaming platforms
+
+Visual:
+
+Full datacenter floor.
+
+---
+
+# Era 7: Regional Cloud Platform
+
+## Virtualization Clusters
+
+New Features:
+
+- Resource pooling
+- Dynamic allocation
+- Multi-customer hosting
+
+Infrastructure Types:
+
+### Compute Cluster
+
+Optimized for:
+
+- Applications
+- SaaS
+- Web hosting
+
+### Storage Cluster
+
+Optimized for:
+
+- Backups
+- Media
+- Archives
+
+### Database Cluster
+
+Optimized for:
+
+- High availability
+- Enterprise workloads
+
+Visual:
+
+Massive cluster deployments.
+
+---
+
+# Era 8: Multi-Datacenter Operations
+
+## Geographic Regions
+
+Player Builds:
+
+- East Region
+- Central Region
+- West Region
+
+Benefits:
+
+- Reduced latency
+- Disaster recovery
+- Regional failover
+
+New Contracts:
+
+- National services
+- Financial applications
+- Enterprise software
+
+Visual:
+
+World map expansion.
+
+---
+
+# Era 9: Global Cloud Provider
+
+## Availability Zones
+
+Each region contains:
+
+- AZ-1
+- AZ-2
+- AZ-3
+
+Benefits:
+
+- High uptime
+- Fault tolerance
+
+Required For:
+
+- Premium enterprise contracts
+- Government contracts
+
+Visual:
+
+Global network map.
+
+---
+
+# Era 10: AI Infrastructure
+
+## GPU Clusters
+
+Specialized Hardware:
+
+- AI Accelerators
+- GPU Servers
+- High-Speed Networking
+
+Supports:
+
+- AI Training
+- AI Inference
+- Scientific Computing
+
+Challenges:
+
+- Extreme power usage
+- Cooling requirements
+- High acquisition costs
+
+Visual:
+
+Dedicated AI campuses.
+
+---
+
+# Hardware Lifecycle System
+
+All hardware ages.
+
+Lifecycle Stages:
+
+## New
+
+- Peak performance
+- Lowest failure rate
+
+## Mature
+
+- Stable operation
+- Normal maintenance
+
+## Aging
+
+- Increased power draw
+- Higher failure risk
+
+## Obsolete
+
+- Poor efficiency
+- Frequent maintenance
+
+Player Choices:
+
+- Continue operating
+- Refurbish
+- Replace
+- Sell
+
+---
+
+# Vendor System
+
+Multiple hardware vendors compete.
+
+Examples:
+
+## Budget Vendor
+
+Pros:
+
+- Cheap
+
+Cons:
+
+- Less reliable
+
+## Enterprise Vendor
+
+Pros:
+
+- Reliable
+- Efficient
+
+Cons:
+
+- Expensive
+
+## Performance Vendor
+
+Pros:
+
+- Highest capacity
+
+Cons:
+
+- Increased power consumption
+
+Vendor reputation affects customer trust and infrastructure reliability.
+
+---
+
+# Research & Development
+
+Players unlock new technologies.
+
+Research Categories:
+
+## Hardware
+
+- Faster CPUs
+- Better storage
+- Advanced networking
+
+## Reliability
+
+- Redundancy
+- Automated failover
+
+## Cloud Services
+
+- Virtual machines
+- Managed databases
+- Object storage
+
+## AI Infrastructure
+
+- GPU technologies
+- Specialized accelerators
+
+Research unlocks future eras and premium contract opportunities.
+
+---
+
+# Long-Term Infrastructure Goal
+
+The player's infrastructure should tell a visual story.
+
+Beginning:
+
+One computer hosting one website.
+
+Middle:
+
+Rows of racks supporting thousands of customers.
+
+Endgame:
+
+Global cloud regions supporting millions of users and the world's largest companies.
+
+The player should be able to zoom out and visually trace the complete history of their company's growth through the infrastructure they built.
+

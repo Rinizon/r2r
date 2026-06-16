@@ -1,0 +1,16 @@
+{
+  "prop_theme": "electronics_bench",
+  "priority": "wall_storage_and_work_surfaces",
+  "scene_texture_path": "res://art/environment/garage_props.png",
+  "modules": [
+    "pegboard_tools",
+    "parts_shelves",
+    "soldering_bench",
+    "spare_hardware"
+  ],
+  "placement_notes": [
+    "Keep most prop density along the top wall and right-side bench zone so the center floor stays playable.",
+    "Use wall-mounted storage and bench clutter before loose floor props to preserve readable pathing.",
+    "Treat spare hardware crates and scrap stacks as startup overflow around the support edge of the room."
+  ]
+}

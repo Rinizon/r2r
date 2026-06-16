@@ -1,0 +1,109 @@
+[
+  {
+    "id": "neighborhood_bakery",
+    "name": "Neighborhood Bakery",
+    "monthly_revenue": "$45",
+    "monthly_revenue_value": 45,
+    "duration_months": 2,
+    "risk_tag": "Low Risk",
+    "support_tag": "Light Support",
+    "tier": 1,
+    "unlock_requirements": {},
+    "resources": {
+      "cpu": 1,
+      "ram_gb": 1,
+      "storage_gb": 10,
+      "bandwidth_mbps": 15
+    }
+  },
+  {
+    "id": "local_artist_portfolio",
+    "name": "Local Artist Portfolio",
+    "monthly_revenue": "$30",
+    "monthly_revenue_value": 30,
+    "duration_months": 2,
+    "risk_tag": "Low Risk",
+    "support_tag": "Hands-off",
+    "tier": 1,
+    "unlock_requirements": {},
+    "resources": {
+      "cpu": 1,
+      "ram_gb": 1,
+      "storage_gb": 6,
+      "bandwidth_mbps": 10
+    }
+  },
+  {
+    "id": "corner_dental_clinic",
+    "name": "Corner Dental Clinic",
+    "monthly_revenue": "$55",
+    "monthly_revenue_value": 55,
+    "duration_months": 3,
+    "risk_tag": "Compliance Sensitive",
+    "support_tag": "Priority Support",
+    "tier": 1,
+    "unlock_requirements": {},
+    "resources": {
+      "cpu": 1,
+      "ram_gb": 1,
+      "storage_gb": 12,
+      "bandwidth_mbps": 18
+    }
+  },
+  {
+    "id": "metro_fitness_studio",
+    "name": "Metro Fitness Studio",
+    "monthly_revenue": "$40",
+    "monthly_revenue_value": 40,
+    "duration_months": 2,
+    "risk_tag": "Traffic Spikes",
+    "support_tag": "After-hours Support",
+    "tier": 1,
+    "unlock_requirements": {},
+    "resources": {
+      "cpu": 1,
+      "ram_gb": 1,
+      "storage_gb": 8,
+      "bandwidth_mbps": 12
+    }
+  },
+  {
+    "id": "riverblock_community_forum",
+    "name": "Riverblock Community Forum",
+    "monthly_revenue": "$72",
+    "monthly_revenue_value": 72,
+    "duration_months": 3,
+    "risk_tag": "Traffic Spikes",
+    "support_tag": "Community Support",
+    "tier": 2,
+    "unlock_requirements": {
+      "required_expansions": ["external_server_unit"]
+    },
+    "resources": {
+      "cpu": 1,
+      "ram_gb": 2,
+      "storage_gb": 18,
+      "bandwidth_mbps": 24
+    }
+  },
+  {
+    "id": "elm_street_accounting_office",
+    "name": "Elm Street Accounting Office",
+    "monthly_revenue": "$88",
+    "monthly_revenue_value": 88,
+    "duration_months": 3,
+    "risk_tag": "Compliance Sensitive",
+    "support_tag": "Priority Support",
+    "tier": 2,
+    "unlock_requirements": {
+      "required_expansions": ["external_server_unit"],
+      "min_completed_contracts": 2
+    },
+    "resources": {
+      "cpu": 2,
+      "ram_gb": 2,
+      "storage_gb": 24,
+      "bandwidth_mbps": 22
+    }
+  }
+]

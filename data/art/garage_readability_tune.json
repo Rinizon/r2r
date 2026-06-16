@@ -1,0 +1,15 @@
+{
+  "readability_focus": "brighten_gameplay_anchors",
+  "focal_balance": "workstation_and_contract_board_equal",
+  "scene_texture_path": "res://art/environment/unified_garage_scene.png",
+  "anchor_targets": [
+    "contract_board",
+    "workstation",
+    "expansion_corner"
+  ],
+  "notes": [
+    "Brighten the board and workstation slightly so they read as equal first-stop anchors without breaking the late-night mood.",
+    "Keep the expansion corner visible as a secondary goal marker rather than a competing primary focal point.",
+    "Tune contrast and local lighting before adding any new clutter or structural changes."
+  ]
+}

@@ -1,0 +1,639 @@
+Technical Design Document v1
+Infrastructure Tycoon
+
+1. Technical Overview
+Infrastructure Tycoon is a 2D business simulation game built in Godot 4.x. The game begins with the player hosting small websites on a single PC and scales into a global cloud infrastructure provider operating racks, datacenters, regions, and AI compute campuses.
+The technical design prioritizes:
+	• PC-first development
+	• Future portability to web and mobile
+	• Moderate simulation depth
+	• Data-driven content
+	• Long-term save scalability
+	• Hybrid detailed and abstracted simulation
+	• Continuous time with adjustable speed controls
+
+2. Target Platform
+Primary Platform
+PC
+Initial release targets:
+	• Windows
+	• macOS
+	• Linux
+	• Steam
+Future Platforms
+The architecture should avoid hard dependencies that would block:
+	• Web export
+	• Tablet/mobile ports
+	• Console ports
+Desktop mouse interaction is the primary input model, but UI systems should be designed so touch interaction can be supported later.
+
+3. Engine & Language
+Engine
+Godot 4.x
+Primary Language
+GDScript
+Optional Future Use
+C# or GDExtension may be considered later for performance-critical simulation systems, but the initial implementation should remain in GDScript for speed of development.
+
+4. Core Technical Goals
+Scalability
+The game must support:
+	• A single PC in early game
+	• Dozens of devices in mid-game
+	• Hundreds of racks in late-game
+	• Multiple datacenters and global regions in endgame
+	• Named story customers plus thousands of abstract background customers
+Readability
+The player should understand why things happen.
+Failures should be explainable:
+	• CPU overloaded
+	• Storage full
+	• Bandwidth saturated
+	• Cooling insufficient
+	• Power backup missing
+	• SLA breached
+Data-Driven Design
+Most game content should be stored as data rather than hardcoded logic.
+Examples:
+	• Hardware definitions
+	• Contract templates
+	• Customer archetypes
+	• Events
+	• Research items
+	• Facility upgrades
+	• Vendor stats
+	• Era unlocks
+Expandability
+The game should be easy to expand with:
+	• New contract types
+	• New hardware tiers
+	• New customer stories
+	• New regions
+	• New cloud services
+	• New failure types
+
+5. High-Level Architecture
+The project should be organized around several major systems.
+Core Systems
+	• GameManager
+	• TimeManager
+	• EconomyManager
+	• SimulationManager
+	• InfrastructureManager
+	• ContractManager
+	• CustomerManager
+	• EventManager
+	• ResearchManager
+	• SaveManager
+	• UIManager
+Suggested Godot Autoloads
+	• GameState
+	• TimeManager
+	• SaveManager
+	• DataRegistry
+	• EventBus
+Autoloads should handle global access, while most gameplay logic should remain in dedicated scene or resource classes.
+
+6. Time System
+The game uses continuous time with adjustable speed.
+Supported Speeds
+	• Paused
+	• 1x
+	• 2x
+	• 4x
+	• 8x
+Optional later:
+	• 16x for late-game fast forwarding
+Time Units
+The game should track:
+	• Days
+	• Months
+	• Years
+Tick Types
+Different systems update at different intervals.
+Frame Update
+Used for:
+	• UI animation
+	• visual feedback
+	• camera movement
+Daily Tick
+Used for:
+	• workload fluctuations
+	• hardware wear
+	• satisfaction changes
+	• small incidents
+Monthly Tick
+Used for:
+	• billing
+	• salaries
+	• rent
+	• customer growth
+	• contract renewal
+	• financial reports
+Yearly Tick
+Used for:
+	• industry trends
+	• technology shifts
+	• major customer milestones
+	• market reputation changes
+
+7. Simulation Model
+The simulation uses a hybrid detail model.
+Early Game: Detailed Simulation
+The player manages individual hardware components.
+Example:
+	• PC
+	• CPU
+	• RAM
+	• Storage
+	• Network connection
+This creates an intimate startup feeling where every upgrade matters.
+Mid Game: Rack Simulation
+Once the player reaches server racks, the game begins grouping equipment into rack-level capacity pools.
+A rack tracks:
+	• CPU capacity
+	• RAM capacity
+	• Storage capacity
+	• Bandwidth capacity
+	• Power usage
+	• Heat output
+	• Reliability
+	• Utilization
+Late Game: Datacenter Simulation
+Large infrastructure is pooled at the datacenter or zone level.
+A datacenter tracks:
+	• Compute pool
+	• Memory pool
+	• Storage pool
+	• Bandwidth pool
+	• Power capacity
+	• Cooling capacity
+	• Redundancy score
+	• Reliability score
+Endgame: Region Simulation
+Global infrastructure is tracked at regional scale.
+A region tracks:
+	• Datacenters
+	• Availability zones
+	• Customer workloads
+	• Latency coverage
+	• failover capacity
+	• market presence
+
+8. Infrastructure Abstraction System
+The game should transition from detailed objects to pooled capacity as scale increases.
+Example
+Early rack:
+	• 12 individual servers
+	• 2 storage units
+	• 1 switch
+	• 1 UPS
+Later abstraction:
+Rack Pool A:
+	• 240 CPU
+	• 768 GB RAM
+	• 100 TB Storage
+	• 40 Gbps Bandwidth
+	• 97% Reliability
+This keeps late-game saves performant while preserving the fantasy of physical infrastructure growth.
+
+9. Infrastructure Entity Model
+HardwareEntity
+Represents an individual device.
+Fields:
+	• id
+	• name
+	• type
+	• tier
+	• cpu_capacity
+	• ram_capacity
+	• storage_capacity
+	• bandwidth_capacity
+	• power_draw
+	• heat_output
+	• reliability
+	• age
+	• condition
+	• purchase_cost
+	• maintenance_cost
+RackEntity
+Represents a rack or rack pool.
+Fields:
+	• id
+	• facility_id
+	• rack_units_total
+	• rack_units_used
+	• compute_pool
+	• ram_pool
+	• storage_pool
+	• bandwidth_pool
+	• power_usage
+	• heat_output
+	• reliability_score
+	• assigned_workloads
+FacilityEntity
+Represents an office, server room, datacenter, or cloud region facility.
+Fields:
+	• id
+	• name
+	• type
+	• location
+	• power_capacity
+	• cooling_capacity
+	• network_capacity
+	• rack_capacity
+	• operating_cost
+	• reliability_modifier
+	• facilities_upgrades
+
+10. Workload System
+Contracts generate workloads.
+A workload consumes:
+	• CPU
+	• RAM
+	• Storage
+	• Bandwidth
+A workload may also require:
+	• uptime target
+	• latency target
+	• backup coverage
+	• redundancy
+	• regional availability
+	• security certification
+Workloads are assigned to infrastructure pools.
+If demand exceeds supply, the game produces:
+	• slowdowns
+	• reduced satisfaction
+	• SLA violations
+	• outages
+	• reputation loss
+
+11. Contract System
+Contracts are the primary source of revenue and progression.
+Contract Fields
+	• id
+	• customer_id
+	• contract_type
+	• resource_requirements
+	• service_requirements
+	• monthly_revenue
+	• duration
+	• growth_potential
+	• risk_profile
+	• penalty_terms
+	• satisfaction
+	• assigned_infrastructure
+Contract Categories
+Early game:
+	• personal blogs
+	• portfolios
+	• local business websites
+Mid game:
+	• forums
+	• e-commerce
+	• SaaS
+	• mobile apps
+	• gaming services
+Late game:
+	• streaming
+	• enterprise systems
+	• financial platforms
+	• government services
+	• AI workloads
+
+12. Customer System
+The game uses two customer types.
+Story Customers
+Named customers with persistent history.
+They track:
+	• name
+	• industry
+	• hosted_since
+	• growth_stage
+	• user_count
+	• satisfaction
+	• contract_history
+	• milestones
+	• relationship_score
+	• churn_risk
+Story customers can:
+	• grow into major companies
+	• go viral
+	• request expansions
+	• suffer setbacks
+	• become flagship customers
+Background Customers
+Aggregated customer groups.
+Example:
+	• 142 personal websites
+	• 87 small businesses
+	• 26 forums
+	• 9 SaaS startups
+Background customers provide scale without requiring individual simulation.
+
+13. Customer Success Story System
+Customer success stories are a signature feature.
+A small early customer can become a major platform over time.
+Example
+Year 1:
+PhotoSnap Startup
+Small hosting contract.
+Year 5:
+PhotoSnap reaches 100,000 users and requests more infrastructure.
+Year 12:
+PhotoSnap becomes a global platform requiring multi-region deployment.
+Year 20:
+PhotoSnap becomes one of the player’s largest customers.
+The system should generate milestone events and preserve long-term customer history.
+
+14. Event System
+Events create narrative and operational challenges.
+Event Types
+	• traffic spike
+	• customer growth milestone
+	• hardware failure
+	• power outage
+	• network congestion
+	• security scare
+	• competitor pressure
+	• new technology trend
+	• vendor discount
+	• major contract opportunity
+Events should usually emerge from simulation conditions rather than pure randomness.
+Example:
+High utilization increases chance of traffic-related incidents.
+Aging hardware increases chance of failures.
+Poor redundancy increases outage impact.
+
+15. Failure System
+Failures should be systems-based.
+Failure Causes
+	• overloaded CPU
+	• insufficient RAM
+	• storage saturation
+	• bandwidth congestion
+	• cooling overload
+	• power shortage
+	• hardware aging
+	• insufficient redundancy
+Failure Results
+	• degraded performance
+	• downtime
+	• SLA penalties
+	• customer dissatisfaction
+	• reputation loss
+	• contract cancellation
+The UI should clearly explain root causes.
+
+16. Economy System
+The economy tracks:
+	• cash
+	• monthly revenue
+	• monthly expenses
+	• debt
+	• salaries
+	• facility costs
+	• hardware maintenance
+	• contract penalties
+	• research investment
+Monthly Financial Tick
+At the end of each month:
+	• collect contract revenue
+	• pay salaries
+	• pay rent/facility costs
+	• pay power and maintenance costs
+	• apply SLA penalties
+	• generate financial report
+
+17. Research System
+Research unlocks new capabilities.
+Research Categories
+Hardware
+	• better CPUs
+	• faster storage
+	• denser racks
+	• GPU servers
+Reliability
+	• UPS
+	• backup generators
+	• failover
+	• monitoring
+	• disaster recovery
+Cloud Services
+	• shared hosting
+	• VPS
+	• managed databases
+	• object storage
+	• CDN
+	• Kubernetes-style orchestration
+Business
+	• sales team
+	• enterprise support
+	• compliance programs
+	• vendor partnerships
+
+18. UI Architecture
+The UI should be modular.
+Main UI Areas
+	• top financial bar
+	• time controls
+	• infrastructure view
+	• contract panel
+	• customer panel
+	• alerts panel
+	• research screen
+	• company stats screen
+	• facility management screen
+Critical UI Requirement
+Every simulation problem must be explainable.
+Example alert:
+“CloudCart is experiencing degraded performance because Rack A is at 96% CPU utilization.”
+
+19. Save/Load System
+The game needs robust long-term save support.
+Save Format
+JSON for early development.
+Potential future option:
+Compressed binary or Godot Resource serialization for larger saves.
+Save Data Includes
+	• company state
+	• current date
+	• money
+	• reputation
+	• infrastructure
+	• contracts
+	• customers
+	• research
+	• events
+	• facilities
+	• world progression
+	• unlocked eras
+Save Versioning
+Every save file should include:
+	• save_version
+	• game_version
+	• timestamp
+This allows future migrations when systems change.
+
+20. Data-Driven Content Pipeline
+Use Godot Resources or external JSON/CSV files for game content.
+Data Definitions
+	• HardwareDefinition
+	• ContractTemplate
+	• CustomerArchetype
+	• EventDefinition
+	• ResearchDefinition
+	• FacilityUpgradeDefinition
+	• VendorDefinition
+	• EraDefinition
+This makes balancing easier and supports future modding.
+
+21. Performance Strategy
+Key Principle
+Do not simulate every object forever.
+Use detail where it matters and abstraction where scale demands it.
+Early Game
+Simulate individual hardware.
+Mid Game
+Simulate racks and pools.
+Late Game
+Simulate datacenters and regions.
+Background Customers
+Aggregate into groups rather than full entities.
+Story Customers
+Remain detailed and persistent.
+
+22. Scene Structure
+Suggested scene hierarchy:
+Main.tscn
+├── GameRoot
+├── Camera2D
+├── WorldView
+│   ├── OfficeView
+│   ├── ServerRoomView
+│   ├── DatacenterView
+│   └── RegionMapView
+├── UI
+│   ├── TopBar
+│   ├── TimeControls
+│   ├── ContractPanel
+│   ├── InfrastructurePanel
+│   ├── AlertsPanel
+│   └── DetailInspector
+└── Managers
+
+23. Code Architecture
+Suggested folder structure:
+res://
+├── scenes/
+│   ├── ui/
+│   ├── world/
+│   ├── facilities/
+│   └── infrastructure/
+├── scripts/
+│   ├── core/
+│   ├── simulation/
+│   ├── economy/
+│   ├── contracts/
+│   ├── customers/
+│   ├── infrastructure/
+│   ├── events/
+│   └── ui/
+├── data/
+│   ├── hardware/
+│   ├── contracts/
+│   ├── customers/
+│   ├── events/
+│   ├── research/
+│   └── vendors/
+└── saves/
+
+24. Testing Strategy
+Unit Tests
+Test:
+	• resource allocation
+	• contract validation
+	• billing calculations
+	• failure probability
+	• customer growth
+	• save/load serialization
+Simulation Tests
+Run long-term automated saves to verify:
+	• economy stability
+	• no runaway debt loops
+	• no impossible progression blocks
+	• late-game performance remains acceptable
+Balance Tests
+Check:
+	• contract rewards
+	• hardware costs
+	• research pacing
+	• outage frequency
+	• customer growth rates
+
+25. MVP Technical Scope
+The first playable prototype should include:
+Era 1
+	• single PC
+	• CPU/RAM/storage/network capacity
+	• simple hosting contracts
+	• monthly billing
+	• upgrades
+	• basic alerts
+Era 2
+	• tower server
+	• first rack
+	• rack capacity
+	• multiple contracts
+	• simple customer satisfaction
+Required MVP Systems
+	• TimeManager
+	• EconomyManager
+	• InfrastructureManager
+	• ContractManager
+	• CustomerManager
+	• SaveManager
+	• Basic UI
+	• Data-driven hardware and contract definitions
+
+26. Future Expansion
+The architecture should support:
+	• multiplayer leaderboards
+	• modded contracts
+	• modded hardware
+	• regional maps
+	• AI workloads
+	• enterprise sales teams
+	• compliance systems
+	• competitor companies
+	• cloud product offerings
+	• advanced customer storylines
+
+27. Technical Risks
+Risk: Late-Game Simulation Becomes Too Heavy
+Mitigation:
+Use pooled simulation at rack, datacenter, and region scale.
+Risk: UI Becomes Too Complex
+Mitigation:
+Use layered detail. Show simple summaries first, with drill-down panels for advanced players.
+Risk: Balancing Becomes Difficult
+Mitigation:
+Keep hardware, contracts, and customer growth data-driven.
+Risk: Save Files Become Fragile
+Mitigation:
+Use versioned save data and migration logic.
+
+28. Summary
+Infrastructure Tycoon should be built as a scalable, data-driven simulation game in Godot 4.x.
+The core technical identity is:
+	• detailed early-game infrastructure
+	• abstracted late-game infrastructure
+	• story-driven named customers
+	• background customer aggregation
+	• systems-based failures
+	• adjustable-speed simulation
+	• expandable content architecture
+The technical design supports the game’s central fantasy:
+Start with one PC hosting one website.
+Grow into a global cloud provider powering the world’s biggest companies.
+

@@ -1,0 +1,21 @@
+{
+  "room_type": "converted_residential_garage",
+  "layout_scale": "single_room_small",
+  "scene_texture_path": "res://art/environment/garage_shell.png",
+  "architectural_features": [
+    "rollup_door",
+    "side_entry_door",
+    "garage_window",
+    "built_in_workbench"
+  ],
+  "tone": {
+    "furniture_style": "diy",
+    "lighting": "warm_utility",
+    "mood": "home_garage_startup"
+  },
+  "notes": [
+    "Keep the room as one compact garage bay rather than splitting into office-like subrooms.",
+    "Use built-in shell fixtures to imply a residential space adapted into a startup workspace.",
+    "Leave the center floor mostly open so future tools, tables, and hardware clutter can arrive in the prop pass."
+  ]
+}
