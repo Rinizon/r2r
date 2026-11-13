@@ -29,7 +29,7 @@ Desktop mouse interaction is the primary input model, but UI systems should be d
 
 3. Engine & Language
 Engine
-Unity 2D. Record the editor version in ProjectSettings/ProjectVersion.txt when the project is initialized.
+Unity 2D using Unity 6.6 (6000.6.9f1), the installed supported release selected for this project. This is not an LTS release. ProjectSettings/ProjectVersion.txt records the exact editor version and revision.
 Primary Language
 C# for simulation, persistence, gameplay, UI, and tests.
 

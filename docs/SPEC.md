@@ -48,7 +48,7 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Owner: `codex`
 - Depends On: `none`
 - Summary: Create the Unity 2D project at the repository root and record the editor version.
-- Acceptance: A clean checkout opens, imports, and compiles in the chosen Unity LTS version recorded in `ProjectSettings/ProjectVersion.txt`. Track package manifests and lockfiles and asset `.meta` files. Ignore generated Unity directories such as Library, Temp, Logs, and Obj.
+- Acceptance: A clean checkout opens, imports, and compiles in the selected Unity 6000.6.9f1 supported release recorded in `ProjectSettings/ProjectVersion.txt`. Track package manifests and lockfiles and asset `.meta` files. Ignore generated Unity directories such as Library, Temp, Logs, and Obj.
 - Completion:
 - Validation:
 - Commit:

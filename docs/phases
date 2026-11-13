@@ -4,7 +4,7 @@ Work through these phases in order. Use the exit criteria to verify each milesto
 
 ## Phase 1 — Unity foundation
 
-Initialize the Unity 2D project and record the editor version. Set up the main scene, GameRoot, orthographic camera, and HUD. Wire the C# simulation clock to pause and 1×, 2×, 4×, and 8× speed controls.
+Initialize the Unity 2D project using Unity 6000.6.9f1 and record the editor version. Set up the main scene, GameRoot, orthographic camera, and HUD. Wire the C# simulation clock to pause and 1×, 2×, 4×, and 8× speed controls.
 
 **Exit criteria:** Main opens in Play Mode, the HUD displays the simulation date, and the clock advances at the selected speed and stops while paused.
 
