@@ -274,15 +274,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next ready task is P3-07, the walkable hardware station and gated panel. P3-09 can query GetBottlenecks() for current reports; reports retain historical values, so refresh after changes. No HUD, penalties, satisfaction, or persistence schema changes were introduced.
 
 ### P3-07 Add the walkable hardware station and gated panel
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-10`
 - Summary: Add a recognizable hardware station prefab, independent blocker/reach trigger, interaction prompt, and closable panel shell using the existing garage interaction pattern.
 - Acceptance: The player can walk to and away from both stations with WASD/arrows, including while simulation time is paused. Hardware interaction out of reach leaves its panel closed; within reach, E opens it, and Close/Escape or leaving reach closes it. At most one station panel opens for an interaction; panel/UI input cannot trigger a second station behind it. Blockers and triggers remain independently tunable, floor routes to both stations remain clear, and both stations fit the camera view below the HUD at 800x600 and 1280x720. Loading a session closes either station panel and preserves player/world placement. Play Mode tests cover movement, collisions, reach/re-entry, station selection, and existing PC behavior. Reuse the existing interaction pattern rather than introducing unrelated input systems; purchase bindings follow in P3-08.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added HardwareStation prefab with separate blocker/reach, amber monitor, labeled prompt, and closable panel shell. Reused PcStationInteraction with nearest-station selection, shared frame consumption, open-panel exclusion, and UI pointer protection. Load closes both panels without moving world/player; existing PC tests now select their station explicitly. Updated README.
+- Validation: Two new Play Mode tests failed before implementation. Unity 6000.6.9f1 passes 156 Edit Mode tests and all 25 Play Mode tests in editor and standalone Windows. Final label adjustment also passed both hardware tests in standalone. Covered paused movement, blocker/reach, re-entry, close/Escape, overlapping station selection, load cleanup, viewport bounds, and actual Close/time/Save/Load hit targets. Visually inspected standalone 800x600 and 1280x720 panels and garage; moved hardware label to avoid the garage heading.
+- Commit: Implementation `c41dc5c`; claim `ecd7f95`.
+- Handoff: Next is P3-08: bind purchase controls into HardwarePanel and effective hosting state into the PC view. HardwareStationInteraction uses the shared PcStationInteraction component with its own serialized references; HardwarePanel currently contains title, body, hint, and Close button. Panel shells and world visuals remain intentional prototypes. No purchases or alerts were added to UI.
 
 ### P3-08 Bind upgrade purchases and effective hosting state to station UI
 - Status: `todo`
