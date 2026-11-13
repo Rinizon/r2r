@@ -85,7 +85,7 @@ Core Systems
 	• SaveManager
 	• UIManager
 Runtime Composition
-A GameRoot MonoBehaviour initializes the session and connects plain C# simulation services to scene components. Keep session state and simulation rules in plain C# classes with explicit dependencies. Use MonoBehaviours for input, rendering, and UI bindings. Drive simulation ticks independently of UI updates.
+A GameRoot MonoBehaviour initializes the session and connects plain C# simulation services to scene components. Keep session state and simulation rules in plain C# classes with explicit dependencies. Use MonoBehaviours for input, rendering, and UI bindings. Drive simulation ticks independently of UI updates. This is the MVP architecture. The manager list above describes responsibilities. Introduce separate services as the playable loop requires them.
 
 6. Time System
 The game uses continuous time with adjustable speed.
@@ -102,6 +102,9 @@ The game should track:
 	• Days
 	• Months
 	• Years
+MVP Clock Contract
+Start January 1, 1995 using the Gregorian calendar. At 1x, one game day takes two real seconds. Preserve fractional days while paused and across speed changes. Process every crossed day in chronological order. At each date boundary, finalize the outgoing day, then the outgoing month if it ended, then the outgoing year if it ended. Bill once for each outgoing month.
+
 Tick Types
 Different systems update at different intervals.
 Frame Update
@@ -427,6 +430,9 @@ Business
 
 18. UI Architecture
 Use a Canvas with a Canvas Scaler and anchored RectTransforms for the HUD and station panels. Keep camera framing independent of UI scaling.
+MVP Interaction
+The player walks between stations in the garage. Interaction within reach opens the station panel. Use the PC station for contracts and workload assignment and the hardware station for purchases and installation. Keep date, speed, cash, and alerts visible in the HUD.
+
 Main UI Areas
 	• top financial bar
 	• time controls
@@ -446,6 +452,8 @@ Example alert:
 The game needs robust long-term save support.
 Save Format
 Serialize versioned C# save models as JSON under Application.persistentDataPath. Store stable content IDs and runtime values independently of scene objects. Consider compression if save size becomes an issue.
+The first save round trip lands with Phase 2 billing. Persist fractional day progress and stable content IDs. Capture saves between session updates after all crossed boundaries have been processed.
+
 Save Data Includes
 	• company state
 	• current date

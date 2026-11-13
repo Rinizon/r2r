@@ -2,6 +2,14 @@
 
 Infrastructure Tycoon is a PC-first 2D business simulation targeting Unity and C#. The player grows a one-PC hosting business into a global cloud provider.
 
+## MVP Interaction and Starter Scenario
+
+Walk to the PC station to accept offers and assign workloads. Walk to the hardware station to buy upgrades and install equipment. Keep finances, time controls, and alerts visible in the HUD.
+
+Use provisional balance values for the first playtest. Start with $150 cash and a PC with 2 CPU cores, 4 GB RAM, 250 GB storage, and 10 Mbps bandwidth. PhotoSnap pays $100 monthly for 1 core, 2 GB RAM, 20 GB storage, and 4 Mbps. A second website pays $80 monthly for 1 core, 1 GB RAM, 10 GB storage, and 4 Mbps. After two paid months PhotoSnap grows to 2 cores, triggering a CPU alert if both sites share the PC. A $120 upgrade adds 2 cores. Test the choice between buying headroom and saving toward the tower.
+
+Unlock the $400 tower at $300 cumulative operating profit. Count hosting revenue less recurring expenses toward operating profit. Use $20 monthly expenses for the starter PC. Hardware purchases reduce available cash. Playtest the time to the first upgrade and tower with either one or both contracts.
+
 # Hardware & Infrastructure Progression Tree
 
 This system governs the player's physical growth from a hobbyist hosting websites on a personal computer to operating global hyperscale cloud infrastructure.

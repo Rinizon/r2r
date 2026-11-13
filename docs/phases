@@ -1,0 +1,39 @@
+# MVP Phases
+
+Work through these phases in order. Use the exit criteria to verify each milestone before moving on. Add scoped implementation tasks to [SPEC.md](SPEC.md) as each phase begins. [GDD](GDD) and [TDD](TDD) define the design and technical scope.
+
+## Phase 1 — Unity foundation
+
+Initialize the Unity 2D project and record the editor version. Set up the main scene, GameRoot, orthographic camera, and HUD. Wire the C# simulation clock to pause and 1×, 2×, 4×, and 8× speed controls.
+
+**Exit criteria:** Main opens in Play Mode, the HUD displays the simulation date, and the clock advances at the selected speed and stops while paused.
+
+## Phase 2 — First hosting contract (Era 1)
+
+Load the starter PC and simple website offers from authored definitions. Track CPU, RAM, storage, and bandwidth capacity. Let the player accept an offer and assign its workload to the PC. Show active contracts and resource utilization, and collect contract revenue at month end. Add walking and proximity-based interaction at the PC station. Implement the first versioned save round trip with stable content IDs and partial-day progress.
+
+**Exit criteria:** From a fresh game, the player can walk to the PC station, open it within reach, host a website, and see its resource usage. Verify the panel stays closed when interaction is attempted out of reach. Save shortly before month rollover, reload, and verify restored partial-day progress and exactly one payment.
+
+## Phase 3 — Capacity upgrades and alerts (Era 1)
+
+Add the hardware station and let the player walk to it to buy CPU, RAM, storage, and internet upgrades. Implement the first PhotoSnap growth milestone from the GDD. Show prices, available cash, and the effect of each upgrade on capacity. Surface a basic alert when a workload exceeds capacity and identify the constrained resource.
+
+**Exit criteria:** The player can identify a bottleneck, pay for the relevant upgrade, and see the alert clear when demand fits. An unaffordable purchase leaves cash and capacity intact. Verify walking, station reach, and purchases in Play Mode.
+
+## Phase 4 — Tower server and multiple customers (Era 2)
+
+Unlock the first tower server at a profit milestone. Let the player buy it and assign contracts across the PC and tower. Track basic customer satisfaction as service quality changes.
+
+**Exit criteria:** The player can unlock and purchase a tower, host multiple contracts across both devices, and see the affected customer's satisfaction change when service degrades.
+
+## Phase 5 — First 42U rack (Era 3)
+
+Let the player buy the first rack and install equipment with defined rack-unit sizes. Show used and available U, and expose the installed equipment's capacity for workload assignment.
+
+**Exit criteria:** The player can install equipment and host a workload on rack capacity. An installation that would exceed 42U leaves equipment placement and rack usage intact.
+
+## Phase 6 — Save, resume, and verify the full loop
+
+Extend the versioned JSON saves introduced in Phase 2 using stable content IDs. Restore the simulation date, company finances, hardware and upgrades, contract assignments, customer satisfaction, and unlocked progression.
+
+**Exit criteria:** A fresh playthrough reaches the first rack through hosting revenue and upgrades. Saving and reloading restores the company and allows the next billing cycle to proceed without duplicate payments. Run Edit Mode checks for simulation and save round trips and Play Mode checks for the main player interactions.

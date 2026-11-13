@@ -40,15 +40,20 @@ If two sources conflict in a way that could cause a wrong implementation, stop a
 - When a task is complete, set it to `done`, clear any blocker note, and leave a short completion note plus a short handoff summary of the final state.
 - Every task handoff should make it obvious to a fresh agent what was changed, how it was validated, what commit contains it, and whether any follow-up risk remains.
 
+## Publishing Claims and Handoffs
+Publish claims to the shared branch before implementation so other agents can see the owner. If an owner hands off or abandons a claim, record the handoff and return it to todo if it is ready or blocked with the reason if it cannot proceed. Check for overlapping edits before work and stage only task-owned changes. Preserve pre-existing unrelated changes when verifying the worktree.
+
+Record the implementation commit hash in a follow-up queue update after the commit exists.
+
 ## Shared Git Workflow
 - Work directly in the shared working branch the user has open unless the user explicitly asks for a separate branch workflow.
 - Treat the current checked-out branch as the source of truth for ongoing work. Do not create, switch, merge, or delete branches unless the user explicitly asks.
 - Keep each commit scoped to one spec task when practical. Do not bundle unrelated cleanup or future work into the same commit.
 - Treat `docs/SPEC.md` as a coordination file first and an implementation artifact second. Avoid mixing broad queue reshuffling with code changes.
 - If you need to claim a task, touch only that task block in `docs/SPEC.md`. Do not reorder unrelated tasks or clean up nearby formatting while claiming work.
-- Prefer leaving the claim update and the implementation changes as separate commits when practical, but never at the expense of leaving the repo dirty between tasks.
+- Prefer leaving the claim update and the implementation changes as separate commits when practical, but keep task-owned changes scoped and reviewable.
 - Do not resolve conflicts by deleting another agent's work. Preserve both sides, then narrow back down to the task boundary intentionally.
-- Before marking a task `done`, make sure all task changes are committed and `git status --short` is clean.
+- Before marking a task `done`, make sure all implementation changes are committed and no task-owned changes are pending except the queue update.
 
 ## Clean Git Rules
 - Before editing, inspect `git status --short` and note any unrelated workspace changes.
@@ -71,21 +76,21 @@ Use the smallest appropriate completion bar for the task type.
 - Make the minimum implementation change required to pass.
 - Run the relevant tests after the change.
 - Update the spec status, completion note, validation note, and handoff note.
-- Commit the completed task and leave the repo clean before treating the task as finished.
+- Commit the completed task and verify no task-owned changes remain pending.
 
 ### Content Or Art Tasks
 - Make only the scoped asset, scene, or tuning change required by the task.
 - Run any validation needed for assets to resolve correctly.
 - Verify the related scene or behavior still loads cleanly.
 - Update the spec status, completion note, validation note, and handoff note.
-- Commit the completed task and leave the repo clean before treating the task as finished.
+- Commit the completed task and verify no task-owned changes remain pending.
 
 ### Docs Or Planning Tasks
 - Keep changes concrete, accurate, and consistent with current repo state.
 - Do not mark speculative ideas as completed implementation.
 - Update the relevant project docs when a change affects contributor or player workflow.
 - Update the spec status, completion note, validation note, and handoff note if the docs task itself is tracked there.
-- Commit the completed task and leave the repo clean before treating the task as finished.
+- Commit the completed task and verify no task-owned changes remain pending.
 
 ## Testing
 - Use Unity and C# for implementation. Once the Unity project exists, run relevant Unity Test Framework suites in the Test Runner or batch mode. Use Edit Mode for simulation and persistence and Play Mode for scene, input, and UI behavior.
@@ -133,7 +138,7 @@ When the user says `next`:
 6. Implement only the scoped change needed for that task.
 7. Run the relevant validation.
 8. Mark the task `done` in `docs/SPEC.md` and fill in completion, validation, commit, and handoff notes.
-9. Commit the task and confirm `git status --short` is clean.
+9. Commit the queue update and confirm no task-owned changes remain pending.
 10. Stop and report results before taking another task.
 
 ## Reusable Multi-Agent Prompt
@@ -157,14 +162,14 @@ Follow this operating contract exactly:
    - do not overwrite unrelated user or agent changes
    - touch only files required for your task
    - keep `docs/SPEC.md` edits minimal and limited to your task block
-   - ensure the repo is clean again before asking for another task
+   - verify no task-owned changes remain pending before asking for another task
 7. If the task is behavior-driven and the repo supports it, add or update a failing test first.
 8. Implement only the smallest change that satisfies the task acceptance criteria.
 9. Run relevant Unity Edit Mode or Play Mode tests when the Unity project exists.
 10. When complete:
-   - mark the task `done` in `docs/SPEC.md`
+   - commit the implementation, then mark the task `done` in `docs/SPEC.md`
    - add short `Completion`, `Validation`, `Commit`, and `Handoff` notes
-   - commit the task work
+   - commit the queue update
    - review `git status --short` and `git diff --stat` for cleanliness
 11. Report back with:
    - task ID
