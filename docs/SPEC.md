@@ -200,3 +200,119 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Validation: Verification-only task: the new regression passed against existing runtime behavior without production changes. Final Unity 6000.6.9f1 full suites passed: Edit Mode 86/86, Editor Play Mode 20/20, standalone Windows Play Mode 20/20. Verified the January 31 snapshot at 0.75 day progress, stable assignment/IDs, one $100 revenue/$20 expense payment to $230 cash, three post-payment loads without replay, and the next month at $310/two paid months. Checked restored pause/resume/speeds, actual pointer targets, full responsive suites, cleaned isolated save directories, and visually inspected resumed-state screenshots at 800x600 and 1280x720.
 - Commit: `923ba41` (integration test, README, phase evidence); claim: `56ca2ef`.
 - Handoff: Phase 2 is complete and all current queued tasks are done. Define scoped Phase 3 tasks from docs/phases before implementing capacity upgrades, the hardware station, PhotoSnap growth, or bottleneck alerts. Prototype art and placeholder alerts remain intentional. Extend version 1 save invariants when purchases/new financial state are introduced; do not lose existing billing/save regression coverage.
+
+## Phase 3 Queue — Capacity upgrades and alerts (Era 1)
+
+Take ready tasks in the priority order below. Preserve the Phase 2 hosting, walking, billing, and save/resume loop. Introduce save compatibility before enabling purchases and growth: the current loader assumes cash equals $150 plus operating profit and validates restored assignments as new allocations, both of which must change for this phase. Keep tower unlocks/purchases, additional hosting devices, satisfaction, SLA penalties, and rack systems in later phases. Over-capacity operation in Phase 3 produces diagnostic alerts without changing the existing revenue or expense rules.
+
+Use one purchasable upgrade per resource on the starter PC for this phase. The CPU upgrade is the GDD's $120 for +2 cores. New provisional starting values for planning are RAM $80 for +4 GB, storage $100 for +250 GB, and internet $90 for +10 Mbps; record them as provisional in the GDD when authoring the content. No repeat purchases or upgrade tiers are required.
+
+### P3-01 Author upgrade and PhotoSnap milestone definitions
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-10`
+- Summary: Extend the authored catalog with four starter-PC upgrades and the first PhotoSnap growth milestone, using immutable runtime definitions and stable content IDs.
+- Acceptance: Assets/Data contains CPU, RAM, storage, and internet upgrade definitions with explicit stable IDs, target hardware content ID, price, and capacity delta matching the Phase 3 provisional values above. The PhotoSnap milestone definition has a stable ID, targets offer.photosnap, becomes eligible after two paid months, and changes demand to 2 cores while retaining 2 GB RAM, 20 GB storage, 4 Mbps, and $100 monthly revenue. Edit Mode validation rejects missing/duplicate IDs, unknown targets, invalid money/resource values, zero-effect upgrades, and invalid milestone thresholds. Definitions convert to engine-independent data without mutable session state. Update docs/GDD with the new provisional upgrade values; preserve existing starter/billing values and verify Unity imports assets and metadata.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-02 Model effective capacities, demand, purchases, and milestone state
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-01`
+- Summary: Extend plain C# runtime state so hardware upgrades and applied contract milestones can alter effective capacity and demand without mutating authored definitions.
+- Acceptance: Hardware exposes base and effective capacity, applied upgrade IDs, and purchase records containing runtime hardware ID, upgrade content ID, and amount paid. Contracts expose effective requirements separately from their authored base requirements and retain applied milestone IDs. Pure resource calculations combine base capacity with recorded upgrade deltas and derive demand from applied milestones; used demand remains visible above capacity while available headroom stays at zero for an overused dimension. Fresh companies still have $150, no purchases/milestones, and the Phase 2 resource totals. Edit Mode tests verify all four resource deltas, the authored PhotoSnap demand change, independent sessions, immutable definitions, and stable runtime IDs. This task adds state/calculation support only; purchasing and automatic growth are separate tasks.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-03 Extend saves for Phase 3 and migrate Phase 2 saves
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-02`
+- Summary: Introduce save version 2 for purchases and milestones while retaining the existing manual slot and supporting version 1 Phase 2 saves.
+- Acceptance: Version 2 saves preserve purchase records/amounts paid, applied upgrade and milestone IDs, and all Phase 2 clock, contract, finance, and billing data. Cash validates as $150 plus cumulative operating profit minus recorded purchase spending; purchases do not reduce operating profit. Load rebuilds effective capacity and demand from the current catalog and stored IDs. Restoring existing hosted assignments allows a valid growth-induced overload; the new-assignment capacity guard remains enforced during normal play. Reject unknown upgrade/milestone IDs, duplicate purchases/milestones, invalid targets/costs, inconsistent milestone/paid-month state, dangling assignments, inconsistent financial totals, and malformed histories without changing live state. Version 1 fixtures migrate with no purchases, preserve IDs/paid-month counts/billing, and apply the authored PhotoSnap milestone if its saved paid-month count already meets the threshold; migration emits no billing ticks or extra payment. Keep Application.persistentDataPath/company-v1.json as the existing slot path (schema version is inside JSON), write version 2 on the next explicit Save, and reject unsupported future versions safely. Edit Mode tests cover migration, upgraded/overloaded round trips, partial days, and exactly one next payment; update format documentation and preserve atomic I/O tests.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-04 Implement atomic starter-PC upgrade purchases
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-03`
+- Summary: Add session purchase operations that validate the upgrade, hardware, affordability, and one-time purchase rule before changing money or capacity.
+- Acceptance: Each authored upgrade can be bought once for the starter PC, subtracting its price from cash, recording the amount paid, and updating only the relevant effective capacity. Buying CPU from a fresh $150 company leaves $30 cash and 4 CPU cores with operating profit unchanged at zero; attempting the $80 RAM upgrade next fails with no state change. Edit Mode tests cover all four upgrades, exact-price affordability, insufficient cash, unknown/cross-session hardware IDs, invalid upgrade IDs, and duplicate purchases. Every failure returns a UI-readable reason and preserves cash, profit, purchase records, assignments, and all resource totals. Purchased upgrades round-trip through version 2 saves and do not alter recurring PC expense. No tower or additional hardware purchases are introduced.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-05 Apply PhotoSnap growth after its second paid month
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-03`, `P3-04`
+- Summary: Apply the authored PhotoSnap milestone once after the qualifying monthly payment and recalculate its hosted demand.
+- Acceptance: PhotoSnap stays at its starter demand before two paid months; accepted but unassigned time does not advance the milestone. After the second payment has updated PaidMonths and finances, apply the milestone once, changing CPU demand from 1 to 2 cores with the other requirements and revenue unchanged. Two hosted starter websites then use 3 cores on the unupgraded 2-core PC without dropping or reassigning either contract; PhotoSnap alone uses 2/2 cores. Edit Mode tests verify billing-before-growth order, a single update crossing multiple qualifying months, one-time application, independent sessions, pre-purchased CPU headroom, and saves/reloads immediately before and after the milestone without duplicate growth/payment. PaidMonths and milestone IDs remain consistent with migrated version 1 saves. No satisfaction, churn, penalties, further growth stages, or tower unlock behavior is added.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-06 Derive resource bottlenecks from effective demand and capacity
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-04`, `P3-05`
+- Summary: Add engine-independent diagnostics that identify overloaded resources and the contracts assigned to the affected hardware.
+- Acceptance: Diagnostics report hardware identity, constrained resource, used demand, effective capacity, shortfall, and affected contract identities for CPU, RAM, storage, and bandwidth. Exact capacity is not an overload; multiple constrained resources are all reported. Both starter sites after PhotoSnap growth identify CPU at 3/2 cores; buying the CPU upgrade changes this to 3/4 and clears the CPU diagnostic immediately. Edit Mode tests cover each resource independently, multiple bottlenecks, equality, growth, relevant versus irrelevant upgrades, and recomputation after restoring an overloaded save. Diagnostics are derived from current state rather than persisted as authoritative save fields and do not change revenue, expenses, assignments, or customer state. HUD presentation is separate.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-07 Add the walkable hardware station and gated panel
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-10`
+- Summary: Add a recognizable hardware station prefab, independent blocker/reach trigger, interaction prompt, and closable panel shell using the existing garage interaction pattern.
+- Acceptance: The player can walk to and away from both stations with WASD/arrows, including while simulation time is paused. Hardware interaction out of reach leaves its panel closed; within reach, E opens it, and Close/Escape or leaving reach closes it. At most one station panel opens for an interaction; panel/UI input cannot trigger a second station behind it. Blockers and triggers remain independently tunable, floor routes to both stations remain clear, and both stations fit the camera view below the HUD at 800x600 and 1280x720. Loading a session closes either station panel and preserves player/world placement. Play Mode tests cover movement, collisions, reach/re-entry, station selection, and existing PC behavior. Reuse the existing interaction pattern rather than introducing unrelated input systems; purchase bindings follow in P3-08.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-08 Bind upgrade purchases and effective hosting state to station UI
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-04`, `P3-05`, `P3-07`
+- Summary: Connect the hardware panel to session purchase operations and update the PC panel to display effective capacity and grown contract requirements.
+- Acceptance: Within hardware-station reach, the panel lists all four upgrades with prices, current cash, current capacity, resulting capacity, and purchase status. Purchase buttons call the shared session operation; unaffordable/already-owned actions are disabled or explain rejection. A successful purchase refreshes cash and capacity immediately. The PC panel reflects PhotoSnap's effective requirements and the upgraded PC totals rather than cached authored base values. Reopening panels and loading upgraded/grown sessions rebuilds current views and button actions without duplicate listeners or stale session references. Play Mode tests buy each upgrade through UI, verify the $120 CPU transaction, reject an unaffordable second purchase without state changes, and exercise save/load rebinding for both panels. Inspect readable layouts and actual button hit targets at 800x600 and 1280x720. No alerts beyond existing action feedback are required in this task.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-09 Show growth and bottleneck information in the HUD and PC panel
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-06`, `P3-08`
+- Summary: Replace the alerts placeholder with current resource diagnostics and explain PhotoSnap's growth in the hosting view.
+- Acceptance: With both starter sites hosted, the second paid month visibly explains PhotoSnap's CPU increase and shows a CPU bottleneck tied to the starter PC and affected hosting contracts. The HUD provides a compact constrained-resource summary, and the PC panel exposes demand versus capacity and the cause in readable units. Purchasing CPU headroom clears the overload indication once usage fits; an unrelated upgrade leaves a CPU alert active. With no overload, the HUD clearly reports no capacity alerts. Reloading an overloaded or upgraded save reconstructs the correct messages without replaying the growth event or retaining stale alerts. Play Mode tests cover appearance, relevant/irrelevant upgrade effects, clearance, and reload; verify all resource names, readable text, and HUD/time/save-control access at the required window sizes. This is diagnostic feedback only, with no service penalties or satisfaction simulation.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P3-10 Verify the complete Phase 3 bottleneck and upgrade loop
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P3-01`, `P3-02`, `P3-03`, `P3-04`, `P3-05`, `P3-06`, `P3-07`, `P3-08`, `P3-09`
+- Summary: Exercise the integrated Phase 3 exit criteria, preserve Phase 2 regressions, and document the player workflow and evidence.
+- Acceptance: From a fresh game, use walking and station UI to host both starter sites, reach the second paid month, identify CPU at 3/2 cores, walk to the hardware station, and buy the $120 CPU upgrade to reach 3/4 cores and clear the alert. Before purchase, cash is $470 and operating profit $320; afterward cash is $350 and operating profit remains $320. In a separate fresh-company case, buy CPU for $120 and reject the $80 RAM purchase with $30 remaining, preserving cash/capacity/records; verify interaction fails out of reach at both stations. Save/reload before growth, while overloaded, and after purchase; verify partial days, milestone/purchase IDs, demand/capacity, alerts, and exactly one subsequent monthly payment without replaying growth or purchases. Include a legacy version 1 save migration and restored-panel actions. Run all Edit Mode and Play Mode suites in Unity 6000.6.9f1, including standalone pointer/layout checks and Phase 2 regressions. Update docs/phases, README, and provisional balance notes with results and remaining prototype-art caveats; mark Phase 3 verified only after these checks pass. Do not implement Phase 4 unlocks or tower purchases.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
