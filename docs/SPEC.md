@@ -103,15 +103,15 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-02 should reference Assets/Data/StarterCatalog.asset from GameRoot and pass ToRuntime() data into the new session. Content namespace is InfrastructureTycoon.Content; immutable data lives in the engine-independent Simulation assembly, ScriptableObjects in Runtime. IDs: hardware.starter-pc, offer.photosnap, offer.local-website. Money fields are authored as whole dollars. No session, workload assignment, or billing was added.
 
 ### P2-02 Create the starter company session and capacity model
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-01`
 - Summary: Introduce a plain C# session owning the existing clock, company finances, starter hardware instance, and four-resource capacity state, and compose it from GameRoot.
 - Acceptance: A new session starts January 1, 1995 at 1x with $150 cash, zero operating profit, one starter PC, and no accepted contracts. Hardware instances have stable runtime IDs distinct from content IDs. CPU, RAM, storage, and bandwidth expose capacity, used, and available values with consistent units. Edit Mode tests verify starter state, resource arithmetic, and independent sessions without mutating authored definitions. Main still loads and the existing date/speed controls and clock tests pass after GameRoot adopts the session; no purchases or progression systems are added.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added engine-independent CompanySession with starter finances, owned clock, one uniquely identified HardwareInstance, and an empty read-only accepted-contract collection. Added four-resource arithmetic and immutable capacity/used/available snapshots. GameRoot now composes the session from the authored catalog assigned in Main and preserves its Clock accessor.
+- Validation: Confirmed five new Edit Mode tests failed before implementation. Final Unity 6000.6.9f1 Edit Mode suite passed 34/34 and Play Mode suite passed 4/4, covering starter state, resource arithmetic and bounds, independent sessions/runtime IDs, authored-data isolation, scene catalog binding, fresh scene sessions, and existing date/speed/pause controls.
+- Commit: `cd7137e` (session, capacity, scene composition, tests, docs); claim: `a3fcb26`.
+- Handoff: P2-03 should add offer acceptance and assignment operations to CompanySession and populate its currently empty contract collection. HardwareInstance.Id is a generated runtime ID distinct from Definition.Id; Resources tracks capacity and actual used demand, with Available clamped at zero. ResourceAmounts supports validated addition/subtraction. Cash and alerts remain HUD placeholders until P2-07; no acceptance, assignment, billing, purchases, or progression behavior was added.
 
 ### P2-03 Accept offers and assign website workloads
 - Status: `todo`
