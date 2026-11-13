@@ -147,8 +147,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-06 should add the prompt and gated PC panel using PCStation/Reach (CircleCollider2D radius 2), separate from PCStation/Blocker (BoxCollider2D). Player has PlayerMovement and PlayerKeyboardInput; walking uses physics at 3 world units/second and remains active during simulation pause. Camera viewport follows the scaled HUD boundaries. Art is explicitly provisional; no panel, contract UI, or hardware station was added.
 
 ### P2-06 Gate the PC station panel by player reach
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-05`
 - Summary: Add an interaction prompt and a closable PC station panel shell that opens only while the player is within reach.
 - Acceptance: The panel starts closed. Within the PC trigger, an E-key interaction opens it and a visible prompt explains the control; the same input out of reach leaves it closed. The panel closes through its close control or Escape and closes when the player leaves reach, with the prompt updating accordingly. UI input does not trigger station actions behind the panel. The panel uses anchored RectTransforms and Canvas scaling, preserves access to the date/speed HUD, and does not create a second clock or session. Play Mode tests verify outside/inside/exit/re-entry behavior and panel closure. Hosting controls are added in P2-07.
