@@ -219,8 +219,8 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: P3-02 should consume HostingCatalog.Upgrades and Milestones. Upgrade CapacityDelta is additive; milestone Requirements is the absolute grown workload, not a delta. IDs: upgrade.starter-cpu/ram/storage/internet and growth.photosnap.cpu-2. Targets: hardware.starter-pc and offer.photosnap. Definitions are metadata only: no effective-state mutation, purchases, automatic growth, save-format changes, or new UI was introduced.
 
 ### P3-02 Model effective capacities, demand, purchases, and milestone state
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P3-01`
 - Summary: Extend plain C# runtime state so hardware upgrades and applied contract milestones can alter effective capacity and demand without mutating authored definitions.
 - Acceptance: Hardware exposes base and effective capacity, applied upgrade IDs, and purchase records containing runtime hardware ID, upgrade content ID, and amount paid. Contracts expose effective requirements separately from their authored base requirements and retain applied milestone IDs. Pure resource calculations combine base capacity with recorded upgrade deltas and derive demand from applied milestones; used demand remains visible above capacity while available headroom stays at zero for an overused dimension. Fresh companies still have $150, no purchases/milestones, and the Phase 2 resource totals. Edit Mode tests verify all four resource deltas, the authored PhotoSnap demand change, independent sessions, immutable definitions, and stable runtime IDs. This task adds state/calculation support only; purchasing and automatic growth are separate tasks.
