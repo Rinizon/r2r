@@ -44,8 +44,8 @@ Add all new `todo`, `in_progress`, and `blocked` tasks in this section.
 Keep the highest-priority ready work at the top so agents can claim it quickly.
 
 ### FOUND-01 Initialize the Unity 2D project
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `none`
 - Summary: Create the Unity 2D project at the repository root and record the editor version.
 - Acceptance: A clean checkout opens, imports, and compiles in the chosen Unity LTS version recorded in `ProjectSettings/ProjectVersion.txt`. Track package manifests and lockfiles and asset `.meta` files. Ignore generated Unity directories such as Library, Temp, Logs, and Obj.
