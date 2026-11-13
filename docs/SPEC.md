@@ -252,8 +252,8 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next is P3-05 automatic PhotoSnap growth after qualifying billing. TryPurchaseUpgrade takes upgrade content ID and owned hardware runtime ID; false returns a readable reason and true returns an empty reason. Hardware.CommitProgression preserves object identity and workload usage while adopting prepared resource/ledger snapshots. Purchase UI remains P3-08; no automatic growth, hardware station, tower purchase, or recurring-expense change was added.
 
 ### P3-05 Apply PhotoSnap growth after its second paid month
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P3-03`, `P3-04`
 - Summary: Apply the authored PhotoSnap milestone once after the qualifying monthly payment and recalculate its hosted demand.
 - Acceptance: PhotoSnap stays at its starter demand before two paid months; accepted but unassigned time does not advance the milestone. After the second payment has updated PaidMonths and finances, apply the milestone once, changing CPU demand from 1 to 2 cores with the other requirements and revenue unchanged. Two hosted starter websites then use 3 cores on the unupgraded 2-core PC without dropping or reassigning either contract; PhotoSnap alone uses 2/2 cores. Edit Mode tests verify billing-before-growth order, a single update crossing multiple qualifying months, one-time application, independent sessions, pre-purchased CPU headroom, and saves/reloads immediately before and after the milestone without duplicate growth/payment. PaidMonths and milestone IDs remain consistent with migrated version 1 saves. No satisfaction, churn, penalties, further growth stages, or tower unlock behavior is added.
