@@ -92,8 +92,8 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 Work in the priority order below when dependencies are satisfied. Use the provisional starter values in `docs/GDD` and the architecture and save contract in `docs/TDD`. Keep upgrades, PhotoSnap growth, bottleneck alerts, tower servers, and customer satisfaction in their later phases. Garage visuals may be simple, clearly labeled prototype art; this phase requires playable interactions rather than a finished art pass.
 
 ### P2-01 Author starter hardware and website definitions
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `FOUND-04`
 - Summary: Add ScriptableObject definitions and a starter catalog for the PC and two website offers, with stable content IDs and conversion to engine-independent runtime data.
 - Acceptance: Authored assets under Assets/Data define the starter PC (2 CPU cores, 4 GB RAM, 250 GB storage, 10 Mbps bandwidth, $20 monthly expense), PhotoSnap (1 core, 2 GB RAM, 20 GB storage, 4 Mbps, $100 monthly revenue), and the second website (1 core, 1 GB RAM, 10 GB storage, 4 Mbps, $80 monthly revenue). IDs are explicit and independent of asset names, paths, or instance IDs. Edit Mode validation rejects missing/duplicate IDs and invalid resource or money values. Definitions remain immutable during play; loading the catalog does not require scene-object references. Verify Unity imports all assets and metadata.
