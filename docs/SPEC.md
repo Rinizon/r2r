@@ -55,15 +55,15 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Handoff: Open the repository root with Unity 6000.6.9f1. Foundation only; no playable scene or gameplay scripts. Next: FOUND-02 creates Main and the HUD shell.
 
 ### FOUND-02 Create the main scene and HUD shell
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `FOUND-01`
 - Summary: Create `Main.unity` with a GameRoot, orthographic camera, WorldView root, and anchored HUD on a Canvas with a Canvas Scaler.
 - Acceptance: Opening Main in Play Mode shows a visible HUD without scene errors, and the HUD stays anchored when the Game view is resized.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added Main.unity with GameRoot, WorldView, an orthographic camera, and a screen-space HUD with Canvas Scaler and anchored top/status bars. Registered Main in build settings and documented opening the scene and running tests.
+- Validation: Added a Play Mode test first and confirmed failure without Main. Final Editor Play Mode suite passed (1/1); standalone Windows Play Mode suite passed (1/1), verifying actual 1280x720, 800x600, and 1920x1080 window sizes, HUD bounds, anchors, labels, and no unexpected scene logs. Visually inspected screenshots at all three sizes.
+- Commit: `e63d9c0` (scene, tests, build settings, README); claim: `0da0960`.
+- Handoff: Open Assets/Scenes/Main.unity and enter Play Mode. HUD values are explicit placeholders; GameRoot is an empty composition root. No world art or simulation bindings yet. Next: FOUND-03 implements the plain C# clock; FOUND-04 connects it to the HUD.
 
 ### FOUND-03 Implement the C# simulation clock
 - Status: `todo`
