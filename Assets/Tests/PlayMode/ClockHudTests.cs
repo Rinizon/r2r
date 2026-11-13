@@ -12,6 +12,31 @@ using UnityEngine.UI;
 public class ClockHudTests
 {
     [UnityTest]
+    public IEnumerator MainComposesAnIndependentStarterSessionFromTheCatalog()
+    {
+        yield return SceneManager.LoadSceneAsync("Main");
+        var root = GameObject.Find("GameRoot").GetComponent<InfrastructureTycoon.GameRoot>();
+        var session = root.Session;
+        Assert.That(session, Is.Not.Null);
+        Assert.That(root.Clock, Is.SameAs(session.Clock));
+        Assert.That(session.Cash, Is.EqualTo(150m));
+        Assert.That(session.OperatingProfit, Is.Zero);
+        Assert.That(session.AcceptedContracts, Is.Empty);
+        Assert.That(session.Hardware.Count, Is.EqualTo(1));
+        Assert.That(session.Hardware[0].Definition.Id, Is.EqualTo("hardware.starter-pc"));
+        Assert.That(session.Hardware[0].Resources.Available.CpuCores, Is.EqualTo(2));
+        session.Clock.Speed = SimulationSpeed.Paused;
+        string instanceId = session.Hardware[0].Id;
+        yield return SceneManager.LoadSceneAsync("Main");
+        root = GameObject.Find("GameRoot").GetComponent<InfrastructureTycoon.GameRoot>();
+        Assert.That(root.Session, Is.Not.SameAs(session));
+        Assert.That(root.Clock.Speed, Is.EqualTo(SimulationSpeed.Normal));
+        Assert.That(root.Session.Hardware[0].Id, Is.Not.EqualTo(instanceId));
+        Assert.That(root.Session.Hardware[0].Definition.Capacity.CpuCores, Is.EqualTo(2));
+        LogAssert.NoUnexpectedReceived();
+    }
+
+    [UnityTest]
     public IEnumerator MainShowsStartingDateAndNormalSpeed()
     {
         yield return SceneManager.LoadSceneAsync("Main");

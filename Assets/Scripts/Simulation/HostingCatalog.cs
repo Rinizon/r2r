@@ -11,6 +11,15 @@ namespace InfrastructureTycoon.Content
         public double StorageGb { get; }
         public double BandwidthMbps { get; }
 
+        public static ResourceAmounts operator +(ResourceAmounts left, ResourceAmounts right) =>
+            new ResourceAmounts(left.CpuCores + right.CpuCores, left.RamGb + right.RamGb,
+                left.StorageGb + right.StorageGb, left.BandwidthMbps + right.BandwidthMbps);
+
+        // Subtracting more than is present is rejected by the nonnegative amount contract.
+        public static ResourceAmounts operator -(ResourceAmounts left, ResourceAmounts right) =>
+            new ResourceAmounts(left.CpuCores - right.CpuCores, left.RamGb - right.RamGb,
+                left.StorageGb - right.StorageGb, left.BandwidthMbps - right.BandwidthMbps);
+
         public ResourceAmounts(double cpuCores, double ramGb, double storageGb, double bandwidthMbps)
         {
             CpuCores = ContentValidation.Resource(cpuCores, nameof(cpuCores));

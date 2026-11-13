@@ -1,4 +1,5 @@
 using InfrastructureTycoon.Simulation;
+using InfrastructureTycoon.Content;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ namespace InfrastructureTycoon
 {
     public sealed class GameRoot : MonoBehaviour
     {
+        [SerializeField] private StarterCatalog starterCatalog;
         [SerializeField] private Text dateLabel;
         [SerializeField] private Text speedLabel;
         // Inspector order: pause, 1x, 2x, 4x, 8x.
@@ -18,11 +20,12 @@ namespace InfrastructureTycoon
             SimulationSpeed.Quadruple, SimulationSpeed.Octuple
         };
 
-        public SimulationClock Clock { get; private set; }
+        public CompanySession Session { get; private set; }
+        public SimulationClock Clock => Session.Clock;
 
         private void Awake()
         {
-            Clock = new SimulationClock();
+            Session = new CompanySession(starterCatalog.ToRuntime());
             for (int i = 0; i < Speeds.Length; i++)
             {
                 var speed = Speeds[i];

@@ -1844,6 +1844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c68d587383fb041ba5326a87cacb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: InfrastructureTycoon.Runtime::InfrastructureTycoon.GameRoot
+  starterCatalog: {fileID: 11400000, guid: c562cf052bf423b4ab01c5eb1ba50c7f, type: 2}
   dateLabel: {fileID: 2128388534}
   speedLabel: {fileID: 1590141736}
   speedButtons:
