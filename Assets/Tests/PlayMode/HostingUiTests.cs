@@ -23,7 +23,7 @@ public class HostingUiTests
 
     private IEnumerator OpenStation()
     {
-        var station = Object.FindFirstObjectByType<PcStationInteraction>();
+        var station = GameObject.Find("PcStationInteraction").GetComponent<PcStationInteraction>();
         Assert.That(station.TryOpen(), Is.False);
         var player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
         player.GetComponent<PlayerKeyboardInput>().enabled = false;

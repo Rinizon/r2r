@@ -46,7 +46,7 @@ public class Phase2LoopTests
         var root = GameObject.Find("GameRoot").GetComponent<InfrastructureTycoon.GameRoot>();
         string path = Path.Combine(directory, "company-v1.json");
         root.ConfigureSaveSlot(new SessionSaveSlot(path));
-        var station = UnityEngine.Object.FindFirstObjectByType<PcStationInteraction>();
+        var station = GameObject.Find("PcStationInteraction").GetComponent<PcStationInteraction>();
         Assert.That(root.Session.Cash, Is.EqualTo(150m));
         Assert.That(root.Session.AcceptedContracts, Is.Empty);
         station.HandleInput(true, false);
@@ -59,7 +59,7 @@ public class Phase2LoopTests
         var start = player.position;
         var target = (Vector2)GameObject.Find("PCStation").transform.position + new Vector2(-1.5f, 0);
         // Drive the same movement motor as keyboard input, without teleporting the player.
-        for (int step = 0; step < 200 && !station.IsWithinReach; step++)
+        for (int step = 0; step < 200 && Vector2.Distance(target, player.position) > 0.1f; step++)
         {
             movement.SetDirection((target - player.position).normalized);
             yield return new WaitForFixedUpdate();

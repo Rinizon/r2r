@@ -18,7 +18,7 @@ public class PcStationTests
     public IEnumerator SetUp()
     {
         yield return SceneManager.LoadSceneAsync("Main");
-        station = Object.FindFirstObjectByType<PcStationInteraction>();
+        station = GameObject.Find("PcStationInteraction").GetComponent<PcStationInteraction>();
         Assert.That(station, Is.Not.Null);
         player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
         player.GetComponent<PlayerKeyboardInput>().enabled = false;

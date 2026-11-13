@@ -71,7 +71,7 @@ namespace InfrastructureTycoon
                 if (saveSlot.TryLoad(Session.Catalog, out var restored, out var loadReason))
                 {
                     Session = restored;
-                    station.Close();
+                    PcStationInteraction.CloseAll();
                     hostingPanel.RebindSession();
                     RefreshHud();
                     saveFeedback.text = "Loaded.";

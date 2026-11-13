@@ -48,7 +48,7 @@ public class SaveControlsTests
         original.TryAcceptOffer("offer.photosnap", out var photo, out _);
         original.TryAssignContract(photo.Id, original.Hardware[0].Id, out _);
         root.Clock.RestoreState(new DateTime(1995, 1, 31), 0.75, SimulationSpeed.Paused);
-        var station = UnityEngine.Object.FindFirstObjectByType<PcStationInteraction>();
+        var station = GameObject.Find("PcStationInteraction").GetComponent<PcStationInteraction>();
         Assert.That(station.IsWithinReach, Is.False);
         Click("SaveGame");
         yield return null;

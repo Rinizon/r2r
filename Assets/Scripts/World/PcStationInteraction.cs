@@ -11,6 +11,26 @@ namespace InfrastructureTycoon.World
         [SerializeField] private GameObject panel;
         [SerializeField] private GameObject prompt;
         [SerializeField] private Button closeButton;
+        private static int consumedFrame = -1;
+
+        public static void CloseAll()
+        {
+            foreach (var station in FindObjectsByType<PcStationInteraction>(FindObjectsSortMode.None))
+                station.Close();
+        }
+
+        private bool CanSelect()
+        {
+            foreach (var station in FindObjectsByType<PcStationInteraction>(FindObjectsSortMode.None))
+            {
+                if (station != this && station.IsOpen) return false;
+                if (station == this || !station.IsWithinReach) continue;
+                float mine = ((Vector2)reach.bounds.center - (Vector2)playerCollider.bounds.center).sqrMagnitude;
+                float other = ((Vector2)station.reach.bounds.center - (Vector2)playerCollider.bounds.center).sqrMagnitude;
+                if (other < mine || (other == mine && string.CompareOrdinal(station.name, name) < 0)) return false;
+            }
+            return true;
+        }
 
         public bool IsOpen => panel.activeSelf;
         public bool IsWithinReach => reach.IsTouching(playerCollider);
@@ -31,7 +51,7 @@ namespace InfrastructureTycoon.World
 
         public bool TryOpen()
         {
-            if (IsOpen || !IsWithinReach) return false;
+            if (IsOpen || !IsWithinReach || !CanSelect()) return false;
             var selected = EventSystem.current == null ? null : EventSystem.current.currentSelectedGameObject;
             if (selected != null && selected.GetComponentInParent<InputField>() != null) return false;
             panel.SetActive(true);
@@ -41,6 +61,7 @@ namespace InfrastructureTycoon.World
 
         public void Close()
         {
+            if (IsOpen) consumedFrame = Time.frameCount;
             var events = EventSystem.current;
             if (events != null && events.currentSelectedGameObject != null &&
                 events.currentSelectedGameObject.transform.IsChildOf(panel.transform))
@@ -52,15 +73,18 @@ namespace InfrastructureTycoon.World
         public void HandleInput(bool interactPressed, bool closePressed)
         {
             // Consume Escape before considering interaction, including simultaneous input.
-            if (closePressed)
+            if (closePressed && IsOpen)
             {
                 Close();
                 return;
             }
-            if (interactPressed && !IsOpen) TryOpen();
+            if (closePressed || consumedFrame == Time.frameCount) return;
+            if (interactPressed && !IsOpen &&
+                (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()) && TryOpen())
+                consumedFrame = Time.frameCount;
         }
 
-        private void RefreshPrompt() => prompt.SetActive(IsWithinReach && !IsOpen);
+        private void RefreshPrompt() => prompt.SetActive(IsWithinReach && !IsOpen && CanSelect());
 
         private void OnDisable()
         {
