@@ -114,8 +114,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-03 should add offer acceptance and assignment operations to CompanySession and populate its currently empty contract collection. HardwareInstance.Id is a generated runtime ID distinct from Definition.Id; Resources tracks capacity and actual used demand, with Available clamped at zero. ResourceAmounts supports validated addition/subtraction. Cash and alerts remain HUD placeholders until P2-07; no acceptance, assignment, billing, purchases, or progression behavior was added.
 
 ### P2-03 Accept offers and assign website workloads
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-02`
 - Summary: Add session operations to accept an available offer and assign its workload to the starter PC.
 - Acceptance: Either authored offer can be accepted once, with an identifiable runtime contract and a separate assignment to the PC. Accepting an offer alone consumes no capacity and earns no revenue; assignment makes it hosted and consumes all four authored resources. Both starter offers fit together at 2 cores, 3 GB RAM, 30 GB storage, and 8 Mbps. Edit Mode tests cover each offer, combined usage, duplicate acceptance/assignment, unknown IDs, and rejection of a new assignment that exceeds any one resource. Failed operations leave contracts, assignments, cash, and resource totals intact and return a reason usable by the UI. No workload growth, contract cancellation, or multi-device management is required.
