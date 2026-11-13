@@ -169,8 +169,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: Next priority is P2-08 versioned JSON session saves. Hosting presenters read GameRoot.Session for current state and action handling; GameRoot owns the cash label binding. Rows are created from the catalog on first panel open. P2-09 must refresh/rebind presentation when replacing a session. Alerts remain a placeholder; no growth, satisfaction, or save/load controls were added.
 
 ### P2-08 Implement the versioned JSON session save round trip
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-04`
 - Summary: Add versioned plain C# save models and JSON serialization/restoration for the Phase 2 session, extending the clock with validated state restoration.
 - Acceptance: Saves contain save_version, game_version, timestamp, simulation date, fractional-day progress, selected speed, cash, cumulative operating profit, hardware runtime/content IDs, accepted contract runtime/content IDs, assignments, paid-month counts, and processed billing state. Recompute capacities and demand from catalog definitions and restored assignments rather than scene references. Capture between session updates after all crossed boundaries are processed. Edit Mode tests round-trip a partially completed day shortly before month end, restore into a fresh session, and verify matching state and exactly one next monthly payment, including a save immediately after billing that must not replay it. Unsupported versions, malformed data, invalid progress/date, unknown content IDs, duplicate runtime IDs, and dangling assignments are rejected without changing a live session. Keep the format scoped to Phase 2; migrations and later-phase systems are deferred.
