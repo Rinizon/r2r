@@ -1,0 +1,5 @@
+{
+  "name": "InfrastructureTycoon.Simulation",
+  "rootNamespace": "InfrastructureTycoon.Simulation",
+  "noEngineReferences": true
+}
