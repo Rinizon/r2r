@@ -136,15 +136,15 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: Next priority is P2-05 garage and walking. P2-07 can display LastMonthlyResult and live finances; P2-08 must persist billing history/processed periods and contract PaidMonths to avoid duplicate payments after restoration. TryBillMonth is idempotent for completed periods and returns a readable rejection reason. No growth, unlocks, financial UI binding, or persistence was added.
 
 ### P2-05 Build the garage and player walking
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `FOUND-04`
 - Summary: Populate WorldView with a small garage, a walkable player, and a recognizable PC station using reusable prefabs and separate blockers and reach triggers.
 - Acceptance: In Main Play Mode, the player can walk with WASD or arrow keys to and away from the PC station. Movement is frame-rate independent, diagonal movement does not increase speed, and the player cannot pass through walls or the PC's physical blocker. An independently tunable trigger defines station reach without blocking floor clearance. The orthographic camera shows the playable area and player without overlapping the anchored HUD; verify at 800x600 and 1280x720. Play Mode tests cover movement and collisions. Walking remains usable while the simulation is paused, and existing clock controls still work. This task adds no contract panel or hardware-purchase station.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added reusable Garage, Player, and PCStation prefabs with labeled prototype sprites, wall/desk blockers, and an independent PC reach trigger. Added WASD/arrow input and normalized fixed-step Rigidbody2D movement. The camera fits the garage in a world viewport reserved between the HUD bars, updating after Canvas layout.
+- Validation: Confirmed three new Play Mode tests failed without the world setup. Final Unity 6000.6.9f1 Editor and standalone Windows Play Mode suites passed 7/7 each, covering physics-step-independent/diagonal movement, wall/desk collisions, nonblocking reach trigger, walking while paused, existing clock controls, and camera/HUD bounds at 800x600, 1280x720, and 1920x1080. Visually inspected screenshots at both required sizes. No simulation logic changed; Edit Mode suite was not rerun.
+- Commit: `54bf5f2` (prefabs, art, movement/camera scripts, scene, tests, README); claim: `423877c`.
+- Handoff: P2-06 should add the prompt and gated PC panel using PCStation/Reach (CircleCollider2D radius 2), separate from PCStation/Blocker (BoxCollider2D). Player has PlayerMovement and PlayerKeyboardInput; walking uses physics at 3 world units/second and remains active during simulation pause. Camera viewport follows the scaled HUD boundaries. Art is explicitly provisional; no panel, contract UI, or hardware station was added.
 
 ### P2-06 Gate the PC station panel by player reach
 - Status: `todo`
