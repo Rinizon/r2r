@@ -1,6 +1,6 @@
 ## Spec
 
-This file is the shared task queue for all agents working in this repo. Implementation targets Unity and C# as described in `docs/TDD`. Only the design and planning documents exist so far. All implementation tasks start as `todo`.
+This file is the shared task queue for all agents working in this repo. Implementation targets Unity and C# as described in `docs/TDD`. The Unity 2D foundation uses Unity 6000.6.9f1. Gameplay implementation follows the task queue below.
 
 ## Status Legend
 - `todo`: ready to claim
@@ -44,15 +44,15 @@ Add all new `todo`, `in_progress`, and `blocked` tasks in this section.
 Keep the highest-priority ready work at the top so agents can claim it quickly.
 
 ### FOUND-01 Initialize the Unity 2D project
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `none`
 - Summary: Create the Unity 2D project at the repository root and record the editor version.
 - Acceptance: A clean checkout opens, imports, and compiles in the selected Unity 6000.6.9f1 supported release recorded in `ProjectSettings/ProjectVersion.txt`. Track package manifests and lockfiles and asset `.meta` files. Ignore generated Unity directories such as Library, Temp, Logs, and Obj.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Initialized the root Unity 2D project with 2D defaults, Sprite tooling, uGUI, Test Framework, tracked folder metadata, package lockfile, and generated-directory ignores. Updated version guidance per user approval.
+- Validation: Unity 6000.6.9f1 batch import and package compilation passed in the workspace and a clean staged-source copy (exit 0). Clean import preserved source files after line-ending normalization; generated folders are ignored. No gameplay tests exist for this setup-only task. Unity recovered automatically from a Hub licensing protocol mismatch by launching its matching licensing client.
+- Commit: `26d3a94` (implementation and version docs); claim: `ea2bf3a`.
+- Handoff: Open the repository root with Unity 6000.6.9f1. Foundation only; no playable scene or gameplay scripts. Next: FOUND-02 creates Main and the HUD shell.
 
 ### FOUND-02 Create the main scene and HUD shell
 - Status: `todo`
