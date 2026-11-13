@@ -114,15 +114,15 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-03 should add offer acceptance and assignment operations to CompanySession and populate its currently empty contract collection. HardwareInstance.Id is a generated runtime ID distinct from Definition.Id; Resources tracks capacity and actual used demand, with Available clamped at zero. ResourceAmounts supports validated addition/subtraction. Cash and alerts remain HUD placeholders until P2-07; no acceptance, assignment, billing, purchases, or progression behavior was added.
 
 ### P2-03 Accept offers and assign website workloads
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-02`
 - Summary: Add session operations to accept an available offer and assign its workload to the starter PC.
 - Acceptance: Either authored offer can be accepted once, with an identifiable runtime contract and a separate assignment to the PC. Accepting an offer alone consumes no capacity and earns no revenue; assignment makes it hosted and consumes all four authored resources. Both starter offers fit together at 2 cores, 3 GB RAM, 30 GB storage, and 8 Mbps. Edit Mode tests cover each offer, combined usage, duplicate acceptance/assignment, unknown IDs, and rejection of a new assignment that exceeds any one resource. Failed operations leave contracts, assignments, cash, and resource totals intact and return a reason usable by the UI. No workload growth, contract cancellation, or multi-device management is required.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added TryAcceptOffer and TryAssignContract operations with runtime contract IDs, separate hosted assignment state, available-offer filtering, cumulative four-resource allocation, and readable failure reasons. Duplicate/unknown/cross-session IDs and over-capacity assignments are rejected before changing state; finances and authored definitions remain intact.
+- Validation: Confirmed 12 new Edit Mode cases failed before implementation. Final Unity 6000.6.9f1 Edit Mode suite passed 46/46 and Play Mode regression suite passed 4/4. Covered each authored offer, combined exact CPU fit and other totals, acceptance versus assignment, duplicates, invalid IDs, cross-session IDs, independent sessions, and atomic rejection when any one resource is cumulatively exceeded.
+- Commit: `98513a8` (session operations, tests, README); claim: `16d74bb`.
+- Handoff: P2-04 should bill only AcceptedContracts whose IsHosted is true, using Definition.MonthlyRevenue and AssignedHardwareId. Acceptance uses an offer content ID; assignment uses contract and hardware runtime IDs. Success returns an empty reason; failure returns a displayable reason with no mutation. No billing, UI hosting controls, cancellation, growth, or reassignment was added.
 
 ### P2-04 Bill hosted contracts at outgoing month boundaries
 - Status: `todo`
