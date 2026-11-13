@@ -285,15 +285,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next is P3-08: bind purchase controls into HardwarePanel and effective hosting state into the PC view. HardwareStationInteraction uses the shared PcStationInteraction component with its own serialized references; HardwarePanel currently contains title, body, hint, and Close button. Panel shells and world visuals remain intentional prototypes. No purchases or alerts were added to UI.
 
 ### P3-08 Bind upgrade purchases and effective hosting state to station UI
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P3-04`, `P3-05`, `P3-07`
 - Summary: Connect the hardware panel to session purchase operations and update the PC panel to display effective capacity and grown contract requirements.
 - Acceptance: Within hardware-station reach, the panel lists all four upgrades with prices, current cash, current capacity, resulting capacity, and purchase status. Purchase buttons call the shared session operation; unaffordable/already-owned actions are disabled or explain rejection. A successful purchase refreshes cash and capacity immediately. The PC panel reflects PhotoSnap's effective requirements and the upgraded PC totals rather than cached authored base values. Reopening panels and loading upgraded/grown sessions rebuilds current views and button actions without duplicate listeners or stale session references. Play Mode tests buy each upgrade through UI, verify the $120 CPU transaction, reject an unaffordable second purchase without state changes, and exercise save/load rebinding for both panels. Inspect readable layouts and actual button hit targets at 800x600 and 1280x720. No alerts beyond existing action feedback are required in this task.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added HardwarePanel and reusable HardwareUpgradeRow prefab for four catalog upgrades, cash/current capacity, per-resource result previews, prices, owned/affordability states, and shared session purchase actions with feedback. Purchases immediately refresh panel and HUD cash. Hosting rows refresh effective contract requirements; existing PC resource totals already read effective usage. Loaded/reopened hardware rows resolve the live session by content ID without rebinding listeners. Updated README.
+- Validation: Three new Play Mode tests failed before implementation. Unity 6000.6.9f1 passes 156 Edit Mode and all 28 Play Mode tests in editor and standalone Windows. UI coverage buys each upgrade, verifies CPU $120/remaining $30 and capacity deltas, rejects duplicate/queued unaffordable actions, repeatedly restores upgraded/grown saves and reopens both panels, checks row counts and effective demand/totals, and verifies purchase hit targets and text bounds at 800x600 and 1280x720. Visually inspected both standalone purchase layouts.
+- Commit: Implementation `4362e8d`; claim `56255f8`.
+- Handoff: Next is P3-09, growth explanations and bottleneck HUD/PC feedback. HardwarePanel reads current cash/capacity and refreshes rows after each purchase; HardwareUpgradeRow uses IDs against GameRoot.Session on every refresh/action. GameRoot load closes both stations, rebinds both panels, and refreshes HUD. No diagnostic alerts, new balance rules, or persistence fields were added.
 
 ### P3-09 Show growth and bottleneck information in the HUD and PC panel
 - Status: `todo`
