@@ -92,15 +92,15 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 Work in the priority order below when dependencies are satisfied. Use the provisional starter values in `docs/GDD` and the architecture and save contract in `docs/TDD`. Keep upgrades, PhotoSnap growth, bottleneck alerts, tower servers, and customer satisfaction in their later phases. Garage visuals may be simple, clearly labeled prototype art; this phase requires playable interactions rather than a finished art pass.
 
 ### P2-01 Author starter hardware and website definitions
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `FOUND-04`
 - Summary: Add ScriptableObject definitions and a starter catalog for the PC and two website offers, with stable content IDs and conversion to engine-independent runtime data.
 - Acceptance: Authored assets under Assets/Data define the starter PC (2 CPU cores, 4 GB RAM, 250 GB storage, 10 Mbps bandwidth, $20 monthly expense), PhotoSnap (1 core, 2 GB RAM, 20 GB storage, 4 Mbps, $100 monthly revenue), and the second website (1 core, 1 GB RAM, 10 GB storage, 4 Mbps, $80 monthly revenue). IDs are explicit and independent of asset names, paths, or instance IDs. Edit Mode validation rejects missing/duplicate IDs and invalid resource or money values. Definitions remain immutable during play; loading the catalog does not require scene-object references. Verify Unity imports all assets and metadata.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added HardwareDefinition, ContractTemplate, and StarterCatalog ScriptableObjects with authored PC/PhotoSnap/local-website assets matching the GDD. ToRuntime creates immutable engine-independent resource, hardware, offer, and catalog data with stable explicit IDs and decimal money. Added content validation and contributor guidance.
+- Validation: Confirmed failing Edit Mode tests before implementation (11 failures). Final Unity 6000.6.9f1 Edit Mode suite passed 29/29 (16 catalog cases plus 13 clock cases); Play Mode regression suite passed 3/3. Verified asset import/reference resolution, exact starter values, missing/duplicate IDs, invalid resources/money, missing asset references, and runtime snapshot isolation from authored changes.
+- Commit: `b547b96` (assets, definitions, runtime data, tests, README); claim: `01df260`.
+- Handoff: P2-02 should reference Assets/Data/StarterCatalog.asset from GameRoot and pass ToRuntime() data into the new session. Content namespace is InfrastructureTycoon.Content; immutable data lives in the engine-independent Simulation assembly, ScriptableObjects in Runtime. IDs: hardware.starter-pc, offer.photosnap, offer.local-website. Money fields are authored as whole dollars. No session, workload assignment, or billing was added.
 
 ### P2-02 Create the starter company session and capacity model
 - Status: `todo`
