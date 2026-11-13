@@ -274,8 +274,8 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next ready task is P3-07, the walkable hardware station and gated panel. P3-09 can query GetBottlenecks() for current reports; reports retain historical values, so refresh after changes. No HUD, penalties, satisfaction, or persistence schema changes were introduced.
 
 ### P3-07 Add the walkable hardware station and gated panel
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-10`
 - Summary: Add a recognizable hardware station prefab, independent blocker/reach trigger, interaction prompt, and closable panel shell using the existing garage interaction pattern.
 - Acceptance: The player can walk to and away from both stations with WASD/arrows, including while simulation time is paused. Hardware interaction out of reach leaves its panel closed; within reach, E opens it, and Close/Escape or leaving reach closes it. At most one station panel opens for an interaction; panel/UI input cannot trigger a second station behind it. Blockers and triggers remain independently tunable, floor routes to both stations remain clear, and both stations fit the camera view below the HUD at 800x600 and 1280x720. Loading a session closes either station panel and preserves player/world placement. Play Mode tests cover movement, collisions, reach/re-entry, station selection, and existing PC behavior. Reuse the existing interaction pattern rather than introducing unrelated input systems; purchase bindings follow in P3-08.
