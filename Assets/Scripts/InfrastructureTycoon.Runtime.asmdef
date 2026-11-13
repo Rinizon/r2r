@@ -1,0 +1,5 @@
+{
+  "name": "InfrastructureTycoon.Runtime",
+  "rootNamespace": "InfrastructureTycoon",
+  "references": ["InfrastructureTycoon.Simulation", "UnityEngine.UI"]
+}

@@ -1,5 +1,5 @@
 {
   "name": "InfrastructureTycoon.PlayModeTests",
-  "references": ["UnityEngine.UI"],
+  "references": ["UnityEngine.UI", "InfrastructureTycoon.Runtime", "InfrastructureTycoon.Simulation"],
   "optionalUnityReferences": ["TestAssemblies"]
 }

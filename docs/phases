@@ -8,6 +8,8 @@ Initialize the Unity 2D project using Unity 6000.6.9f1 and record the editor ver
 
 **Exit criteria:** Main opens in Play Mode, the HUD displays the simulation date, and the clock advances at the selected speed and stops while paused.
 
+**Verified:** Phase 1 completed with FOUND-04 on Unity 6000.6.9f1. Edit Mode tests passed 13/13; Editor Play Mode and standalone Windows player tests passed 3/3 each, including speed controls, date rollover, pause/resume, and HUD resize checks.
+
 ## Phase 2 — First hosting contract (Era 1)
 
 Load the starter PC and simple website offers from authored definitions. Track CPU, RAM, storage, and bandwidth capacity. Let the player accept an offer and assign its workload to the PC. Show active contracts and resource utilization, and collect contract revenue at month end. Add walking and proximity-based interaction at the PC station. Implement the first versioned save round trip with stable content IDs and partial-day progress.
