@@ -5,7 +5,7 @@ using InfrastructureTycoon.Content;
 
 namespace InfrastructureTycoon.Simulation
 {
-    public sealed class CompanySession
+    public sealed partial class CompanySession
     {
         private readonly List<ContractInstance> acceptedContracts = new List<ContractInstance>();
         private readonly List<MonthlyBillingResult> billingHistory = new List<MonthlyBillingResult>();
@@ -163,12 +163,15 @@ namespace InfrastructureTycoon.Simulation
 
     public sealed class HardwareInstance
     {
-        public string Id { get; } = Guid.NewGuid().ToString("N");
+        public string Id { get; }
         public HardwareData Definition { get; }
         public ResourceUsage Resources { get; private set; }
 
-        public HardwareInstance(HardwareData definition)
+        public HardwareInstance(HardwareData definition) : this(definition, Guid.NewGuid().ToString("N")) { }
+
+        internal HardwareInstance(HardwareData definition, string id)
         {
+            Id = id;
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             Resources = new ResourceUsage(definition.Capacity, default);
         }
@@ -178,13 +181,14 @@ namespace InfrastructureTycoon.Simulation
 
     public sealed class ContractInstance
     {
-        public string Id { get; } = Guid.NewGuid().ToString("N");
+        public string Id { get; }
         public OfferData Definition { get; }
         public string AssignedHardwareId { get; internal set; }
         public bool IsHosted => AssignedHardwareId != null;
         public int PaidMonths { get; internal set; }
 
-        internal ContractInstance(OfferData definition) { Definition = definition; }
+        internal ContractInstance(OfferData definition) : this(definition, Guid.NewGuid().ToString("N")) { }
+        internal ContractInstance(OfferData definition, string id) { Definition = definition; Id = id; }
     }
 
     public readonly struct ResourceUsage

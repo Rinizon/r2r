@@ -19,6 +19,7 @@ namespace InfrastructureTycoon.Simulation
         public DateTime Date { get; private set; } = new DateTime(1995, 1, 1);
         /// <summary>Fraction of the current day completed, in [0, 1).</summary>
         public double DayProgress { get; private set; }
+        public bool IsAdvancing { get; private set; }
         public SimulationSpeed Speed
         {
             get => speed;
@@ -38,8 +39,21 @@ namespace InfrastructureTycoon.Simulation
         public event Action<DateTime> MonthEnded;
         public event Action<DateTime> YearEnded;
 
+        public void RestoreState(DateTime date, double progress, SimulationSpeed selectedSpeed)
+        {
+            if (IsAdvancing) throw new InvalidOperationException("Cannot restore during a clock update.");
+            if (date != date.Date || date < new DateTime(1995, 1, 1))
+                throw new ArgumentOutOfRangeException(nameof(date));
+            if (double.IsNaN(progress) || double.IsInfinity(progress) || progress < 0 || progress >= 1)
+                throw new ArgumentOutOfRangeException(nameof(progress));
+            Speed = selectedSpeed; // Validates before changing any clock state.
+            Date = date;
+            DayProgress = progress;
+        }
+
         public void Advance(double elapsedSeconds)
         {
+            if (IsAdvancing) throw new InvalidOperationException("Clock updates cannot be nested.");
             if (double.IsNaN(elapsedSeconds) || double.IsInfinity(elapsedSeconds) || elapsedSeconds < 0)
                 throw new ArgumentOutOfRangeException(nameof(elapsedSeconds));
             if (speed == SimulationSpeed.Paused || elapsedSeconds == 0)
@@ -51,19 +65,24 @@ namespace InfrastructureTycoon.Simulation
                 Math.Floor(DayProgress + remainingDays) > (DateTime.MaxValue.Date - Date).Days)
                 throw new ArgumentOutOfRangeException(nameof(elapsedSeconds));
 
-            while (remainingDays >= 1 - DayProgress)
+            IsAdvancing = true;
+            try
             {
-                remainingDays -= 1 - DayProgress;
-                var outgoing = Date;
-                Date = Date.AddDays(1);
-                DayProgress = 0;
-                DayEnded?.Invoke(outgoing);
-                if (Date.Month != outgoing.Month)
-                    MonthEnded?.Invoke(outgoing);
-                if (Date.Year != outgoing.Year)
-                    YearEnded?.Invoke(outgoing);
+                while (remainingDays >= 1 - DayProgress)
+                {
+                    remainingDays -= 1 - DayProgress;
+                    var outgoing = Date;
+                    Date = Date.AddDays(1);
+                    DayProgress = 0;
+                    DayEnded?.Invoke(outgoing);
+                    if (Date.Month != outgoing.Month)
+                        MonthEnded?.Invoke(outgoing);
+                    if (Date.Year != outgoing.Year)
+                        YearEnded?.Invoke(outgoing);
+                }
+                DayProgress += remainingDays;
             }
-            DayProgress += remainingDays;
+            finally { IsAdvancing = false; }
         }
     }
 }

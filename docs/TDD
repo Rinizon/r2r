@@ -455,6 +455,7 @@ The game needs robust long-term save support.
 Save Format
 Serialize versioned C# save models as JSON under Application.persistentDataPath. Store stable content IDs and runtime values independently of scene objects. Consider compression if save size becomes an issue.
 The first save round trip lands with Phase 2 billing. Persist fractional day progress and stable content IDs. Capture saves between session updates after all crossed boundaries have been processed.
+Phase 2 version 1 is implemented with engine-independent SessionSaveData models and SessionSaveJson using the .NET data-contract JSON serializer. Required snake_case fields store metadata, date/progress/speed, decimal cash/profit, hardware and contract IDs, assignments, paid-month counts, and monthly history. The complete ordered billing history also records processed periods; load rebuilds the duplicate-payment guard. Restore validates into a fresh CompanySession, recomputes resources from catalog definitions, and emits no clock ticks. Version 1 requires the single starter PC, a complete ledger from January 1995 through the last closed month, and cash equal to $150 plus cumulative operating profit. Extend these Phase 2 invariants before adding purchases or other financial systems. Clock state restoration is validated and silent; capture and restore are blocked while Advance is processing boundaries. File I/O and session replacement in Main belong to P2-09.
 
 Save Data Includes
 	• company state
