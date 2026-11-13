@@ -13,6 +13,7 @@ namespace InfrastructureTycoon.Simulation
         private readonly DateTime billingStartDate;
         public ReadOnlyCollection<MonthlyBillingResult> BillingHistory { get; }
         public MonthlyBillingResult LastMonthlyResult => billingHistory.Count == 0 ? null : billingHistory[billingHistory.Count - 1];
+        public event Action<ContractInstance, GrowthMilestoneData> MilestoneApplied;
 
         public bool TryBillMonth(DateTime outgoingMonthEnd, out string reason)
         {
@@ -48,6 +49,7 @@ namespace InfrastructureTycoon.Simulation
                     contract.PaidMonths++;
             billingHistory.Add(result);
             processedBillingPeriods.Add(outgoingMonthEnd);
+            ApplyEligibleMilestones(true);
             reason = string.Empty;
             return true;
         }
@@ -208,8 +210,8 @@ namespace InfrastructureTycoon.Simulation
         public string Id { get; }
         public OfferData Definition { get; }
         public ResourceAmounts BaseRequirements => Definition.Requirements;
-        public ResourceAmounts EffectiveRequirements { get; }
-        public ReadOnlyCollection<string> AppliedMilestoneIds { get; }
+        public ResourceAmounts EffectiveRequirements { get; private set; }
+        public ReadOnlyCollection<string> AppliedMilestoneIds { get; private set; }
         public string AssignedHardwareId { get; internal set; }
         public bool IsHosted => AssignedHardwareId != null;
         public int PaidMonths { get; internal set; }
@@ -230,6 +232,15 @@ namespace InfrastructureTycoon.Simulation
             AppliedMilestoneIds = applied.AsReadOnly();
             PaidMonths = paidMonths;
             AssignedHardwareId = assignedHardwareId == null ? null : ContentValidation.Text(assignedHardwareId, nameof(assignedHardwareId));
+        }
+
+        internal void CommitMilestones(ContractInstance prepared)
+        {
+            if (prepared == null || prepared.Id != Id || !ReferenceEquals(prepared.Definition, Definition) ||
+                prepared.PaidMonths != PaidMonths || prepared.AssignedHardwareId != AssignedHardwareId)
+                throw new ArgumentException("Prepared state must belong to this contract.", nameof(prepared));
+            EffectiveRequirements = prepared.EffectiveRequirements;
+            AppliedMilestoneIds = prepared.AppliedMilestoneIds;
         }
     }
 

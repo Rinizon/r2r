@@ -100,6 +100,8 @@ namespace InfrastructureTycoon.Simulation
                 throw new ArgumentException("Finances do not match billing history.");
             Cash = data.Cash;
             OperatingProfit = data.OperatingProfit;
+            // Reconcile saves from the earlier state-only v2 build without replaying notifications or billing.
+            ApplyEligibleMilestones(false);
         }
 
         private static void AddRuntimeId(HashSet<string> ids, string id, string contentId)
