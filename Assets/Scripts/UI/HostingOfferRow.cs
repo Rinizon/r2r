@@ -46,11 +46,13 @@ namespace InfrastructureTycoon.UI
             var contract = Contract();
             var demand = contract == null ? offer.Requirements : contract.EffectiveRequirements;
             requirements.text = string.Format(CultureInfo.InvariantCulture,
-                "CPU {0} cores   |   RAM {1} GB\nStorage {2} GB   |   Bandwidth {3} Mbps",
+                "CPU {0} cores | RAM {1} GB | Storage {2} GB | Bandwidth {3} Mbps",
                 demand.CpuCores, demand.RamGb, demand.StorageGb, demand.BandwidthMbps);
             accept.interactable = contract == null;
             assign.interactable = contract != null && !contract.IsHosted;
             state.text = contract == null ? "AVAILABLE" : contract.IsHosted ? "HOSTED ON STARTER PC" : "ACCEPTED / UNASSIGNED";
+            var growth = CapacityFeedback.Growth(contract, root.Session.Catalog);
+            if (growth.Length > 0) state.text += " | " + growth;
         }
 
         private void Accept()

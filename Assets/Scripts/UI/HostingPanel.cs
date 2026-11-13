@@ -13,6 +13,7 @@ namespace InfrastructureTycoon.UI
         [SerializeField] private Text resourceUsage;
         [SerializeField] private Text monthlyResult;
         [SerializeField] private Text feedback;
+        [SerializeField] private Text capacityDetails;
         private bool initialized;
 
         public void RebindSession()
@@ -54,6 +55,7 @@ namespace InfrastructureTycoon.UI
         private void Refresh()
         {
             var session = gameRoot.Session;
+            capacityDetails.text = CapacityFeedback.Details(session.GetBottlenecks());
             var usage = session.Hardware[0].Resources;
             resourceUsage.text = string.Format(CultureInfo.InvariantCulture,
                 "STARTER PC   CPU {0}/{1} cores   |   RAM {2}/{3} GB\nSTORAGE {4}/{5} GB   |   BANDWIDTH {6}/{7} Mbps",

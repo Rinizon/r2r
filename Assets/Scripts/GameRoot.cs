@@ -15,6 +15,7 @@ namespace InfrastructureTycoon
         [SerializeField] private Text dateLabel;
         [SerializeField] private Text speedLabel;
         [SerializeField] private Text cashLabel;
+        [SerializeField] private Text alertsLabel;
         [SerializeField] private Button saveButton;
         [SerializeField] private Button loadButton;
         [SerializeField] private Text saveFeedback;
@@ -96,6 +97,9 @@ namespace InfrastructureTycoon
 
         internal void RefreshHud()
         {
+            var reports = Session.GetBottlenecks();
+            alertsLabel.text = CapacityFeedback.Summary(reports);
+            alertsLabel.color = reports.Count == 0 ? new Color(.75f, .88f, .84f) : new Color(1f, .76f, .38f);
             cashLabel.text = "CASH  " + UI.HostingPanel.Money(Session.Cash);
             dateLabel.text = "DATE  " + Clock.Date.ToString("dd MMM yyyy", CultureInfo.InvariantCulture).ToUpperInvariant();
             speedLabel.text = Clock.Speed == SimulationSpeed.Paused ? "SPEED  PAUSED" : "SPEED  " + (int)Clock.Speed + "x";
