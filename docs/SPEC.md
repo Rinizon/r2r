@@ -125,8 +125,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-04 should bill only AcceptedContracts whose IsHosted is true, using Definition.MonthlyRevenue and AssignedHardwareId. Acceptance uses an offer content ID; assignment uses contract and hardware runtime IDs. Success returns an empty reason; failure returns a displayable reason with no mutation. No billing, UI hosting controls, cancellation, growth, or reassignment was added.
 
 ### P2-04 Bill hosted contracts at outgoing month boundaries
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-03`
 - Summary: Connect session billing to the clock's MonthEnded event, tracking revenue, starter-PC expenses, operating profit, and processed billing periods.
 - Acceptance: Each outgoing month collects the authored monthly revenue for contracts hosted at that boundary and deducts the PC's $20 recurring expense once. For this first loop, use full monthly amounts without proration; accepted but unassigned offers earn nothing. Starting from $150, one PhotoSnap-only month ends at $230 cash and $80 cumulative operating profit; hosting both offers ends at $310 and $160. A monthly result identifies its outgoing period, revenue, expenses, and net profit; retain per-contract paid-month counts for later progression. Edit Mode tests verify no payment before rollover, no revenue while unassigned, expenses with no hosted contracts, ordered billing across multiple months/year rollover in one update, and no duplicate billing of an already processed period. Growth and unlocks remain deferred.
