@@ -136,8 +136,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: Next priority is P2-05 garage and walking. P2-07 can display LastMonthlyResult and live finances; P2-08 must persist billing history/processed periods and contract PaidMonths to avoid duplicate payments after restoration. TryBillMonth is idempotent for completed periods and returns a readable rejection reason. No growth, unlocks, financial UI binding, or persistence was added.
 
 ### P2-05 Build the garage and player walking
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `FOUND-04`
 - Summary: Populate WorldView with a small garage, a walkable player, and a recognizable PC station using reusable prefabs and separate blockers and reach triggers.
 - Acceptance: In Main Play Mode, the player can walk with WASD or arrow keys to and away from the PC station. Movement is frame-rate independent, diagonal movement does not increase speed, and the player cannot pass through walls or the PC's physical blocker. An independently tunable trigger defines station reach without blocking floor clearance. The orthographic camera shows the playable area and player without overlapping the anchored HUD; verify at 800x600 and 1280x720. Play Mode tests cover movement and collisions. Walking remains usable while the simulation is paused, and existing clock controls still work. This task adds no contract panel or hardware-purchase station.
