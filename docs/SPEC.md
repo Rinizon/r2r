@@ -219,15 +219,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: P3-02 should consume HostingCatalog.Upgrades and Milestones. Upgrade CapacityDelta is additive; milestone Requirements is the absolute grown workload, not a delta. IDs: upgrade.starter-cpu/ram/storage/internet and growth.photosnap.cpu-2. Targets: hardware.starter-pc and offer.photosnap. Definitions are metadata only: no effective-state mutation, purchases, automatic growth, save-format changes, or new UI was introduced.
 
 ### P3-02 Model effective capacities, demand, purchases, and milestone state
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P3-01`
 - Summary: Extend plain C# runtime state so hardware upgrades and applied contract milestones can alter effective capacity and demand without mutating authored definitions.
 - Acceptance: Hardware exposes base and effective capacity, applied upgrade IDs, and purchase records containing runtime hardware ID, upgrade content ID, and amount paid. Contracts expose effective requirements separately from their authored base requirements and retain applied milestone IDs. Pure resource calculations combine base capacity with recorded upgrade deltas and derive demand from applied milestones; used demand remains visible above capacity while available headroom stays at zero for an overused dimension. Fresh companies still have $150, no purchases/milestones, and the Phase 2 resource totals. Edit Mode tests verify all four resource deltas, the authored PhotoSnap demand change, independent sessions, immutable definitions, and stable runtime IDs. This task adds state/calculation support only; purchasing and automatic growth are separate tasks.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added immutable UpgradePurchase records, explicit state constructors, read-only applied upgrade/milestone IDs, and base/effective resource properties on runtime instances. ProgressionResources validates recorded state and calculates additive capacity, absolute applied workload profiles, and assigned usage/headroom. New assignments now read effective requirements; fresh sessions retain Phase 2 state.
+- Validation: Confirmed seven new Edit Mode failures before calculation implementation. Final Unity 6000.6.9f1 suites passed: Edit Mode 107/107 and Editor/standalone Windows Play Mode 20/20 each. Covered all four deltas, combined capacity, historical amounts paid, PhotoSnap demand, overload visibility, unrelated/unassigned contracts, input snapshot isolation, stable IDs, independent sessions, invalid records/targets/eligibility, profile ordering, and the complete existing hosting/save loop.
+- Commit: `a230824` (runtime state, pure calculations, tests, README); claim: `a521f3a`.
+- Handoff: P3-03 can use explicit HardwareInstance/ContractInstance state constructors with catalog definitions, then ProgressionResources.CalculateUsage and internal SetUsedResources to rebuild allocations without treating restored overloads as new assignments. Upgrade records retain historical AmountPaid; profile requirements replace rather than add to base demand. State constructors do not spend cash or apply eligible milestones automatically. Controlled live purchase/growth commits remain in P3-04/P3-05. Version 1 persistence and UI behavior are unchanged.
 
 ### P3-03 Extend saves for Phase 3 and migrate Phase 2 saves
 - Status: `todo`
