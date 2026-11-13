@@ -77,8 +77,8 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Handoff: FOUND-04 should reference InfrastructureTycoon.Simulation, create a SimulationClock in GameRoot, call Advance with real elapsed seconds, and bind Date and Speed to the HUD. Starts January 1, 1995 at Normal; two real seconds per day. Events carry the outgoing date; callbacks see the next date at zero day progress. No billing or persistence is implemented.
 
 ### FOUND-04 Connect the clock to the HUD and verify Phase 1
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `FOUND-02`, `FOUND-03`
 - Summary: Have GameRoot drive the clock and bind the HUD date and speed controls to the session.
 - Acceptance: In Main Play Mode, the HUD shows the starting date and selected speed. Each speed control changes the rate of date advancement, pause freezes the date, and resuming continues from the same simulation state. Verify the interaction in Play Mode.
