@@ -191,8 +191,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-10 should verify the full fresh-game hosting/save/resume loop and record Phase 2 exit evidence. Save and Load are explicit single-slot actions; load always closes the PC panel and its next open rebuilds rows. GameRoot.ConfigureSaveSlot accepts an isolated backend path for tests. Default slot: Application.persistentDataPath/company-v1.json. No autosave, slot manager, or Phase 3 mechanics were added.
 
 ### P2-10 Verify the complete Phase 2 hosting and resume loop
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-01`, `P2-02`, `P2-03`, `P2-04`, `P2-05`, `P2-06`, `P2-07`, `P2-08`, `P2-09`
 - Summary: Exercise the integrated Phase 2 exit criteria and document the player workflow and verification evidence.
 - Acceptance: From a fresh Main session, demonstrate that interaction out of reach leaves the PC panel closed, then walk within reach, accept and assign a website through the panel, and inspect matching utilization and cash. Save shortly before month rollover with nonzero fractional-day progress, reload, verify that progress and assignment restore, and advance across rollover for exactly one correct payment and expense. Save/reload after that payment and verify it is not repeated; the following month still bills once. Repeat loading to catch duplicate subscriptions, and confirm pause/resume and speed controls still operate on the restored session. Run all Edit Mode and Play Mode suites in Unity 6000.6.9f1, including real pointer-hit and responsive-layout checks in the standalone test player where required. Record results and any remaining prototype-art caveat in docs/phases and README, and mark Phase 2 verified only after these checks pass. Do not start Phase 3 mechanics in this task.
