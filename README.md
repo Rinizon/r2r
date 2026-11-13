@@ -16,4 +16,26 @@ Starter content is authored in `Assets/Data/StarterCatalog.asset`, referencing S
 
 Phase 2 save serialization is available through SessionSaveJson.Capture(session, gameVersion), ToJson(snapshot), and TryLoad(json, catalog, out restoredSession, out reason). Capture between session updates; capture during a clock boundary callback is rejected. Version 1 uses required JSON fields and decimal finances, saves fractional-day progress and selected speed, and preserves runtime/content IDs, assignments, paid-month counts, and the complete monthly billing ledger. Capacities and demand are rebuilt from the supplied catalog. Loading validates a separate session before the UI replaces live state. The format currently describes the Phase 2 starter-PC company. Use SAVE and LOAD in the HUD from anywhere in the garage. The single slot is `company-v1.json` under `Application.persistentDataPath`. Saves run after the frame simulation update, flush a temporary sibling file, and atomically replace the previous slot; failures preserve the previous file. Loading closes the PC panel and refreshes the clock/cash HUD; reopening the panel rebuilds its controls for the restored company. Player position, station triggers, and panel-open state are not saved. Missing, invalid, unsupported, or inaccessible saves show a short HUD message and leave the current company active. Tests inject unique temporary slots through GameRoot.ConfigureSaveSlot and clean up only those files.
 
+## Phase 2 verified playthrough
+
+1. Open Main in Play Mode for a fresh $150 company. Walk to the PC using WASD/arrows; E stays inactive out of reach and opens the panel within reach.
+2. ACCEPT PhotoSnap, then ASSIGN it. Usage becomes 1/2 CPU cores, 2/4 GB RAM, 20/250 GB storage, and 4/10 Mbps. Acceptance alone consumes no resources.
+3. Pause on January 31, SAVE, then LOAD. The company, assignment, selected speed, and partial day resume; loading closes the panel. Reopen it with E if still within reach.
+4. Resume across February 1. January's result is $100 revenue, $20 expense, and $80 net, leaving $230 cash. SAVE after that payment and LOAD repeatedly: the payment must not repeat.
+5. Resume across March 1. February pays once, leaving $310 cash and two paid months for PhotoSnap. Pause and speed controls continue to affect the restored company.
+
+Verified on November 13, 2026 with Unity 6000.6.9f1:
+
+| Suite | Passed |
+| --- | --- |
+| Edit Mode | 86/86 |
+| Editor Play Mode | 20/20 |
+| Standalone Windows Play Mode | 20/20 |
+
+`Phase2LoopTests.FreshGameWalkHostSaveBeforeAndAfterBillingThenResumeNextMonth` covers this complete sequence. It drives the keyboard's physics movement motor without teleporting, routes interaction through the E-key handler, and uses UI pointer events (including real raycast checks in the standalone player). Calendar advancement is accelerated deterministically through the clock API; the pre-rollover snapshot preserves exactly 0.75 day progress. Other suites cover every speed's real frame advancement, collisions, reach/re-entry, rejection paths, malformed saves, and failed file replacement.
+
+Run all Edit Mode and Play Mode suites in Window > General > Test Runner. For the standalone check, run the installed Unity editor with `-batchmode -projectPath <repo-root> -runTests -testPlatform StandaloneWindows64 -testResults <results.xml> -logFile <editor.log>`. The integrated test saves `Phase2-Resumed-800x600.png` and `Phase2-Resumed-1280x720.png` under `Application.temporaryCachePath`; both layouts were visually inspected. Tests use unique temporary save directories and clean their slots without touching the player's save.
+
+The garage, player, and PC remain labeled prototype art. Capacity upgrades, PhotoSnap growth, bottleneck alerts, and later progression are outside this verified Phase 2 milestone.
+
 Design and task queue: [GDD](docs/GDD), [TDD](docs/TDD), [phases](docs/phases), [SPEC](docs/SPEC.md). Contributor workflow: [AGENTS](docs/AGENTS.md).

@@ -16,6 +16,8 @@ Load the starter PC and simple website offers from authored definitions. Track C
 
 **Exit criteria:** From a fresh game, the player can walk to the PC station, open it within reach, host a website, and see its resource usage. Verify the panel stays closed when interaction is attempted out of reach. Save shortly before month rollover, reload, and verify restored partial-day progress and exactly one payment.
 
+**Verified:** Phase 2 completed with P2-10 on November 13, 2026 using Unity 6000.6.9f1. All Edit Mode tests passed 86/86; Editor Play Mode and standalone Windows Play Mode passed 20/20 each. The integrated Phase2LoopTests regression walks the player into reach, hosts PhotoSnap through UI controls, saves at January 31 with 0.75 day progress, and restores the same IDs, assignment, and progress. January closes once at $100 revenue less $20 expense ($230 cash). Saving after payment and loading three times does not replay it; February closes once at $310 cash and two paid months. Pause/resume and speed controls operate on the restored session. Standalone tests verify real UI raycast targets and responsive layouts; resumed-state screenshots were visually checked at 800x600 and 1280x720. Save tests use isolated temporary slots and clean up their files. Garage visuals remain prototype art; no Phase 3 mechanics are included in this milestone.
+
 ## Phase 3 — Capacity upgrades and alerts (Era 1)
 
 Add the hardware station and let the player walk to it to buy CPU, RAM, storage, and internet upgrades. Implement the first PhotoSnap growth milestone from the GDD. Show prices, available cash, and the effect of each upgrade on capacity. Surface a basic alert when a workload exceeds capacity and identify the constrained resource.
