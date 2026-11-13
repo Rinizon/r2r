@@ -296,15 +296,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next is P3-09, growth explanations and bottleneck HUD/PC feedback. HardwarePanel reads current cash/capacity and refreshes rows after each purchase; HardwareUpgradeRow uses IDs against GameRoot.Session on every refresh/action. GameRoot load closes both stations, rebinds both panels, and refreshes HUD. No diagnostic alerts, new balance rules, or persistence fields were added.
 
 ### P3-09 Show growth and bottleneck information in the HUD and PC panel
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P3-06`, `P3-08`
 - Summary: Replace the alerts placeholder with current resource diagnostics and explain PhotoSnap's growth in the hosting view.
 - Acceptance: With both starter sites hosted, the second paid month visibly explains PhotoSnap's CPU increase and shows a CPU bottleneck tied to the starter PC and affected hosting contracts. The HUD provides a compact constrained-resource summary, and the PC panel exposes demand versus capacity and the cause in readable units. Purchasing CPU headroom clears the overload indication once usage fits; an unrelated upgrade leaves a CPU alert active. With no overload, the HUD clearly reports no capacity alerts. Reloading an overloaded or upgraded save reconstructs the correct messages without replaying the growth event or retaining stale alerts. Play Mode tests cover appearance, relevant/irrelevant upgrade effects, clearance, and reload; verify all resource names, readable text, and HUD/time/save-control access at the required window sizes. This is diagnostic feedback only, with no service penalties or satisfaction simulation.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Replaced the HUD placeholder with current constrained-resource names or NO CAPACITY ALERTS. Added PC capacity details with hardware, demand/capacity, units, shortfall, and affected contracts; contract status explains applied growth and paid-month threshold. Shared CapacityFeedback derives text from current diagnostics/progression without event subscriptions. Compacted contract rows and enlarged the PC panel within HUD/status bounds to reserve separate diagnostic/finance space. Updated README.
+- Validation: Initial growth/feedback test failed against the placeholder; an added overlap assertion caught the first layout before correction. Unity 6000.6.9f1 passes 156 Edit Mode and 31 Play Mode tests in editor and standalone Windows. Covers no-overload state, growth appearance, irrelevant/relevant UI purchases, immediate clearance, overloaded/upgraded reload without replayed billing/growth, all resource names/units/shortfalls, simultaneous-constraint text fit, row/diagnostic/finance separation, and HUD/time/save/close hit targets at 800x600 and 1280x720. Visually inspected both final standalone layouts.
+- Commit: Implementation `72c7798`; claim `03a2630`.
+- Handoff: Next is P3-10, integrated Phase 3 loop verification and documentation. CapacityFeedback formats current GetBottlenecks() reports; GameRoot.RefreshHud updates the summary, including immediately after UI purchases/load. HostingPanel derives details on refresh; HostingOfferRow derives persistent growth explanations from applied IDs. No service penalties, satisfaction state, persistence fields, or notification replay were added.
 
 ### P3-10 Verify the complete Phase 3 bottleneck and upgrade loop
 - Status: `todo`
