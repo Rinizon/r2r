@@ -118,7 +118,7 @@ namespace InfrastructureTycoon.Simulation
 
             var used = hardware.Resources.Used;
             var capacity = hardware.Resources.Capacity;
-            var demand = contract.Definition.Requirements;
+            var demand = contract.EffectiveRequirements;
             if (used.CpuCores + demand.CpuCores > capacity.CpuCores)
                 reason = "Not enough CPU capacity.";
             else if (used.RamGb + demand.RamGb > capacity.RamGb)
@@ -165,30 +165,62 @@ namespace InfrastructureTycoon.Simulation
     {
         public string Id { get; }
         public HardwareData Definition { get; }
+        public ResourceAmounts BaseCapacity => Definition.Capacity;
+        public ResourceAmounts EffectiveCapacity { get; }
+        public ReadOnlyCollection<UpgradePurchase> PurchaseRecords { get; }
+        public ReadOnlyCollection<string> AppliedUpgradeIds { get; }
         public ResourceUsage Resources { get; private set; }
 
         public HardwareInstance(HardwareData definition) : this(definition, Guid.NewGuid().ToString("N")) { }
 
         internal HardwareInstance(HardwareData definition, string id)
+            : this(definition, id, Array.Empty<UpgradePurchase>(), Array.Empty<UpgradeData>()) { }
+
+        public HardwareInstance(HardwareData definition, string id, IEnumerable<UpgradePurchase> purchases, IEnumerable<UpgradeData> upgrades)
         {
-            Id = id;
+            Id = ContentValidation.Text(id, nameof(id));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            Resources = new ResourceUsage(definition.Capacity, default);
+            if (purchases == null) throw new ArgumentNullException(nameof(purchases));
+            var records = new List<UpgradePurchase>(purchases);
+            EffectiveCapacity = ProgressionResources.CalculateCapacity(definition, id, records, upgrades);
+            PurchaseRecords = records.AsReadOnly();
+            var appliedIds = new List<string>();
+            foreach (var record in records) appliedIds.Add(record.UpgradeId);
+            AppliedUpgradeIds = appliedIds.AsReadOnly();
+            Resources = new ResourceUsage(EffectiveCapacity, default);
         }
 
-        internal void SetUsedResources(ResourceAmounts used) => Resources = new ResourceUsage(Definition.Capacity, used);
+        internal void SetUsedResources(ResourceAmounts used) => Resources = new ResourceUsage(EffectiveCapacity, used);
     }
 
     public sealed class ContractInstance
     {
         public string Id { get; }
         public OfferData Definition { get; }
+        public ResourceAmounts BaseRequirements => Definition.Requirements;
+        public ResourceAmounts EffectiveRequirements { get; }
+        public ReadOnlyCollection<string> AppliedMilestoneIds { get; }
         public string AssignedHardwareId { get; internal set; }
         public bool IsHosted => AssignedHardwareId != null;
         public int PaidMonths { get; internal set; }
 
         internal ContractInstance(OfferData definition) : this(definition, Guid.NewGuid().ToString("N")) { }
-        internal ContractInstance(OfferData definition, string id) { Definition = definition; Id = id; }
+        internal ContractInstance(OfferData definition, string id)
+            : this(definition, id, 0, Array.Empty<string>(), Array.Empty<GrowthMilestoneData>()) { }
+
+        public ContractInstance(OfferData definition, string id, int paidMonths, IEnumerable<string> appliedMilestoneIds,
+            IEnumerable<GrowthMilestoneData> milestones, string assignedHardwareId = null)
+        {
+            Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            Id = ContentValidation.Text(id, nameof(id));
+            if (paidMonths < 0) throw new ArgumentOutOfRangeException(nameof(paidMonths));
+            if (appliedMilestoneIds == null) throw new ArgumentNullException(nameof(appliedMilestoneIds));
+            var applied = new List<string>(appliedMilestoneIds);
+            EffectiveRequirements = ProgressionResources.CalculateRequirements(definition, paidMonths, applied, milestones);
+            AppliedMilestoneIds = applied.AsReadOnly();
+            PaidMonths = paidMonths;
+            AssignedHardwareId = assignedHardwareId == null ? null : ContentValidation.Text(assignedHardwareId, nameof(assignedHardwareId));
+        }
     }
 
     public readonly struct ResourceUsage
