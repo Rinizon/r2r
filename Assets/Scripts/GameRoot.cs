@@ -11,6 +11,7 @@ namespace InfrastructureTycoon
         [SerializeField] private StarterCatalog starterCatalog;
         [SerializeField] private Text dateLabel;
         [SerializeField] private Text speedLabel;
+        [SerializeField] private Text cashLabel;
         // Inspector order: pause, 1x, 2x, 4x, 8x.
         [SerializeField] private Button[] speedButtons;
 
@@ -48,6 +49,7 @@ namespace InfrastructureTycoon
 
         private void RefreshHud()
         {
+            cashLabel.text = "CASH  " + UI.HostingPanel.Money(Session.Cash);
             dateLabel.text = "DATE  " + Clock.Date.ToString("dd MMM yyyy", CultureInfo.InvariantCulture).ToUpperInvariant();
             speedLabel.text = Clock.Speed == SimulationSpeed.Paused ? "SPEED  PAUSED" : "SPEED  " + (int)Clock.Speed + "x";
             for (int i = 0; i < Speeds.Length; i++)
