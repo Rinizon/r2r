@@ -241,8 +241,8 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: P3-04 should implement purchase transactions using the persisted hardware PurchaseRecords; amount paid is historical, and applied upgrade IDs derive from record keys. Version 2 requires purchases and applied_milestone_ids arrays, even when empty. Explicit version 2 milestone flags remain authoritative; automatic new milestone application is still P3-05. Restored base allocations must fit effective capacity, while eligible applied growth may overload them. No live purchase operation, automatic billing-time growth, or UI upgrade controls were added.
 
 ### P3-04 Implement atomic starter-PC upgrade purchases
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P3-03`
 - Summary: Add session purchase operations that validate the upgrade, hardware, affordability, and one-time purchase rule before changing money or capacity.
 - Acceptance: Each authored upgrade can be bought once for the starter PC, subtracting its price from cash, recording the amount paid, and updating only the relevant effective capacity. Buying CPU from a fresh $150 company leaves $30 cash and 4 CPU cores with operating profit unchanged at zero; attempting the $80 RAM upgrade next fails with no state change. Edit Mode tests cover all four upgrades, exact-price affordability, insufficient cash, unknown/cross-session hardware IDs, invalid upgrade IDs, and duplicate purchases. Every failure returns a UI-readable reason and preserves cash, profit, purchase records, assignments, and all resource totals. Purchased upgrades round-trip through version 2 saves and do not alter recurring PC expense. No tower or additional hardware purchases are introduced.
