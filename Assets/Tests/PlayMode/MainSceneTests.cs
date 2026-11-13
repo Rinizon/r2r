@@ -43,6 +43,18 @@ public class MainSceneTests
             Assert.That(bottom.anchorMax, Is.EqualTo(new Vector2(1, 0)));
             Assert.That(top.rect.width, Is.EqualTo(hudRect.rect.width).Within(1));
             Assert.That(bottom.rect.width, Is.EqualTo(hudRect.rect.width).Within(1));
+            var topCorners = new Vector3[4];
+            var bottomCorners = new Vector3[4];
+            top.GetWorldCorners(topCorners);
+            bottom.GetWorldCorners(bottomCorners);
+            Assert.That(Camera.main.pixelRect.yMin, Is.EqualTo(bottomCorners[1].y).Within(1));
+            Assert.That(Camera.main.pixelRect.yMax, Is.EqualTo(topCorners[0].y).Within(1));
+            foreach (var worldCorner in new[] { new Vector3(-6, -3.5f, 0), new Vector3(6, 3.5f, 0), GameObject.Find("Player").transform.position })
+            {
+                var screen = Camera.main.WorldToScreenPoint(worldCorner);
+                Assert.That(screen.x, Is.InRange(0, Screen.width));
+                Assert.That(screen.y, Is.InRange(bottomCorners[1].y, topCorners[0].y));
+            }
             foreach (var label in canvas.GetComponentsInChildren<Text>())
             {
                 Assert.That(label.text, Is.Not.Empty);
