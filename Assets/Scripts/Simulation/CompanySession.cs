@@ -166,9 +166,9 @@ namespace InfrastructureTycoon.Simulation
         public string Id { get; }
         public HardwareData Definition { get; }
         public ResourceAmounts BaseCapacity => Definition.Capacity;
-        public ResourceAmounts EffectiveCapacity { get; }
-        public ReadOnlyCollection<UpgradePurchase> PurchaseRecords { get; }
-        public ReadOnlyCollection<string> AppliedUpgradeIds { get; }
+        public ResourceAmounts EffectiveCapacity { get; private set; }
+        public ReadOnlyCollection<UpgradePurchase> PurchaseRecords { get; private set; }
+        public ReadOnlyCollection<string> AppliedUpgradeIds { get; private set; }
         public ResourceUsage Resources { get; private set; }
 
         public HardwareInstance(HardwareData definition) : this(definition, Guid.NewGuid().ToString("N")) { }
@@ -191,6 +191,16 @@ namespace InfrastructureTycoon.Simulation
         }
 
         internal void SetUsedResources(ResourceAmounts used) => Resources = new ResourceUsage(EffectiveCapacity, used);
+
+        internal void CommitProgression(HardwareInstance prepared)
+        {
+            if (prepared == null || prepared.Id != Id || !ReferenceEquals(prepared.Definition, Definition))
+                throw new ArgumentException("Prepared state must belong to this hardware.", nameof(prepared));
+            EffectiveCapacity = prepared.EffectiveCapacity;
+            PurchaseRecords = prepared.PurchaseRecords;
+            AppliedUpgradeIds = prepared.AppliedUpgradeIds;
+            Resources = prepared.Resources;
+        }
     }
 
     public sealed class ContractInstance
