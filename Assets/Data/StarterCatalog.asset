@@ -16,3 +16,10 @@ MonoBehaviour:
   websiteOffers:
   - {fileID: 11400000, guid: 5c49325672f0bc94588def5d7899fae3, type: 2}
   - {fileID: 11400000, guid: 270d465b607ca7647959b639c820e25f, type: 2}
+  upgrades:
+  - {fileID: 11400000, guid: 9f95b9b51e2873b438b5bcb62e45ced9, type: 2}
+  - {fileID: 11400000, guid: 1763d6719df97df49a3838075402db39, type: 2}
+  - {fileID: 11400000, guid: 9d5f123671aaec44496c9b9a4acc12b8, type: 2}
+  - {fileID: 11400000, guid: e8ebcb0a607fc1c45b215f695d4ec7aa, type: 2}
+  milestones:
+  - {fileID: 11400000, guid: 5aaa2b0f7d59ef0448dfc7a729214b53, type: 2}

@@ -65,8 +65,14 @@ namespace InfrastructureTycoon.Content
     {
         public HardwareData StarterPc { get; }
         public ReadOnlyCollection<OfferData> Offers { get; }
+        public ReadOnlyCollection<UpgradeData> Upgrades { get; }
+        public ReadOnlyCollection<GrowthMilestoneData> Milestones { get; }
 
         public HostingCatalog(HardwareData starterPc, IEnumerable<OfferData> offers)
+            : this(starterPc, offers, Array.Empty<UpgradeData>(), Array.Empty<GrowthMilestoneData>()) { }
+
+        public HostingCatalog(HardwareData starterPc, IEnumerable<OfferData> offers,
+            IEnumerable<UpgradeData> upgrades, IEnumerable<GrowthMilestoneData> milestones)
         {
             StarterPc = starterPc ?? throw new ArgumentNullException(nameof(starterPc));
             if (offers == null)
@@ -82,6 +88,27 @@ namespace InfrastructureTycoon.Content
                 copy.Add(offer);
             }
             Offers = copy.AsReadOnly();
+            if (upgrades == null) throw new ArgumentNullException(nameof(upgrades));
+            if (milestones == null) throw new ArgumentNullException(nameof(milestones));
+            var upgradeCopy = new List<UpgradeData>();
+            foreach (var upgrade in upgrades)
+            {
+                if (upgrade == null) throw new ArgumentException("Catalog contains a missing upgrade.", nameof(upgrades));
+                if (!ids.Add(upgrade.Id)) throw new ArgumentException("Duplicate content ID: " + upgrade.Id, nameof(upgrades));
+                if (upgrade.TargetHardwareId != starterPc.Id) throw new ArgumentException("Unknown upgrade hardware target: " + upgrade.TargetHardwareId, nameof(upgrades));
+                upgradeCopy.Add(upgrade);
+            }
+            var milestoneCopy = new List<GrowthMilestoneData>();
+            foreach (var milestone in milestones)
+            {
+                if (milestone == null) throw new ArgumentException("Catalog contains a missing milestone.", nameof(milestones));
+                if (!ids.Add(milestone.Id)) throw new ArgumentException("Duplicate content ID: " + milestone.Id, nameof(milestones));
+                if (!copy.Exists(offer => offer.Id == milestone.TargetOfferId))
+                    throw new ArgumentException("Unknown milestone offer target: " + milestone.TargetOfferId, nameof(milestones));
+                milestoneCopy.Add(milestone);
+            }
+            Upgrades = upgradeCopy.AsReadOnly();
+            Milestones = milestoneCopy.AsReadOnly();
         }
     }
 

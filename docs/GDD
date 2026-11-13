@@ -10,6 +10,17 @@ Use provisional balance values for the first playtest. Start with $150 cash and 
 
 Unlock the $400 tower at $300 cumulative operating profit. Count hosting revenue less recurring expenses toward operating profit. Use $20 monthly expenses for the starter PC. Hardware purchases reduce available cash. Playtest the time to the first upgrade and tower with either one or both contracts.
 
+For Phase 3, use these provisional one-time upgrades for the starter PC. Each upgrade can be purchased once per PC; none changes the $20 monthly PC expense. Purchases reduce cash, not cumulative operating profit. The CPU value retains the starter scenario above; RAM, storage, and internet values are new provisional playtest values.
+
+| Upgrade | Price | Capacity added |
+| --- | --- | --- |
+| CPU | $120 | 2 cores |
+| RAM | $80 | 4 GB |
+| Storage | $100 | 250 GB |
+| Internet | $90 | 10 Mbps |
+
+PhotoSnap's first milestone becomes eligible after its second paid month. Its grown workload requires 2 CPU cores, 2 GB RAM, 20 GB storage, and 4 Mbps, still paying $100 monthly. With both starter sites hosted this raises combined CPU demand to 3 cores; the CPU upgrade provides 4 cores of capacity. Upgrade and milestone definitions are authored content; runtime purchase and growth behavior are tracked separately in SPEC.
+
 # Hardware & Infrastructure Progression Tree
 
 This system governs the player's physical growth from a hobbyist hosting websites on a personal computer to operating global hyperscale cloud infrastructure.
