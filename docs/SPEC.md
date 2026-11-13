@@ -147,15 +147,15 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-06 should add the prompt and gated PC panel using PCStation/Reach (CircleCollider2D radius 2), separate from PCStation/Blocker (BoxCollider2D). Player has PlayerMovement and PlayerKeyboardInput; walking uses physics at 3 world units/second and remains active during simulation pause. Camera viewport follows the scaled HUD boundaries. Art is explicitly provisional; no panel, contract UI, or hardware station was added.
 
 ### P2-06 Gate the PC station panel by player reach
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-05`
 - Summary: Add an interaction prompt and a closable PC station panel shell that opens only while the player is within reach.
 - Acceptance: The panel starts closed. Within the PC trigger, an E-key interaction opens it and a visible prompt explains the control; the same input out of reach leaves it closed. The panel closes through its close control or Escape and closes when the player leaves reach, with the prompt updating accordingly. UI input does not trigger station actions behind the panel. The panel uses anchored RectTransforms and Canvas scaling, preserves access to the date/speed HUD, and does not create a second clock or session. Play Mode tests verify outside/inside/exit/re-entry behavior and panel closure. Hosting controls are added in P2-07.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added a scaled, anchored PC panel shell, Close control, and [E] interaction prompt. PcStationInteraction opens only while the player collider touches the existing reach trigger, consumes repeated interaction while open, closes through Close/Escape or leaving reach, and respects text-input focus. Date/speed HUD remains accessible and the existing session/clock is preserved.
+- Validation: Confirmed three new Play Mode cases failed before scene/controller implementation. Final Unity 6000.6.9f1 Editor and standalone Windows Play Mode suites passed 11/11 each. Verified out-of-reach rejection, in-reach opening, exit/re-entry, repeated input, Close/Escape priority, text-input focus, unchanged session/clock, panel bounds at 800x600 and 1280x720, and real Close/time-control raycast targets. Visually inspected open-panel screenshots at both sizes. No simulation changes; Edit Mode suite was not rerun.
+- Commit: `cb1b7ce` (controller, panel scene, tests, README); claim: `9966083`.
+- Handoff: P2-07 should bind offers, accepted contracts, assignments, utilization, and monthly finances into the existing PcPanel. PcStationInteraction is a scene component under WorldView with serialized references to PCStation/Reach, the player collider, panel, prompt, and Close button. TryOpen/Close and IsOpen/IsWithinReach expose panel lifecycle; no hosting controls, extra session, or additional station was added.
 
 ### P2-07 Bind hosting offers, assignments, utilization, and cash to the UI
 - Status: `todo`
