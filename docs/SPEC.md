@@ -169,15 +169,15 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: Next priority is P2-08 versioned JSON session saves. Hosting presenters read GameRoot.Session for current state and action handling; GameRoot owns the cash label binding. Rows are created from the catalog on first panel open. P2-09 must refresh/rebind presentation when replacing a session. Alerts remain a placeholder; no growth, satisfaction, or save/load controls were added.
 
 ### P2-08 Implement the versioned JSON session save round trip
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-04`
 - Summary: Add versioned plain C# save models and JSON serialization/restoration for the Phase 2 session, extending the clock with validated state restoration.
 - Acceptance: Saves contain save_version, game_version, timestamp, simulation date, fractional-day progress, selected speed, cash, cumulative operating profit, hardware runtime/content IDs, accepted contract runtime/content IDs, assignments, paid-month counts, and processed billing state. Recompute capacities and demand from catalog definitions and restored assignments rather than scene references. Capture between session updates after all crossed boundaries are processed. Edit Mode tests round-trip a partially completed day shortly before month end, restore into a fresh session, and verify matching state and exactly one next monthly payment, including a save immediately after billing that must not replay it. Unsupported versions, malformed data, invalid progress/date, unknown content IDs, duplicate runtime IDs, and dangling assignments are rejected without changing a live session. Keep the format scoped to Phase 2; migrations and later-phase systems are deferred.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added required-field version 1 JSON save models, UTC/game-version metadata, safe between-update capture, validated silent clock restoration, and fresh-session reconstruction preserving runtime IDs, finances, assignments, paid-month counts, and processed billing history. Resources are rebuilt from catalog definitions. Invalid input is rejected without replacing live state, including trailing JSON and inconsistent/incomplete monthly ledgers.
+- Validation: Confirmed pre-implementation failures (12 cases). Final Unity 6000.6.9f1 Edit Mode suite passed 86/86 and standalone Windows Play Mode suite passed 15/15, including JSON round trips in the player. Verified saves before/after month rollover, one payment per period and the next billing cycle, all saved speeds, stable IDs, catalog-based resource reconstruction, rejected over-capacity restoration, capture guards, malformed/unsupported data, invalid progress/date/IDs/assignments/counters/finances, and unchanged live state on failure. Editor Play Mode also passed 15/15 before the final trailing-input hardening.
+- Commit: `3e62e12` (save models/serializer, restore validation, clock guard, tests, docs); claim: `e82c594`.
+- Handoff: P2-09 should capture with SessionSaveJson.Capture(session, Application.version) between updates, write ToJson(snapshot) to the documented slot, and replace GameRoot.Session only after TryLoad succeeds. Billing history is the processed-period ledger and rebuilds the duplicate guard without emitting ticks. Version 1 is scoped to one starter PC and Phase 2 finances (cash = $150 + operating profit); extend those invariants before purchases. No disk I/O, player save/load controls, or live presentation rebinding was added.
 
 ### P2-09 Add disk save/load controls and rebind the restored session
 - Status: `todo`
