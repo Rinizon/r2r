@@ -1,6 +1,6 @@
 {
   "name": "InfrastructureTycoon.EditModeTests",
-  "references": ["InfrastructureTycoon.Simulation"],
+  "references": ["InfrastructureTycoon.Simulation", "InfrastructureTycoon.Runtime"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"]
 }
