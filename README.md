@@ -50,4 +50,25 @@ Run all Edit Mode and Play Mode suites in Window > General > Test Runner. For th
 
 The garage, player, and PC remain labeled prototype art. Capacity upgrades, PhotoSnap growth, bottleneck alerts, and later progression are outside this verified Phase 2 milestone.
 
+## Phase 3 verified playthrough
+
+1. Start a fresh company, pause, and walk to the PC. ACCEPT and ASSIGN both websites through the panel. Combined demand is 2/2 CPU cores, 3/4 GB RAM, 30/250 GB storage, and 8/10 Mbps. Both stations reject E outside reach.
+2. Before growth, pause on February 28 with a partial day and SAVE/LOAD. January has paid once: cash is $310 and operating profit $160. Loading closes panels while preserving the company and player position.
+3. Cross March 1 for the second payment. Cash becomes $470 and operating profit $320. PhotoSnap grows from 1 to 2 CPU cores; the PC shows 3/2 cores, affected contracts, and a CPU alert. SAVE/LOAD preserves growth, partial days, and the overload.
+4. Walk across the clear floor to the hardware station and BUY the $120 CPU upgrade. Cash becomes $350, operating profit stays $320, capacity becomes 4 cores, and the alert clears. Other upgrades leave a CPU overload active.
+5. SAVE/LOAD after purchase, reopen either panel, and continue through April 1. The next month pays exactly $180 revenue less $20 expense: cash becomes $510 and operating profit $480. Usage stays 3/4 cores; purchases and growth do not repeat.
+6. In a separate fresh company, buy CPU immediately. The remaining $30 cannot buy the $80 RAM upgrade; even a queued rejected action preserves all saved company state. Loading a legacy version 1 slot also reconstructs eligible growth and permits purchases through the restored panels; the next explicit save writes version 2.
+
+Verified on November 13, 2026 with Unity 6000.6.9f1:
+
+| Suite | Passed |
+| --- | --- |
+| Edit Mode | 156/156 |
+| Editor Play Mode | 34/34 |
+| Standalone Windows Play Mode | 34/34 |
+
+`Phase3LoopTests` covers this integrated sequence, the fresh-company rejection, and legacy migration with restored-panel actions. Movement drives the same physics motor as keyboard input without teleporting; E interaction and UI pointer events perform station actions. Calendar advancement uses the clock API to reach exact checkpoints. Saves before growth, while overloaded, and after purchase compare complete normalized snapshots, including partial days, runtime/content IDs, financial history, purchases, and milestones. The full suites retain Phase 2 regressions and check pointer hit targets, text bounds, and diagnostic separation at 800x600 and 1280x720. `Phase3-Resumed-800x600.png` and `Phase3-Resumed-1280x720.png` under `Application.temporaryCachePath` were visually inspected alongside the existing capacity and upgrade layouts.
+
+Phase 3 is verified with provisional balance values. The garage, player, and station art remain prototypes. Overloads provide diagnostic feedback without service penalties. Tower unlocks, tower purchases, additional hardware, and customer satisfaction remain Phase 4 work; the longer-term tower saving choice has not been playtested.
+
 Design and task queue: [GDD](docs/GDD), [TDD](docs/TDD), [phases](docs/phases), [SPEC](docs/SPEC.md). Contributor workflow: [AGENTS](docs/AGENTS.md).

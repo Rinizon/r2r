@@ -21,6 +21,8 @@ For Phase 3, use these provisional one-time upgrades for the starter PC. Each up
 
 PhotoSnap's first milestone becomes eligible after its second paid month. Its grown workload requires 2 CPU cores, 2 GB RAM, 20 GB storage, and 4 Mbps, still paying $100 monthly. With both starter sites hosted this raises combined CPU demand to 3 cores; the CPU upgrade provides 4 cores of capacity. Upgrade and milestone definitions are authored content; runtime purchase and growth behavior are tracked separately in SPEC.
 
+Phase 3 verification on November 13, 2026 confirmed these provisional values in Unity 6000.6.9f1. Hosting both sites yields $160 operating profit per month: after two payments cash is $470 and cumulative operating profit $320. Buying CPU leaves $350 cash and $320 profit, changes usage from 3/2 to 3/4 cores, and clears the alert. The next month leaves $510 cash and $480 profit. Buying CPU at company creation leaves $30; RAM at $80 is rejected without changing cash, capacity, or purchase records. Save/load and legacy version 1 migration preserve this arithmetic without repeated payments, growth, or charges. Values were not retuned: this verifies accounting and interactions, while pacing and the choice to save for a tower remain playtest questions. The planned $300 profit unlock threshold is reached after two payments, but tower unlock/purchase behavior remains Phase 4 scope. Garage, player, and station visuals remain prototype art; overloads currently have no revenue or satisfaction penalty.
+
 # Hardware & Infrastructure Progression Tree
 
 This system governs the player's physical growth from a hobbyist hosting websites on a personal computer to operating global hyperscale cloud infrastructure.

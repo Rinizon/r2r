@@ -24,6 +24,8 @@ Add the hardware station and let the player walk to it to buy CPU, RAM, storage,
 
 **Exit criteria:** The player can identify a bottleneck, pay for the relevant upgrade, and see the alert clear when demand fits. An unaffordable purchase leaves cash and capacity intact. Verify walking, station reach, and purchases in Play Mode.
 
+**Verified:** Phase 3 completed with P3-10 on November 13, 2026 using Unity 6000.6.9f1: 156 Edit Mode, 34 editor Play Mode, and 34 standalone Windows Play Mode tests passed, retaining Phase 2 regressions. The integrated test walks between both stations, hosts both starter sites through UI, restores before growth/while overloaded/after purchase, resolves CPU 3/2 to 3/4 for $120, and resumes exactly one subsequent monthly payment. It also verifies the fresh-company $30/unaffordable RAM case and legacy version 1 migration with restored-panel purchases. Standalone pointer checks and visually inspected 800x600/1280x720 layouts cover the station, capacity, and resumed views. README records the workflow and GDD records the verified provisional arithmetic. Art remains provisional; no tower unlocks/purchases, extra hardware, service penalties, or satisfaction systems were added.
+
 ## Phase 4 — Tower server and multiple customers (Era 2)
 
 Unlock the first tower server at a profit milestone. Let the player buy it and assign contracts across the PC and tower. Track basic customer satisfaction as service quality changes.
