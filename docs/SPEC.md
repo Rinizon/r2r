@@ -296,8 +296,8 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next is P3-09, growth explanations and bottleneck HUD/PC feedback. HardwarePanel reads current cash/capacity and refreshes rows after each purchase; HardwareUpgradeRow uses IDs against GameRoot.Session on every refresh/action. GameRoot load closes both stations, rebinds both panels, and refreshes HUD. No diagnostic alerts, new balance rules, or persistence fields were added.
 
 ### P3-09 Show growth and bottleneck information in the HUD and PC panel
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P3-06`, `P3-08`
 - Summary: Replace the alerts placeholder with current resource diagnostics and explain PhotoSnap's growth in the hosting view.
 - Acceptance: With both starter sites hosted, the second paid month visibly explains PhotoSnap's CPU increase and shows a CPU bottleneck tied to the starter PC and affected hosting contracts. The HUD provides a compact constrained-resource summary, and the PC panel exposes demand versus capacity and the cause in readable units. Purchasing CPU headroom clears the overload indication once usage fits; an unrelated upgrade leaves a CPU alert active. With no overload, the HUD clearly reports no capacity alerts. Reloading an overloaded or upgraded save reconstructs the correct messages without replaying the growth event or retaining stale alerts. Play Mode tests cover appearance, relevant/irrelevant upgrade effects, clearance, and reload; verify all resource names, readable text, and HUD/time/save-control access at the required window sizes. This is diagnostic feedback only, with no service penalties or satisfaction simulation.
