@@ -86,3 +86,117 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Validation: Added failing Play Mode coverage first (2 failures). Final Unity 6000.6.9f1 suites passed: Edit Mode 13/13, Editor Play Mode 3/3, standalone Windows Play Mode 3/3. Verified starting date, all speed rates, actual UI raycast targets, date rollover, pause/resume without resetting fractional progress, and resized HUD at 1280x720, 800x600, and 1920x1080. Visually inspected screenshots at all sizes.
 - Commit: `6b5a1bc` (implementation, scene, tests, docs); claim: `8ac1eb1`.
 - Handoff: Phase 1 is complete. Open Main and enter Play Mode to use the time controls. Cash and alerts remain placeholders, and WorldView remains empty. No further todo tasks are queued; define scoped Phase 2 tasks from docs/phases before beginning hosting contracts, walking/station interaction, billing, or saves.
+
+## Phase 2 Queue — First hosting contract (Era 1)
+
+Work in the priority order below when dependencies are satisfied. Use the provisional starter values in `docs/GDD` and the architecture and save contract in `docs/TDD`. Keep upgrades, PhotoSnap growth, bottleneck alerts, tower servers, and customer satisfaction in their later phases. Garage visuals may be simple, clearly labeled prototype art; this phase requires playable interactions rather than a finished art pass.
+
+### P2-01 Author starter hardware and website definitions
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `FOUND-04`
+- Summary: Add ScriptableObject definitions and a starter catalog for the PC and two website offers, with stable content IDs and conversion to engine-independent runtime data.
+- Acceptance: Authored assets under Assets/Data define the starter PC (2 CPU cores, 4 GB RAM, 250 GB storage, 10 Mbps bandwidth, $20 monthly expense), PhotoSnap (1 core, 2 GB RAM, 20 GB storage, 4 Mbps, $100 monthly revenue), and the second website (1 core, 1 GB RAM, 10 GB storage, 4 Mbps, $80 monthly revenue). IDs are explicit and independent of asset names, paths, or instance IDs. Edit Mode validation rejects missing/duplicate IDs and invalid resource or money values. Definitions remain immutable during play; loading the catalog does not require scene-object references. Verify Unity imports all assets and metadata.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-02 Create the starter company session and capacity model
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-01`
+- Summary: Introduce a plain C# session owning the existing clock, company finances, starter hardware instance, and four-resource capacity state, and compose it from GameRoot.
+- Acceptance: A new session starts January 1, 1995 at 1x with $150 cash, zero operating profit, one starter PC, and no accepted contracts. Hardware instances have stable runtime IDs distinct from content IDs. CPU, RAM, storage, and bandwidth expose capacity, used, and available values with consistent units. Edit Mode tests verify starter state, resource arithmetic, and independent sessions without mutating authored definitions. Main still loads and the existing date/speed controls and clock tests pass after GameRoot adopts the session; no purchases or progression systems are added.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-03 Accept offers and assign website workloads
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-02`
+- Summary: Add session operations to accept an available offer and assign its workload to the starter PC.
+- Acceptance: Either authored offer can be accepted once, with an identifiable runtime contract and a separate assignment to the PC. Accepting an offer alone consumes no capacity and earns no revenue; assignment makes it hosted and consumes all four authored resources. Both starter offers fit together at 2 cores, 3 GB RAM, 30 GB storage, and 8 Mbps. Edit Mode tests cover each offer, combined usage, duplicate acceptance/assignment, unknown IDs, and rejection of a new assignment that exceeds any one resource. Failed operations leave contracts, assignments, cash, and resource totals intact and return a reason usable by the UI. No workload growth, contract cancellation, or multi-device management is required.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-04 Bill hosted contracts at outgoing month boundaries
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-03`
+- Summary: Connect session billing to the clock's MonthEnded event, tracking revenue, starter-PC expenses, operating profit, and processed billing periods.
+- Acceptance: Each outgoing month collects the authored monthly revenue for contracts hosted at that boundary and deducts the PC's $20 recurring expense once. For this first loop, use full monthly amounts without proration; accepted but unassigned offers earn nothing. Starting from $150, one PhotoSnap-only month ends at $230 cash and $80 cumulative operating profit; hosting both offers ends at $310 and $160. A monthly result identifies its outgoing period, revenue, expenses, and net profit; retain per-contract paid-month counts for later progression. Edit Mode tests verify no payment before rollover, no revenue while unassigned, expenses with no hosted contracts, ordered billing across multiple months/year rollover in one update, and no duplicate billing of an already processed period. Growth and unlocks remain deferred.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-05 Build the garage and player walking
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `FOUND-04`
+- Summary: Populate WorldView with a small garage, a walkable player, and a recognizable PC station using reusable prefabs and separate blockers and reach triggers.
+- Acceptance: In Main Play Mode, the player can walk with WASD or arrow keys to and away from the PC station. Movement is frame-rate independent, diagonal movement does not increase speed, and the player cannot pass through walls or the PC's physical blocker. An independently tunable trigger defines station reach without blocking floor clearance. The orthographic camera shows the playable area and player without overlapping the anchored HUD; verify at 800x600 and 1280x720. Play Mode tests cover movement and collisions. Walking remains usable while the simulation is paused, and existing clock controls still work. This task adds no contract panel or hardware-purchase station.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-06 Gate the PC station panel by player reach
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-05`
+- Summary: Add an interaction prompt and a closable PC station panel shell that opens only while the player is within reach.
+- Acceptance: The panel starts closed. Within the PC trigger, an E-key interaction opens it and a visible prompt explains the control; the same input out of reach leaves it closed. The panel closes through its close control or Escape and closes when the player leaves reach, with the prompt updating accordingly. UI input does not trigger station actions behind the panel. The panel uses anchored RectTransforms and Canvas scaling, preserves access to the date/speed HUD, and does not create a second clock or session. Play Mode tests verify outside/inside/exit/re-entry behavior and panel closure. Hosting controls are added in P2-07.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-07 Bind hosting offers, assignments, utilization, and cash to the UI
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-03`, `P2-04`, `P2-06`
+- Summary: Connect the PC panel and finance HUD to the shared session so the player can perform and inspect the hosting loop.
+- Acceptance: Walking to the PC and opening its panel shows both available offers with requirements and monthly revenue, accepted contracts with assignment state, and the PC's used/total CPU, RAM, storage, and bandwidth with units. Separate accept and assign controls call the session operations and visibly update the same state; unavailable actions are disabled or explain the rejection without corrupting state. Cash starts at $150 in the HUD, updates after billing, and the player can inspect the last monthly revenue/expense/net result. Play Mode tests use UI controls to host a website, verify resource usage and cash after rollover, and confirm out-of-reach interaction cannot open the panel. Check panel and HUD readability at 800x600 and 1280x720. Capacity-growth alerts and satisfaction remain deferred.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-08 Implement the versioned JSON session save round trip
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-04`
+- Summary: Add versioned plain C# save models and JSON serialization/restoration for the Phase 2 session, extending the clock with validated state restoration.
+- Acceptance: Saves contain save_version, game_version, timestamp, simulation date, fractional-day progress, selected speed, cash, cumulative operating profit, hardware runtime/content IDs, accepted contract runtime/content IDs, assignments, paid-month counts, and processed billing state. Recompute capacities and demand from catalog definitions and restored assignments rather than scene references. Capture between session updates after all crossed boundaries are processed. Edit Mode tests round-trip a partially completed day shortly before month end, restore into a fresh session, and verify matching state and exactly one next monthly payment, including a save immediately after billing that must not replay it. Unsupported versions, malformed data, invalid progress/date, unknown content IDs, duplicate runtime IDs, and dangling assignments are rejected without changing a live session. Keep the format scoped to Phase 2; migrations and later-phase systems are deferred.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-09 Add disk save/load controls and rebind the restored session
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-07`, `P2-08`
+- Summary: Store the Phase 2 JSON save under Application.persistentDataPath and expose explicit Save and Load controls in Main.
+- Acceptance: Save writes one documented local slot at a completed session-update boundary, using a temporary file and replacement so a failed write preserves the previous save. Load validates the entire save before replacing the active session; GameRoot, the clock HUD, cash display, and an open PC panel all bind to the restored session without duplicate billing subscriptions or stale button actions. Missing/corrupt/unsupported saves and I/O failures show a concise message and preserve current play state. Saving does not require station reach; loading closes or refreshes the panel consistently. Player transform, interaction triggers, and panel-open state are not serialized in this first format. Play Mode tests use an isolated test save path, verify controls and rebinding, and clean up their own files without touching a player's slot. No autosave or slot-management UI is required.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
+
+### P2-10 Verify the complete Phase 2 hosting and resume loop
+- Status: `todo`
+- Owner: `unassigned`
+- Depends On: `P2-01`, `P2-02`, `P2-03`, `P2-04`, `P2-05`, `P2-06`, `P2-07`, `P2-08`, `P2-09`
+- Summary: Exercise the integrated Phase 2 exit criteria and document the player workflow and verification evidence.
+- Acceptance: From a fresh Main session, demonstrate that interaction out of reach leaves the PC panel closed, then walk within reach, accept and assign a website through the panel, and inspect matching utilization and cash. Save shortly before month rollover with nonzero fractional-day progress, reload, verify that progress and assignment restore, and advance across rollover for exactly one correct payment and expense. Save/reload after that payment and verify it is not repeated; the following month still bills once. Repeat loading to catch duplicate subscriptions, and confirm pause/resume and speed controls still operate on the restored session. Run all Edit Mode and Play Mode suites in Unity 6000.6.9f1, including real pointer-hit and responsive-layout checks in the standalone test player where required. Record results and any remaining prototype-art caveat in docs/phases and README, and mark Phase 2 verified only after these checks pass. Do not start Phase 3 mechanics in this task.
+- Completion:
+- Validation:
+- Commit:
+- Handoff:
