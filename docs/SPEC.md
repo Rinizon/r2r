@@ -241,15 +241,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: P3-04 should implement purchase transactions using the persisted hardware PurchaseRecords; amount paid is historical, and applied upgrade IDs derive from record keys. Version 2 requires purchases and applied_milestone_ids arrays, even when empty. Explicit version 2 milestone flags remain authoritative; automatic new milestone application is still P3-05. Restored base allocations must fit effective capacity, while eligible applied growth may overload them. No live purchase operation, automatic billing-time growth, or UI upgrade controls were added.
 
 ### P3-04 Implement atomic starter-PC upgrade purchases
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P3-03`
 - Summary: Add session purchase operations that validate the upgrade, hardware, affordability, and one-time purchase rule before changing money or capacity.
 - Acceptance: Each authored upgrade can be bought once for the starter PC, subtracting its price from cash, recording the amount paid, and updating only the relevant effective capacity. Buying CPU from a fresh $150 company leaves $30 cash and 4 CPU cores with operating profit unchanged at zero; attempting the $80 RAM upgrade next fails with no state change. Edit Mode tests cover all four upgrades, exact-price affordability, insufficient cash, unknown/cross-session hardware IDs, invalid upgrade IDs, and duplicate purchases. Every failure returns a UI-readable reason and preserves cash, profit, purchase records, assignments, and all resource totals. Purchased upgrades round-trip through version 2 saves and do not alter recurring PC expense. No tower or additional hardware purchases are introduced.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added TryPurchaseUpgrade with upgrade/hardware lookup, compatibility, one-time ownership, and affordability checks. The session prepares validated capacity, purchase records, and preserved workload usage before committing cash and hardware state. Hardware references/IDs and assignments stay stable; operating profit and recurring expenses are unchanged. Added API guidance, purchase tests, and a player save round trip with a populated ledger.
+- Validation: Confirmed seven new Edit Mode failures before implementation. Final Unity 6000.6.9f1 suites passed: Edit Mode 143/143 and Editor/standalone Windows Play Mode 22/22 each. Covered all four upgrades, exact affordability, $30 CPU-purchase remainder and rejected RAM purchase, null/unknown/foreign/content IDs, duplicates before/after reload, capacity overflow without partial commit, accumulated upgrades, restored overload repair, unchanged workload/profit/expense, and version 2 persistence.
+- Commit: `8a0b6e4` (purchase API, controlled hardware commit, tests, README); claim: `1a1ba73`.
+- Handoff: Next is P3-05 automatic PhotoSnap growth after qualifying billing. TryPurchaseUpgrade takes upgrade content ID and owned hardware runtime ID; false returns a readable reason and true returns an empty reason. Hardware.CommitProgression preserves object identity and workload usage while adopting prepared resource/ledger snapshots. Purchase UI remains P3-08; no automatic growth, hardware station, tower purchase, or recurring-expense change was added.
 
 ### P3-05 Apply PhotoSnap growth after its second paid month
 - Status: `todo`
