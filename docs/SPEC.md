@@ -77,12 +77,12 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Handoff: FOUND-04 should reference InfrastructureTycoon.Simulation, create a SimulationClock in GameRoot, call Advance with real elapsed seconds, and bind Date and Speed to the HUD. Starts January 1, 1995 at Normal; two real seconds per day. Events carry the outgoing date; callbacks see the next date at zero day progress. No billing or persistence is implemented.
 
 ### FOUND-04 Connect the clock to the HUD and verify Phase 1
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `FOUND-02`, `FOUND-03`
 - Summary: Have GameRoot drive the clock and bind the HUD date and speed controls to the session.
 - Acceptance: In Main Play Mode, the HUD shows the starting date and selected speed. Each speed control changes the rate of date advancement, pause freezes the date, and resuming continues from the same simulation state. Verify the interaction in Play Mode.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: GameRoot now creates and drives the simulation clock using real elapsed time. Main shows the date and selected speed, with Pause/1x/2x/4x/8x buttons and an EventSystem. Selected speed is highlighted; pause preserves session progress. Phase 1 exit criteria are verified and documented.
+- Validation: Added failing Play Mode coverage first (2 failures). Final Unity 6000.6.9f1 suites passed: Edit Mode 13/13, Editor Play Mode 3/3, standalone Windows Play Mode 3/3. Verified starting date, all speed rates, actual UI raycast targets, date rollover, pause/resume without resetting fractional progress, and resized HUD at 1280x720, 800x600, and 1920x1080. Visually inspected screenshots at all sizes.
+- Commit: `6b5a1bc` (implementation, scene, tests, docs); claim: `8ac1eb1`.
+- Handoff: Phase 1 is complete. Open Main and enter Play Mode to use the time controls. Cash and alerts remain placeholders, and WorldView remains empty. No further todo tasks are queued; define scoped Phase 2 tasks from docs/phases before beginning hosting contracts, walking/station interaction, billing, or saves.
