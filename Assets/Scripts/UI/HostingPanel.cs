@@ -15,6 +15,19 @@ namespace InfrastructureTycoon.UI
         [SerializeField] private Text feedback;
         private bool initialized;
 
+        public void RebindSession()
+        {
+            foreach (Transform row in rows)
+            {
+                row.gameObject.SetActive(false);
+                Destroy(row.gameObject);
+            }
+            initialized = false;
+            feedback.text = "Session loaded. Select an offer to continue.";
+            // Loading closes the panel; the next open rebuilds rows from the restored session.
+            Refresh();
+        }
+
         private void OnEnable()
         {
             if (!initialized)
