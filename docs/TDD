@@ -2,7 +2,7 @@ Technical Design Document v1
 Infrastructure Tycoon
 
 1. Technical Overview
-Infrastructure Tycoon is a 2D business simulation game built in Godot 4.x. The game begins with the player hosting small websites on a single PC and scales into a global cloud infrastructure provider operating racks, datacenters, regions, and AI compute campuses.
+Infrastructure Tycoon is a 2D business simulation game targeting Unity and C#. The game begins with the player hosting small websites on a single PC and scales into a global cloud infrastructure provider operating racks, datacenters, regions, and AI compute campuses.
 The technical design prioritizes:
 	• PC-first development
 	• Future portability to web and mobile
@@ -29,11 +29,9 @@ Desktop mouse interaction is the primary input model, but UI systems should be d
 
 3. Engine & Language
 Engine
-Godot 4.x
+Unity 2D. Record the editor version in ProjectSettings/ProjectVersion.txt when the project is initialized.
 Primary Language
-GDScript
-Optional Future Use
-C# or GDExtension may be considered later for performance-critical simulation systems, but the initial implementation should remain in GDScript for speed of development.
+C# for simulation, persistence, gameplay, UI, and tests.
 
 4. Core Technical Goals
 Scalability
@@ -86,13 +84,8 @@ Core Systems
 	• ResearchManager
 	• SaveManager
 	• UIManager
-Suggested Godot Autoloads
-	• GameState
-	• TimeManager
-	• SaveManager
-	• DataRegistry
-	• EventBus
-Autoloads should handle global access, while most gameplay logic should remain in dedicated scene or resource classes.
+Runtime Composition
+A GameRoot MonoBehaviour initializes the session and connects plain C# simulation services to scene components. Keep session state and simulation rules in plain C# classes with explicit dependencies. Use MonoBehaviours for input, rendering, and UI bindings. Drive simulation ticks independently of UI updates.
 
 6. Time System
 The game uses continuous time with adjustable speed.
@@ -433,7 +426,7 @@ Business
 	• vendor partnerships
 
 18. UI Architecture
-The UI should be modular.
+Use a Canvas with a Canvas Scaler and anchored RectTransforms for the HUD and station panels. Keep camera framing independent of UI scaling.
 Main UI Areas
 	• top financial bar
 	• time controls
@@ -452,9 +445,7 @@ Example alert:
 19. Save/Load System
 The game needs robust long-term save support.
 Save Format
-JSON for early development.
-Potential future option:
-Compressed binary or Godot Resource serialization for larger saves.
+Serialize versioned C# save models as JSON under Application.persistentDataPath. Store stable content IDs and runtime values independently of scene objects. Consider compression if save size becomes an issue.
 Save Data Includes
 	• company state
 	• current date
@@ -476,7 +467,7 @@ Every save file should include:
 This allows future migrations when systems change.
 
 20. Data-Driven Content Pipeline
-Use Godot Resources or external JSON/CSV files for game content.
+Use ScriptableObject assets for authored definitions and JSON or CSV for external catalogs where useful. Keep mutable state in C# runtime models.
 Data Definitions
 	• HardwareDefinition
 	• ContractTemplate
@@ -504,51 +495,21 @@ Story Customers
 Remain detailed and persistent.
 
 22. Scene Structure
-Suggested scene hierarchy:
-Main.tscn
-├── GameRoot
-├── Camera2D
-├── WorldView
-│   ├── OfficeView
-│   ├── ServerRoomView
-│   ├── DatacenterView
-│   └── RegionMapView
-├── UI
-│   ├── TopBar
-│   ├── TimeControls
-│   ├── ContractPanel
-│   ├── InfrastructurePanel
-│   ├── AlertsPanel
-│   └── DetailInspector
-└── Managers
+Use a Main.unity scene with a GameRoot, an orthographic camera, a WorldView root, and a UI Canvas. Build the garage and later infrastructure views as prefabs. Use separate Collider2D blockers and interaction triggers so station reach and floor clearance can be tuned independently.
 
 23. Code Architecture
-Suggested folder structure:
-res://
-├── scenes/
-│   ├── ui/
-│   ├── world/
-│   ├── facilities/
-│   └── infrastructure/
-├── scripts/
-│   ├── core/
-│   ├── simulation/
-│   ├── economy/
-│   ├── contracts/
-│   ├── customers/
-│   ├── infrastructure/
-│   ├── events/
-│   └── ui/
-├── data/
-│   ├── hardware/
-│   ├── contracts/
-│   ├── customers/
-│   ├── events/
-│   ├── research/
-│   └── vendors/
-└── saves/
+Suggested Unity project layout:
+
+- Assets/Scenes for playable scenes
+- Assets/Prefabs for world and UI prefabs
+- Assets/Scripts for C# gameplay, simulation, persistence, and presentation
+- Assets/Data for authored definitions and catalogs
+- Assets/Tests/EditMode and Assets/Tests/PlayMode for automated coverage
+- Packages and ProjectSettings for dependencies and editor configuration
 
 24. Testing Strategy
+Use the Unity Test Framework. Run Edit Mode tests for simulation rules and save round trips. Run Play Mode tests for scene interactions, collision, camera framing, and responsive UI. Run both suites from the Test Runner or in batch mode for CI.
+
 Unit Tests
 Test:
 	• resource allocation
@@ -624,7 +585,7 @@ Mitigation:
 Use versioned save data and migration logic.
 
 28. Summary
-Infrastructure Tycoon should be built as a scalable, data-driven simulation game in Godot 4.x.
+Infrastructure Tycoon should be built as a scalable, data-driven simulation game using Unity and C#.
 The core technical identity is:
 	• detailed early-game infrastructure
 	• abstracted late-game infrastructure

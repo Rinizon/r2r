@@ -1,3 +1,7 @@
+# Infrastructure Tycoon
+
+Infrastructure Tycoon is a PC-first 2D business simulation targeting Unity and C#. The player grows a one-PC hosting business into a global cloud provider.
+
 # Hardware & Infrastructure Progression Tree
 
 This system governs the player's physical growth from a hobbyist hosting websites on a personal computer to operating global hyperscale cloud infrastructure.

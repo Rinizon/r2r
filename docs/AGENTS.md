@@ -10,7 +10,6 @@ It is the operating contract for coordination, scope control, and reporting.
 ## Scope
 - This file defines agent behavior, coordination rules, and default workflow.
 - `docs/SPEC.md` defines the work queue, task status, ownership, and acceptance intent.
-- `docs/README.md` records brief user-facing summaries of completed work.
 - The current code, scenes, data files, and tests are the final authority on implementation details when docs lag behind reality.
 
 ## Source Of Truth Order
@@ -18,8 +17,7 @@ When instructions conflict, use this order:
 1. Direct user request.
 2. Current task entry in `docs/SPEC.md`.
 3. Existing code, tests, scenes, and data.
-4. `docs/README.md`.
-5. General preferences in this file.
+4. General preferences in this file.
 
 If two sources conflict in a way that could cause a wrong implementation, stop and ask.
 
@@ -47,7 +45,7 @@ If two sources conflict in a way that could cause a wrong implementation, stop a
 - Treat the current checked-out branch as the source of truth for ongoing work. Do not create, switch, merge, or delete branches unless the user explicitly asks.
 - Keep each commit scoped to one spec task when practical. Do not bundle unrelated cleanup or future work into the same commit.
 - Treat `docs/SPEC.md` as a coordination file first and an implementation artifact second. Avoid mixing broad queue reshuffling with code changes.
-- If you need to claim a task, touch only that task block in `docs/SPEC.md`. Do not reorder unrelated tasks, rewrap completed sections, or clean up nearby formatting while claiming work.
+- If you need to claim a task, touch only that task block in `docs/SPEC.md`. Do not reorder unrelated tasks or clean up nearby formatting while claiming work.
 - Prefer leaving the claim update and the implementation changes as separate commits when practical, but never at the expense of leaving the repo dirty between tasks.
 - Do not resolve conflicts by deleting another agent's work. Preserve both sides, then narrow back down to the task boundary intentionally.
 - Before marking a task `done`, make sure all task changes are committed and `git status --short` is clean.
@@ -55,10 +53,9 @@ If two sources conflict in a way that could cause a wrong implementation, stop a
 ## Clean Git Rules
 - Before editing, inspect `git status --short` and note any unrelated workspace changes.
 - Do not revert or overwrite files changed by another agent unless the user explicitly asks you to take over that work.
-- Keep your diff limited to files required for the current task, plus the necessary `docs/SPEC.md` and `docs/README.md` updates.
+- Keep changes scoped to the task and its affected documentation.
 - Before committing, review `git diff --stat` and `git status --short` to confirm there is no unrelated noise, generated output, or accidental formatting churn.
 - Use clear commit messages that include the task ID, for example `feat: ART-06 player sprite pass`.
-- The last step of every task is: commit the task work, update `docs/README.md`, update `docs/SPEC.md`, and confirm `git status --short` is clean before asking for another task.
 - Stop after the task is complete. Do not stack extra speculative cleanup commits onto the same branch.
 
 ## Task Selection
@@ -73,7 +70,6 @@ Use the smallest appropriate completion bar for the task type.
 - Add or update a failing test first when the task is behavior-driven and the repo has a meaningful automated test path for it.
 - Make the minimum implementation change required to pass.
 - Run the relevant tests after the change.
-- Update `docs/README.md` with a short note for the completed task.
 - Update the spec status, completion note, validation note, and handoff note.
 - Commit the completed task and leave the repo clean before treating the task as finished.
 
@@ -81,22 +77,21 @@ Use the smallest appropriate completion bar for the task type.
 - Make only the scoped asset, scene, or tuning change required by the task.
 - Run any validation needed for assets to resolve correctly.
 - Verify the related scene or behavior still loads cleanly.
-- Update `docs/README.md` with a short note for the completed task.
 - Update the spec status, completion note, validation note, and handoff note.
 - Commit the completed task and leave the repo clean before treating the task as finished.
 
 ### Docs Or Planning Tasks
 - Keep changes concrete, accurate, and consistent with current repo state.
 - Do not mark speculative ideas as completed implementation.
-- Update `docs/README.md` when the docs change affects contributor or player-visible workflow.
+- Update the relevant project docs when a change affects contributor or player workflow.
 - Update the spec status, completion note, validation note, and handoff note if the docs task itself is tracked there.
 - Commit the completed task and leave the repo clean before treating the task as finished.
 
 ## Testing
-- Use the existing project validation path when relevant, currently `godot --headless --script docs/test.gd`.
+- Use Unity and C# for implementation. Once the Unity project exists, run relevant Unity Test Framework suites in the Test Runner or batch mode. Use Edit Mode for simulation and persistence and Play Mode for scene, input, and UI behavior.
 - Do not force unrelated tests to change just to satisfy a scoped task.
 - If a task cannot reasonably have a failing test first, state why in the final report.
-- If new art assets are added, run the needed Godot import or validation step before rerunning tests so resources resolve correctly.
+- If new art assets are added, let Unity import them and verify the affected scenes and prefabs resolve their asset references before rerunning tests.
 
 ## Change Boundaries
 - Do not pull future spec work into the current task without user approval.
@@ -137,10 +132,9 @@ When the user says `next`:
 5. If the task is behavior-driven, write or update one failing test first when practical.
 6. Implement only the scoped change needed for that task.
 7. Run the relevant validation.
-8. Update `docs/README.md` with a short note for the completed task.
-9. Mark the task `done` in `docs/SPEC.md` and fill in completion, validation, commit, and handoff notes.
-10. Commit the task and confirm `git status --short` is clean.
-11. Stop and report results before taking another task.
+8. Mark the task `done` in `docs/SPEC.md` and fill in completion, validation, commit, and handoff notes.
+9. Commit the task and confirm `git status --short` is clean.
+10. Stop and report results before taking another task.
 
 ## Reusable Multi-Agent Prompt
 Use or adapt this prompt when launching a new agent for this repo:
@@ -166,11 +160,10 @@ Follow this operating contract exactly:
    - ensure the repo is clean again before asking for another task
 7. If the task is behavior-driven and the repo supports it, add or update a failing test first.
 8. Implement only the smallest change that satisfies the task acceptance criteria.
-9. Run relevant validation, currently `godot --headless --script docs/test.gd`, when it applies.
+9. Run relevant Unity Edit Mode or Play Mode tests when the Unity project exists.
 10. When complete:
    - mark the task `done` in `docs/SPEC.md`
    - add short `Completion`, `Validation`, `Commit`, and `Handoff` notes
-   - update `docs/README.md` for every completed task
    - commit the task work
    - review `git status --short` and `git diff --stat` for cleanliness
 11. Report back with:
