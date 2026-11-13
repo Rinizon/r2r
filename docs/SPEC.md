@@ -125,15 +125,15 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-04 should bill only AcceptedContracts whose IsHosted is true, using Definition.MonthlyRevenue and AssignedHardwareId. Acceptance uses an offer content ID; assignment uses contract and hardware runtime IDs. Success returns an empty reason; failure returns a displayable reason with no mutation. No billing, UI hosting controls, cancellation, growth, or reassignment was added.
 
 ### P2-04 Bill hosted contracts at outgoing month boundaries
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-03`
 - Summary: Connect session billing to the clock's MonthEnded event, tracking revenue, starter-PC expenses, operating profit, and processed billing periods.
 - Acceptance: Each outgoing month collects the authored monthly revenue for contracts hosted at that boundary and deducts the PC's $20 recurring expense once. For this first loop, use full monthly amounts without proration; accepted but unassigned offers earn nothing. Starting from $150, one PhotoSnap-only month ends at $230 cash and $80 cumulative operating profit; hosting both offers ends at $310 and $160. A monthly result identifies its outgoing period, revenue, expenses, and net profit; retain per-contract paid-month counts for later progression. Edit Mode tests verify no payment before rollover, no revenue while unassigned, expenses with no hosted contracts, ordered billing across multiple months/year rollover in one update, and no duplicate billing of an already processed period. Growth and unlocks remain deferred.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Connected CompanySession billing to its clock MonthEnded event. Added immutable monthly results, ordered read-only history, last result, processed-period protection, cash/profit updates, recurring hardware expenses, and hosted-contract PaidMonths counters. Full monthly amounts apply without proration; unassigned contracts earn nothing.
+- Validation: Confirmed seven new Edit Mode cases failed before implementation. Final Unity 6000.6.9f1 Edit Mode suite passed 53/53 and Play Mode regression suite passed 4/4. Verified GDD cash/profit examples, no early payment, unassigned/empty hosting expenses, late assignment without proration, 14 ordered monthly payments through year-end and leap day, and unchanged state for replayed/invalid periods.
+- Commit: `cc21473` (billing, results, tests, docs); claim: `99e67ed`.
+- Handoff: Next priority is P2-05 garage and walking. P2-07 can display LastMonthlyResult and live finances; P2-08 must persist billing history/processed periods and contract PaidMonths to avoid duplicate payments after restoration. TryBillMonth is idempotent for completed periods and returns a readable rejection reason. No growth, unlocks, financial UI binding, or persistence was added.
 
 ### P2-05 Build the garage and player walking
 - Status: `todo`
