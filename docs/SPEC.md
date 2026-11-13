@@ -55,8 +55,8 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Handoff: Open the repository root with Unity 6000.6.9f1. Foundation only; no playable scene or gameplay scripts. Next: FOUND-02 creates Main and the HUD shell.
 
 ### FOUND-02 Create the main scene and HUD shell
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `FOUND-01`
 - Summary: Create `Main.unity` with a GameRoot, orthographic camera, WorldView root, and anchored HUD on a Canvas with a Canvas Scaler.
 - Acceptance: Opening Main in Play Mode shows a visible HUD without scene errors, and the HUD stays anchored when the Game view is resized.
