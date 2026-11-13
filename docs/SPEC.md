@@ -263,15 +263,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: P3-06 should derive bottlenecks from Hardware.Resources, now recalculated after growth and purchases. MilestoneApplied provides the live contract and authored milestone after finances/counters/history/usage commit; restore suppresses notifications. EffectiveRequirements is the runtime demand, while Definition.Requirements remains authored base data. Contract-row demand/growth explanations remain P3-08 and alerts P3-09; no satisfaction, penalties, extra growth stages, or tower unlocks were introduced.
 
 ### P3-06 Derive resource bottlenecks from effective demand and capacity
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P3-04`, `P3-05`
 - Summary: Add engine-independent diagnostics that identify overloaded resources and the contracts assigned to the affected hardware.
 - Acceptance: Diagnostics report hardware identity, constrained resource, used demand, effective capacity, shortfall, and affected contract identities for CPU, RAM, storage, and bandwidth. Exact capacity is not an overload; multiple constrained resources are all reported. Both starter sites after PhotoSnap growth identify CPU at 3/2 cores; buying the CPU upgrade changes this to 3/4 and clears the CPU diagnostic immediately. Edit Mode tests cover each resource independently, multiple bottlenecks, equality, growth, relevant versus irrelevant upgrades, and recomputation after restoring an overloaded save. Diagnostics are derived from current state rather than persisted as authoritative save fields and do not change revenue, expenses, assignments, or customer state. HUD presentation is separate.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added engine-independent immutable resource reports and CompanySession.GetBottlenecks(), including hardware/contract identities, units, demand, capacity, and shortfall. Derives all constrained resources from effective state without mutation or save fields; documented the API.
+- Validation: Six new Edit Mode cases failed before implementation; all 156 Edit Mode and 23 Play Mode tests pass in Unity 6000.6.9f1. Covers every resource, equality, simultaneous constraints, growth, relevant/irrelevant upgrades, overloaded/upgraded restore, snapshot independence, and unchanged serialized state. Standalone player suite was not rerun for this simulation-only API.
+- Commit: Implementation `5ff3247`; claim `bcd14c5`.
+- Handoff: Next ready task is P3-07, the walkable hardware station and gated panel. P3-09 can query GetBottlenecks() for current reports; reports retain historical values, so refresh after changes. No HUD, penalties, satisfaction, or persistence schema changes were introduced.
 
 ### P3-07 Add the walkable hardware station and gated panel
 - Status: `todo`
