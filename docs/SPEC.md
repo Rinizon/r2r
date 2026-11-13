@@ -158,8 +158,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-07 should bind offers, accepted contracts, assignments, utilization, and monthly finances into the existing PcPanel. PcStationInteraction is a scene component under WorldView with serialized references to PCStation/Reach, the player collider, panel, prompt, and Close button. TryOpen/Close and IsOpen/IsWithinReach expose panel lifecycle; no hosting controls, extra session, or additional station was added.
 
 ### P2-07 Bind hosting offers, assignments, utilization, and cash to the UI
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-03`, `P2-04`, `P2-06`
 - Summary: Connect the PC panel and finance HUD to the shared session so the player can perform and inspect the hosting loop.
 - Acceptance: Walking to the PC and opening its panel shows both available offers with requirements and monthly revenue, accepted contracts with assignment state, and the PC's used/total CPU, RAM, storage, and bandwidth with units. Separate accept and assign controls call the session operations and visibly update the same state; unavailable actions are disabled or explain the rejection without corrupting state. Cash starts at $150 in the HUD, updates after billing, and the player can inspect the last monthly revenue/expense/net result. Play Mode tests use UI controls to host a website, verify resource usage and cash after rollover, and confirm out-of-reach interaction cannot open the panel. Check panel and HUD readability at 800x600 and 1280x720. Capacity-growth alerts and satisfaction remain deferred.
