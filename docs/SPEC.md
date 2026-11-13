@@ -252,15 +252,15 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next is P3-05 automatic PhotoSnap growth after qualifying billing. TryPurchaseUpgrade takes upgrade content ID and owned hardware runtime ID; false returns a readable reason and true returns an empty reason. Hardware.CommitProgression preserves object identity and workload usage while adopting prepared resource/ledger snapshots. Purchase UI remains P3-08; no automatic growth, hardware station, tower purchase, or recurring-expense change was added.
 
 ### P3-05 Apply PhotoSnap growth after its second paid month
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P3-03`, `P3-04`
 - Summary: Apply the authored PhotoSnap milestone once after the qualifying monthly payment and recalculate its hosted demand.
 - Acceptance: PhotoSnap stays at its starter demand before two paid months; accepted but unassigned time does not advance the milestone. After the second payment has updated PaidMonths and finances, apply the milestone once, changing CPU demand from 1 to 2 cores with the other requirements and revenue unchanged. Two hosted starter websites then use 3 cores on the unupgraded 2-core PC without dropping or reassigning either contract; PhotoSnap alone uses 2/2 cores. Edit Mode tests verify billing-before-growth order, a single update crossing multiple qualifying months, one-time application, independent sessions, pre-purchased CPU headroom, and saves/reloads immediately before and after the milestone without duplicate growth/payment. PaidMonths and milestone IDs remain consistent with migrated version 1 saves. No satisfaction, churn, penalties, further growth stages, or tower unlock behavior is added.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Eligible unapplied milestones now run after completed billing, paid-month counts, and processed-period history. Contract identity and assignments remain stable; prepared workload profiles and all hardware usage commit before MilestoneApplied notifications. PhotoSnap reaches 2 CPU cores after two paid months with unchanged revenue/other requirements. Restore silently reconciles eligible missing flags from older state-only v2 saves without replaying billing or notifications.
+- Validation: Confirmed seven new Edit Mode failures before implementation. Final Unity 6000.6.9f1 suites passed: Edit Mode 150/150 and Editor/standalone Windows Play Mode 23/23 each. Verified billing-before-growth observer state, one-time application across 14 months/year/leap day, no unassigned-time growth, independent sessions and definitions, PhotoSnap alone at 2/2 cores, both sites at 3/2, pre-purchased CPU at 3/4, before/after milestone save round trips, legacy/v2 reconciliation, no duplicate payments/events, and the complete existing loop.
+- Commit: `606f57c` (growth policy, controlled contract commit, restore reconciliation, tests, docs); claim: `a095ea6`.
+- Handoff: P3-06 should derive bottlenecks from Hardware.Resources, now recalculated after growth and purchases. MilestoneApplied provides the live contract and authored milestone after finances/counters/history/usage commit; restore suppresses notifications. EffectiveRequirements is the runtime demand, while Definition.Requirements remains authored base data. Contract-row demand/growth explanations remain P3-08 and alerts P3-09; no satisfaction, penalties, extra growth stages, or tower unlocks were introduced.
 
 ### P3-06 Derive resource bottlenecks from effective demand and capacity
 - Status: `todo`
