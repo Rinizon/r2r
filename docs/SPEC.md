@@ -66,15 +66,15 @@ Keep the highest-priority ready work at the top so agents can claim it quickly.
 - Handoff: Open Assets/Scenes/Main.unity and enter Play Mode. HUD values are explicit placeholders; GameRoot is an empty composition root. No world art or simulation bindings yet. Next: FOUND-03 implements the plain C# clock; FOUND-04 connects it to the HUD.
 
 ### FOUND-03 Implement the C# simulation clock
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `FOUND-01`
 - Summary: Implement a plain C# clock that tracks the simulation date and advances with elapsed time at pause, 1x, 2x, 4x, or 8x.
 - Acceptance: Edit Mode tests verify that equal elapsed time produces proportional advancement at each running speed, pause preserves the date and partial-day progress, and one update crossing multiple month boundaries and a year boundary emits each expected tick exactly once in the order defined in the TDD.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Added engine-independent SimulationClock with Gregorian date, fractional day progress, pause and 1x/2x/4x/8x speeds, and ordered outgoing day/month/year events. Documented the API and added Edit Mode coverage.
+- Validation: Confirmed the pre-implementation suite failed (12 failures). Final Unity 6000.6.9f1 Edit Mode suite passed 13/13 cases, covering proportional speed, pause/resume and speed changes, one update across 14 month ends and a year end including leap day, repeated small updates, and invalid inputs. No scene or HUD changes; Play Mode suite was not rerun.
+- Commit: `b2523bd` (clock, tests, docs); claim: `97e73ca`.
+- Handoff: FOUND-04 should reference InfrastructureTycoon.Simulation, create a SimulationClock in GameRoot, call Advance with real elapsed seconds, and bind Date and Speed to the HUD. Starts January 1, 1995 at Normal; two real seconds per day. Events carry the outgoing date; callbacks see the next date at zero day progress. No billing or persistence is implemented.
 
 ### FOUND-04 Connect the clock to the HUD and verify Phase 1
 - Status: `todo`
