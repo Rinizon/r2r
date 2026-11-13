@@ -26,10 +26,6 @@ namespace InfrastructureTycoon.UI
             accept.onClick.AddListener(Accept);
             assign.onClick.AddListener(Assign);
             offerName.text = offer.DisplayName + "  /  " + HostingPanel.Money(offer.MonthlyRevenue) + "/mo";
-            var demand = offer.Requirements;
-            requirements.text = string.Format(CultureInfo.InvariantCulture,
-                "CPU {0} cores   |   RAM {1} GB\nStorage {2} GB   |   Bandwidth {3} Mbps",
-                demand.CpuCores, demand.RamGb, demand.StorageGb, demand.BandwidthMbps);
             Refresh();
         }
 
@@ -48,6 +44,10 @@ namespace InfrastructureTycoon.UI
         private void Refresh()
         {
             var contract = Contract();
+            var demand = contract == null ? offer.Requirements : contract.EffectiveRequirements;
+            requirements.text = string.Format(CultureInfo.InvariantCulture,
+                "CPU {0} cores   |   RAM {1} GB\nStorage {2} GB   |   Bandwidth {3} Mbps",
+                demand.CpuCores, demand.RamGb, demand.StorageGb, demand.BandwidthMbps);
             accept.interactable = contract == null;
             assign.interactable = contract != null && !contract.IsHosted;
             state.text = contract == null ? "AVAILABLE" : contract.IsHosted ? "HOSTED ON STARTER PC" : "ACCEPTED / UNASSIGNED";

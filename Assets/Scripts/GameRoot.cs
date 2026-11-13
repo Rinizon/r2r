@@ -19,6 +19,7 @@ namespace InfrastructureTycoon
         [SerializeField] private Button loadButton;
         [SerializeField] private Text saveFeedback;
         [SerializeField] private HostingPanel hostingPanel;
+        [SerializeField] private HardwarePanel hardwarePanel;
         [SerializeField] private PcStationInteraction station;
         // Inspector order: pause, 1x, 2x, 4x, 8x.
         [SerializeField] private Button[] speedButtons;
@@ -73,6 +74,7 @@ namespace InfrastructureTycoon
                     Session = restored;
                     PcStationInteraction.CloseAll();
                     hostingPanel.RebindSession();
+                    hardwarePanel.RebindSession();
                     RefreshHud();
                     saveFeedback.text = "Loaded.";
                 }
@@ -92,7 +94,7 @@ namespace InfrastructureTycoon
             RefreshHud();
         }
 
-        private void RefreshHud()
+        internal void RefreshHud()
         {
             cashLabel.text = "CASH  " + UI.HostingPanel.Money(Session.Cash);
             dateLabel.text = "DATE  " + Clock.Date.ToString("dd MMM yyyy", CultureInfo.InvariantCulture).ToUpperInvariant();
