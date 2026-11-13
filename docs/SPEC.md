@@ -307,8 +307,8 @@ Use one purchasable upgrade per resource on the starter PC for this phase. The C
 - Handoff: Next is P3-10, integrated Phase 3 loop verification and documentation. CapacityFeedback formats current GetBottlenecks() reports; GameRoot.RefreshHud updates the summary, including immediately after UI purchases/load. HostingPanel derives details on refresh; HostingOfferRow derives persistent growth explanations from applied IDs. No service penalties, satisfaction state, persistence fields, or notification replay were added.
 
 ### P3-10 Verify the complete Phase 3 bottleneck and upgrade loop
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P3-01`, `P3-02`, `P3-03`, `P3-04`, `P3-05`, `P3-06`, `P3-07`, `P3-08`, `P3-09`
 - Summary: Exercise the integrated Phase 3 exit criteria, preserve Phase 2 regressions, and document the player workflow and evidence.
 - Acceptance: From a fresh game, use walking and station UI to host both starter sites, reach the second paid month, identify CPU at 3/2 cores, walk to the hardware station, and buy the $120 CPU upgrade to reach 3/4 cores and clear the alert. Before purchase, cash is $470 and operating profit $320; afterward cash is $350 and operating profit remains $320. In a separate fresh-company case, buy CPU for $120 and reject the $80 RAM purchase with $30 remaining, preserving cash/capacity/records; verify interaction fails out of reach at both stations. Save/reload before growth, while overloaded, and after purchase; verify partial days, milestone/purchase IDs, demand/capacity, alerts, and exactly one subsequent monthly payment without replaying growth or purchases. Include a legacy version 1 save migration and restored-panel actions. Run all Edit Mode and Play Mode suites in Unity 6000.6.9f1, including standalone pointer/layout checks and Phase 2 regressions. Update docs/phases, README, and provisional balance notes with results and remaining prototype-art caveats; mark Phase 3 verified only after these checks pass. Do not implement Phase 4 unlocks or tower purchases.
