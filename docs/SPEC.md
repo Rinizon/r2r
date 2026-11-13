@@ -103,8 +103,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-02 should reference Assets/Data/StarterCatalog.asset from GameRoot and pass ToRuntime() data into the new session. Content namespace is InfrastructureTycoon.Content; immutable data lives in the engine-independent Simulation assembly, ScriptableObjects in Runtime. IDs: hardware.starter-pc, offer.photosnap, offer.local-website. Money fields are authored as whole dollars. No session, workload assignment, or billing was added.
 
 ### P2-02 Create the starter company session and capacity model
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-01`
 - Summary: Introduce a plain C# session owning the existing clock, company finances, starter hardware instance, and four-resource capacity state, and compose it from GameRoot.
 - Acceptance: A new session starts January 1, 1995 at 1x with $150 cash, zero operating profit, one starter PC, and no accepted contracts. Hardware instances have stable runtime IDs distinct from content IDs. CPU, RAM, storage, and bandwidth expose capacity, used, and available values with consistent units. Edit Mode tests verify starter state, resource arithmetic, and independent sessions without mutating authored definitions. Main still loads and the existing date/speed controls and clock tests pass after GameRoot adopts the session; no purchases or progression systems are added.
