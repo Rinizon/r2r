@@ -180,8 +180,8 @@ Work in the priority order below when dependencies are satisfied. Use the provis
 - Handoff: P2-09 should capture with SessionSaveJson.Capture(session, Application.version) between updates, write ToJson(snapshot) to the documented slot, and replace GameRoot.Session only after TryLoad succeeds. Billing history is the processed-period ledger and rebuilds the duplicate guard without emitting ticks. Version 1 is scoped to one starter PC and Phase 2 finances (cash = $150 + operating profit); extend those invariants before purchases. No disk I/O, player save/load controls, or live presentation rebinding was added.
 
 ### P2-09 Add disk save/load controls and rebind the restored session
-- Status: `todo`
-- Owner: `unassigned`
+- Status: `in_progress`
+- Owner: `codex`
 - Depends On: `P2-07`, `P2-08`
 - Summary: Store the Phase 2 JSON save under Application.persistentDataPath and expose explicit Save and Load controls in Main.
 - Acceptance: Save writes one documented local slot at a completed session-update boundary, using a temporary file and replacement so a failed write preserves the previous save. Load validates the entire save before replacing the active session; GameRoot, the clock HUD, cash display, and an open PC panel all bind to the restored session without duplicate billing subscriptions or stale button actions. Missing/corrupt/unsupported saves and I/O failures show a concise message and preserve current play state. Saving does not require station reach; loading closes or refreshes the panel consistently. Player transform, interaction triggers, and panel-open state are not serialized in this first format. Play Mode tests use an isolated test save path, verify controls and rebinding, and clean up their own files without touching a player's slot. No autosave or slot-management UI is required.
