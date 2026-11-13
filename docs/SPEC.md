@@ -208,15 +208,15 @@ Take ready tasks in the priority order below. Preserve the Phase 2 hosting, walk
 Use one purchasable upgrade per resource on the starter PC for this phase. The CPU upgrade is the GDD's $120 for +2 cores. New provisional starting values for planning are RAM $80 for +4 GB, storage $100 for +250 GB, and internet $90 for +10 Mbps; record them as provisional in the GDD when authoring the content. No repeat purchases or upgrade tiers are required.
 
 ### P3-01 Author upgrade and PhotoSnap milestone definitions
-- Status: `in_progress`
+- Status: `done`
 - Owner: `codex`
 - Depends On: `P2-10`
 - Summary: Extend the authored catalog with four starter-PC upgrades and the first PhotoSnap growth milestone, using immutable runtime definitions and stable content IDs.
 - Acceptance: Assets/Data contains CPU, RAM, storage, and internet upgrade definitions with explicit stable IDs, target hardware content ID, price, and capacity delta matching the Phase 3 provisional values above. The PhotoSnap milestone definition has a stable ID, targets offer.photosnap, becomes eligible after two paid months, and changes demand to 2 cores while retaining 2 GB RAM, 20 GB storage, 4 Mbps, and $100 monthly revenue. Edit Mode validation rejects missing/duplicate IDs, unknown targets, invalid money/resource values, zero-effect upgrades, and invalid milestone thresholds. Definitions convert to engine-independent data without mutable session state. Update docs/GDD with the new provisional upgrade values; preserve existing starter/billing values and verify Unity imports assets and metadata.
-- Completion:
-- Validation:
-- Commit:
-- Handoff:
+- Completion: Authored CPU/RAM/storage/internet upgrade assets and the PhotoSnap two-paid-month growth asset, referenced by StarterCatalog. Added immutable UpgradeData/GrowthMilestoneData, validated catalog targets/global IDs, and retained the legacy two-argument catalog constructor. Recorded provisional prices/deltas in docs/GDD and content guidance in README; starter offers and billing values remain unchanged.
+- Validation: Confirmed ten new Edit Mode failures before implementation. Final Unity 6000.6.9f1 suites passed: Edit Mode 98/98 and Editor/standalone Windows Play Mode 20/20 each. Verified exact authored values, stable IDs across renamed copies, independent runtime snapshots/list copies, missing/duplicate IDs and references, unknown targets, invalid prices/resources/thresholds, zero-effect upgrades, asset imports, and the full existing Phase 2 loop.
+- Commit: `552df9a` (assets, definitions/catalog validation, tests, GDD/README); claim: `e8d58db`.
+- Handoff: P3-02 should consume HostingCatalog.Upgrades and Milestones. Upgrade CapacityDelta is additive; milestone Requirements is the absolute grown workload, not a delta. IDs: upgrade.starter-cpu/ram/storage/internet and growth.photosnap.cpu-2. Targets: hardware.starter-pc and offer.photosnap. Definitions are metadata only: no effective-state mutation, purchases, automatic growth, save-format changes, or new UI was introduced.
 
 ### P3-02 Model effective capacities, demand, purchases, and milestone state
 - Status: `todo`
