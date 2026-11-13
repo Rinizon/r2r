@@ -24,7 +24,7 @@ public class SessionSaveTests
         session.Clock.Speed = SimulationSpeed.Quadruple;
         var data = SessionSaveJson.Capture(session, "0.1-test");
         var json = SessionSaveJson.ToJson(data);
-        Assert.That(json, Does.Contain("\"save_version\":1").And.Contain("\"game_version\":\"0.1-test\"").And.Contain("\"timestamp\""));
+        Assert.That(json, Does.Contain("\"save_version\":" + SessionSaveJson.CurrentVersion).And.Contain("\"game_version\":\"0.1-test\"").And.Contain("\"timestamp\""));
         Assert.That(SessionSaveJson.TryLoad(json, session.Catalog, out var restored, out var reason), Is.True, reason);
         Assert.That(restored.Clock.Date, Is.EqualTo(session.Clock.Date));
         Assert.That(restored.Clock.DayProgress, Is.EqualTo(0.75));

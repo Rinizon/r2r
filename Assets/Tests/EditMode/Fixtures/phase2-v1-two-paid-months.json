@@ -1,0 +1,19 @@
+{
+  "save_version": 1,
+  "game_version": "phase2-legacy",
+  "timestamp": "2026-11-13T00:00:00.0000000+00:00",
+  "date": "1995-03-01",
+  "day_progress": 0.75,
+  "speed": 0,
+  "cash": 470,
+  "operating_profit": 320,
+  "hardware": [{ "id": "pc-original", "content_id": "hardware.starter-pc" }],
+  "contracts": [
+    { "id": "photo-original", "content_id": "offer.photosnap", "assigned_hardware_id": "pc-original", "paid_months": 2 },
+    { "id": "web-original", "content_id": "offer.local-website", "assigned_hardware_id": "pc-original", "paid_months": 2 }
+  ],
+  "billing_history": [
+    { "period_end": "1995-01-31", "revenue": 180, "expenses": 20 },
+    { "period_end": "1995-02-28", "revenue": 180, "expenses": 20 }
+  ]
+}

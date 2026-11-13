@@ -24,6 +24,16 @@ namespace InfrastructureTycoon.Simulation
     {
         [DataMember(Name = "id", IsRequired = true)] public string Id;
         [DataMember(Name = "content_id", IsRequired = true)] public string ContentId;
+        // Optional in the reader for v1 compatibility; mandatory (including []) in v2.
+        [DataMember(Name = "purchases", EmitDefaultValue = false)] public UpgradePurchaseSaveData[] Purchases;
+    }
+
+    [DataContract]
+    public sealed class UpgradePurchaseSaveData
+    {
+        [DataMember(Name = "hardware_id", IsRequired = true)] public string HardwareId;
+        [DataMember(Name = "upgrade_id", IsRequired = true)] public string UpgradeId;
+        [DataMember(Name = "amount_paid", IsRequired = true)] public decimal AmountPaid;
     }
 
     [DataContract]
@@ -33,6 +43,7 @@ namespace InfrastructureTycoon.Simulation
         [DataMember(Name = "content_id", IsRequired = true)] public string ContentId;
         [DataMember(Name = "assigned_hardware_id", IsRequired = true)] public string AssignedHardwareId;
         [DataMember(Name = "paid_months", IsRequired = true)] public int PaidMonths;
+        [DataMember(Name = "applied_milestone_ids", EmitDefaultValue = false)] public string[] AppliedMilestoneIds;
     }
 
     [DataContract]

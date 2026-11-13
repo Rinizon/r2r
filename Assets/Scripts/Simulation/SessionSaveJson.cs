@@ -12,7 +12,7 @@ namespace InfrastructureTycoon.Simulation
 {
     public static class SessionSaveJson
     {
-        public const int CurrentVersion = 1;
+        public const int CurrentVersion = 2;
 
         public static SessionSaveData Capture(CompanySession session, string gameVersion)
         {
@@ -32,12 +32,20 @@ namespace InfrastructureTycoon.Simulation
             for (int i = 0; i < data.Hardware.Length; i++)
             {
                 var item = session.Hardware[i];
-                data.Hardware[i] = new HardwareSaveData { Id = item.Id, ContentId = item.Definition.Id };
+                var purchases = new UpgradePurchaseSaveData[item.PurchaseRecords.Count];
+                for (int j = 0; j < purchases.Length; j++)
+                {
+                    var record = item.PurchaseRecords[j];
+                    purchases[j] = new UpgradePurchaseSaveData { HardwareId = record.HardwareId, UpgradeId = record.UpgradeId, AmountPaid = record.AmountPaid };
+                }
+                data.Hardware[i] = new HardwareSaveData { Id = item.Id, ContentId = item.Definition.Id, Purchases = purchases };
             }
             for (int i = 0; i < data.Contracts.Length; i++)
             {
                 var item = session.AcceptedContracts[i];
-                data.Contracts[i] = new ContractSaveData { Id = item.Id, ContentId = item.Definition.Id, AssignedHardwareId = item.AssignedHardwareId, PaidMonths = item.PaidMonths };
+                var applied = new string[item.AppliedMilestoneIds.Count];
+                item.AppliedMilestoneIds.CopyTo(applied, 0);
+                data.Contracts[i] = new ContractSaveData { Id = item.Id, ContentId = item.Definition.Id, AssignedHardwareId = item.AssignedHardwareId, PaidMonths = item.PaidMonths, AppliedMilestoneIds = applied };
             }
             for (int i = 0; i < data.BillingHistory.Length; i++)
             {

@@ -10,7 +10,7 @@ namespace InfrastructureTycoon.Simulation
         internal static CompanySession Restore(HostingCatalog catalog, SessionSaveData data)
         {
             if (data == null) throw new ArgumentException("Save data is missing.");
-            if (data.SaveVersion != SessionSaveJson.CurrentVersion) throw new ArgumentException("Unsupported save version.");
+            if (data.SaveVersion != 1 && data.SaveVersion != SessionSaveJson.CurrentVersion) throw new ArgumentException("Unsupported save version.");
             if (string.IsNullOrWhiteSpace(data.GameVersion) ||
                 !DateTimeOffset.TryParseExact(data.Timestamp, "O", CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp) ||
                 timestamp.Offset != TimeSpan.Zero)
@@ -28,7 +28,19 @@ namespace InfrastructureTycoon.Simulation
 
             var ids = new HashSet<string>(StringComparer.Ordinal);
             AddRuntimeId(ids, data.Hardware[0].Id, data.Hardware[0].ContentId);
-            Hardware = Array.AsReadOnly(new[] { new HardwareInstance(catalog.StarterPc, data.Hardware[0].Id) });
+            bool legacy = data.SaveVersion == 1;
+            var savedHardware = data.Hardware[0];
+            if ((!legacy && savedHardware.Purchases == null) || (legacy && savedHardware.Purchases != null && savedHardware.Purchases.Length != 0))
+                throw new ArgumentException("Invalid purchase state for the save version.");
+            var purchases = new List<UpgradePurchase>();
+            decimal spending = 0;
+            foreach (var purchase in savedHardware.Purchases ?? Array.Empty<UpgradePurchaseSaveData>())
+            {
+                if (purchase == null) throw new ArgumentException("Missing purchase record.");
+                purchases.Add(new UpgradePurchase(purchase.HardwareId, purchase.UpgradeId, purchase.AmountPaid));
+                spending += purchase.AmountPaid;
+            }
+            Hardware = Array.AsReadOnly(new[] { new HardwareInstance(catalog.StarterPc, savedHardware.Id, purchases, catalog.Upgrades) });
             var offers = new HashSet<string>(StringComparer.Ordinal);
             int completedMonths = (date.Year - 1995) * 12 + date.Month - 1;
             foreach (var saved in data.Contracts)
@@ -40,11 +52,34 @@ namespace InfrastructureTycoon.Simulation
                 if (saved.PaidMonths < 0 || saved.PaidMonths > completedMonths ||
                     (saved.AssignedHardwareId == null && saved.PaidMonths != 0))
                     throw new ArgumentException("Invalid paid-month count.");
-                var contract = new ContractInstance(offer, saved.Id) { PaidMonths = saved.PaidMonths };
+                if ((!legacy && saved.AppliedMilestoneIds == null) || (legacy && saved.AppliedMilestoneIds != null && saved.AppliedMilestoneIds.Length != 0))
+                    throw new ArgumentException("Invalid milestone state for the save version.");
+                var milestones = new List<string>();
+                if (legacy)
+                {
+                    // Phase 2 did not store milestones. Apply eligible profiles once during migration,
+                    // retaining paid-month counts and without advancing the clock or replaying billing.
+                    foreach (var milestone in catalog.Milestones)
+                        if (milestone.TargetOfferId == offer.Id && saved.PaidMonths >= milestone.RequiredPaidMonths)
+                            milestones.Add(milestone.Id);
+                }
+                else milestones.AddRange(saved.AppliedMilestoneIds);
+                if (saved.AssignedHardwareId != null && saved.AssignedHardwareId != Hardware[0].Id)
+                    throw new ArgumentException("Dangling hardware assignment.");
+                var contract = new ContractInstance(offer, saved.Id, saved.PaidMonths, milestones, catalog.Milestones, saved.AssignedHardwareId);
                 acceptedContracts.Add(contract);
-                if (saved.AssignedHardwareId != null && !TryAssignContract(contract.Id, saved.AssignedHardwareId, out var reason))
-                    throw new ArgumentException("Invalid assignment: " + reason);
             }
+
+            // Historical assignments may exceed capacity because an applied growth profile increased demand.
+            // Their original base allocation must still fit; ordinary new allocations keep their capacity guard.
+            var baseDemand = default(ResourceAmounts);
+            foreach (var contract in acceptedContracts)
+                if (contract.IsHosted) baseDemand += contract.BaseRequirements;
+            var capacity = Hardware[0].EffectiveCapacity;
+            if (baseDemand.CpuCores > capacity.CpuCores || baseDemand.RamGb > capacity.RamGb ||
+                baseDemand.StorageGb > capacity.StorageGb || baseDemand.BandwidthMbps > capacity.BandwidthMbps)
+                throw new ArgumentException("Base assignments exceed hardware capacity.");
+            Hardware[0].SetUsedResources(ProgressionResources.CalculateUsage(Hardware[0], acceptedContracts).Used);
 
             // Require the complete chronological ledger; missing periods could otherwise replay payments.
             if (data.BillingHistory.Length != completedMonths) throw new ArgumentException("Incomplete billing history.");
@@ -61,7 +96,7 @@ namespace InfrastructureTycoon.Simulation
                 billingHistory.Add(result);
                 processedBillingPeriods.Add(period);
             }
-            if (data.OperatingProfit != profit || data.Cash != 150m + profit)
+            if (data.OperatingProfit != profit || data.Cash != 150m + profit - spending)
                 throw new ArgumentException("Finances do not match billing history.");
             Cash = data.Cash;
             OperatingProfit = data.OperatingProfit;
