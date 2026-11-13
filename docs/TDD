@@ -533,20 +533,21 @@ Check:
 	• customer growth rates
 
 25. MVP Technical Scope
-The first playable prototype should include:
-Era 1
+The first playable prototype covers Eras 1 and 2 and the first rack milestone of Era 3.
+Era 1 - Personal Computer
 	• single PC
 	• CPU/RAM/storage/network capacity
 	• simple hosting contracts
 	• monthly billing
 	• upgrades
 	• basic alerts
-Era 2
+Era 2 - Tower Servers
 	• tower server
-	• first rack
-	• rack capacity
 	• multiple contracts
 	• simple customer satisfaction
+Era 3 - Rack Infrastructure (first rack milestone)
+	• first 42U rack
+	• install equipment within the rack capacity, measured in rack units (U)
 Required MVP Systems
 	• TimeManager
 	• EconomyManager
