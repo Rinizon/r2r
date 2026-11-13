@@ -8,6 +8,49 @@ namespace InfrastructureTycoon.Simulation
     public sealed class CompanySession
     {
         private readonly List<ContractInstance> acceptedContracts = new List<ContractInstance>();
+        private readonly List<MonthlyBillingResult> billingHistory = new List<MonthlyBillingResult>();
+        private readonly HashSet<DateTime> processedBillingPeriods = new HashSet<DateTime>();
+        private readonly DateTime billingStartDate;
+        public ReadOnlyCollection<MonthlyBillingResult> BillingHistory { get; }
+        public MonthlyBillingResult LastMonthlyResult => billingHistory.Count == 0 ? null : billingHistory[billingHistory.Count - 1];
+
+        public bool TryBillMonth(DateTime outgoingMonthEnd, out string reason)
+        {
+            if (processedBillingPeriods.Contains(outgoingMonthEnd))
+            {
+                reason = "This month has already been billed.";
+                return false;
+            }
+            if (outgoingMonthEnd.TimeOfDay != TimeSpan.Zero ||
+                outgoingMonthEnd.Day != DateTime.DaysInMonth(outgoingMonthEnd.Year, outgoingMonthEnd.Month) ||
+                outgoingMonthEnd < billingStartDate || outgoingMonthEnd >= Clock.Date)
+            {
+                reason = "Billing requires a completed calendar month from this session.";
+                return false;
+            }
+
+            decimal revenue = 0;
+            foreach (var contract in acceptedContracts)
+                if (contract.IsHosted)
+                    revenue += contract.Definition.MonthlyRevenue;
+            decimal expenses = 0;
+            foreach (var hardware in Hardware)
+                expenses += hardware.Definition.MonthlyExpense;
+            var result = new MonthlyBillingResult(outgoingMonthEnd, revenue, expenses);
+            // Compute finances before committing the billing period or any counters.
+            decimal cash = Cash + result.NetProfit;
+            decimal profit = OperatingProfit + result.NetProfit;
+
+            Cash = cash;
+            OperatingProfit = profit;
+            foreach (var contract in acceptedContracts)
+                if (contract.IsHosted)
+                    contract.PaidMonths++;
+            billingHistory.Add(result);
+            processedBillingPeriods.Add(outgoingMonthEnd);
+            reason = string.Empty;
+            return true;
+        }
         public HostingCatalog Catalog { get; }
         public SimulationClock Clock { get; } = new SimulationClock();
         public decimal Cash { get; private set; }
@@ -102,7 +145,12 @@ namespace InfrastructureTycoon.Simulation
             Cash = 150m;
             Hardware = Array.AsReadOnly(new[] { new HardwareInstance(catalog.StarterPc) });
             AcceptedContracts = acceptedContracts.AsReadOnly();
+            BillingHistory = billingHistory.AsReadOnly();
+            billingStartDate = Clock.Date;
+            Clock.MonthEnded += OnMonthEnded;
         }
+
+        private void OnMonthEnded(DateTime outgoingMonthEnd) => TryBillMonth(outgoingMonthEnd, out _);
 
         private OfferData FindOffer(string offerId)
         {
@@ -134,6 +182,7 @@ namespace InfrastructureTycoon.Simulation
         public OfferData Definition { get; }
         public string AssignedHardwareId { get; internal set; }
         public bool IsHosted => AssignedHardwareId != null;
+        public int PaidMonths { get; internal set; }
 
         internal ContractInstance(OfferData definition) { Definition = definition; }
     }
